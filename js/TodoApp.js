@@ -5,6 +5,17 @@ import { DEFAULT_DATA } from "./util/data.js";
 import { STATUS } from "./util/constants.js";
 
 
+class TodoCount {
+  constructor(count) {
+    this.$todoCount = document.querySelector(".todo-count");
+    this.render(count);
+  }
+
+  render(count) {
+    this.$todoCount.innerHTML = `총 ${count} 개`;
+  }
+}
+
 export default class TodoApp {
   constructor() {
     this.items = DEFAULT_DATA || [];
@@ -17,12 +28,14 @@ export default class TodoApp {
         editHandler: this.handleEditTodo.bind(this),
       }
     );
-    new TodoInput({ addTodoHandler: this.handleAddTodo.bind(this) });
+    this.todoInput = new TodoInput({ addTodoHandler: this.handleAddTodo.bind(this) });
+    this.todoCount = new TodoCount(this.items.length);
   }
 
   setState(items) {
     this.items = items;
     this.todoList.render.call(this.todoList, this.items);
+    this.todoCount.render.call(this.todoCount, this.items.length);
   }
 
   handleAddTodo(content) {
