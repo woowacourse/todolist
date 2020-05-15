@@ -42,8 +42,18 @@ export function TodoList(toggleComplete, toggleDelete, toggleEdit, saveEdit) {
     }
   };
 
+  this.cancelEditHandler = (event) => {
+    const $target = event.target;
+    if (event.key === "Escape" && $target.classList.contains("edit")) {
+      const selectedItem = $target.closest("li");
+      const itemId = selectedItem.dataset.itemId;
+      toggleEdit(itemId);
+    }
+  };
+
   $todoList.addEventListener("click", this.completeToggleHandler);
   $todoList.addEventListener("click", this.deleteToggleHandler);
   $todoList.addEventListener("dblclick", this.editToggleHandler);
   $todoList.addEventListener("keyup", this.saveEditHandler);
+  $todoList.addEventListener("keyup", this.cancelEditHandler);
 }

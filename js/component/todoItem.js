@@ -26,5 +26,5 @@ export function TodoItem(content, completed = false, editing = false) {
       return new TodoItem(modifiedContent, completed, false);
     }
     return this;
-  }
+  };
 }
