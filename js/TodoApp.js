@@ -7,7 +7,10 @@ import { DEFAULT_DATA } from "./util/data.js";
 export default class TodoApp {
   constructor() {
     this.items = DEFAULT_DATA || [];
-    this.todoList = new TodoList(this.items, { toggleCompleteHandler: this.handleToggleComplete.bind(this) });
+    this.todoList = new TodoList(this.items, {
+      toggleCompleteHandler: this.handleToggleComplete.bind(this),
+      deleteHandler: this.handleDeleteTodo.bind(this)
+    });
     new TodoInput({ addTodoHandler: this.handleAddTodo.bind(this) });
   }
 
@@ -18,6 +21,10 @@ export default class TodoApp {
 
   handleAddTodo(content) {
     this.setState(this.items.concat({ id: getUUID(), title: content }));
+  }
+
+  handleDeleteTodo(id) {
+    this.setState(this.items.filter(item => item.id !== id));
   }
 
   handleToggleComplete(id) {
