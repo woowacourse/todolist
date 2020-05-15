@@ -19,7 +19,7 @@ export function TodoApp() {
     return this.todoItems.map(item => item.renderingHtml()).join("");
   }
 
-  this.completeToggle = (itemId) => {
+  this.completeItem = (itemId) => {
     const updatedItems = this.todoItems.map(item => {
       if (item.is(itemId)) {
         return item.completeToggled();
@@ -29,7 +29,12 @@ export function TodoApp() {
     this.setState(updatedItems);
   };
 
-  this.todoList = new TodoList(this.completeToggle);
+  this.deleteItem = (itemId) => {
+    const updateItems = this.todoItems.filter(item => !item.is(itemId));
+    this.setState(updateItems);
+  }
+
+  this.todoList = new TodoList(this.completeItem, this.deleteItem);
 
   new TodoInput(this.addItem);
 }

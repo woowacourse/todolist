@@ -1,4 +1,4 @@
-export function TodoList(completeToggle) {
+export function TodoList(completeItem, deleteItem) {
   const $todoList = document.querySelector("#todo-list");
 
   this.render = (template) => {
@@ -10,9 +10,19 @@ export function TodoList(completeToggle) {
     if ($target.classList.contains("toggle")) {
       const selectedItem = $target.closest("li");
       const itemId = selectedItem.dataset.itemId;
-      completeToggle(itemId);
+      completeItem(itemId);
+    }
+  };
+
+  this.deleteHandler = (event) => {
+    const $target = event.target;
+    if ($target.classList.contains("destroy")) {
+      const selectedItem = $target.closest("li");
+      const itemId = selectedItem.dataset.itemId;
+      deleteItem(itemId);
     }
   };
 
   $todoList.addEventListener("click", this.completeToggleHandler);
+  $todoList.addEventListener("click", this.deleteHandler);
 }
