@@ -1,8 +1,18 @@
-export function TodoList() {
-  this.$todoList = document.querySelector("#todo-list");
+export function TodoList(completeToggle) {
+  const $todoList = document.querySelector("#todo-list");
 
-  this.render = (todoItems) => {
-    const itemsHtml = todoItems.map(item => item.renderingHtml()).join("");
-    this.$todoList.innerHTML = itemsHtml;
-  }
+  this.render = (template) => {
+    $todoList.innerHTML = template;
+  };
+
+  this.completeToggleHandler = (event) => {
+    const $target = event.target;
+    if ($target.classList.contains("toggle")) {
+      const selectedItem = $target.closest("li");
+      const itemId = selectedItem.dataset.itemId;
+      completeToggle(itemId);
+    }
+  };
+
+  $todoList.addEventListener("click", this.completeToggleHandler);
 }
