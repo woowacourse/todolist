@@ -17,24 +17,29 @@ export function TodoApp() {
 
   this.todoItemsTemplate = () => {
     return this.todoItems.map(item => item.renderingHtml()).join("");
-  }
+  };
 
-  this.completeItem = (itemId) => {
-    const updatedItems = this.todoItems.map(item => {
-      if (item.is(itemId)) {
-        return item.completeToggled();
-      }
-      return item;
-    });
+  this.toggleComplete = (itemId) => {
+    const updatedItems = this.todoItems.map(item => item.toggleCompleteIf(itemId));
     this.setState(updatedItems);
   };
 
-  this.deleteItem = (itemId) => {
+  this.toggleDelete = (itemId) => {
     const updateItems = this.todoItems.filter(item => !item.is(itemId));
     this.setState(updateItems);
-  }
+  };
 
-  this.todoList = new TodoList(this.completeItem, this.deleteItem);
+  this.toggleEdit = (itemId) => {
+    const updatedItems = this.todoItems.map(item => item.toggleEditIf(itemId));
+    this.setState(updatedItems);
+  };
+
+  this.saveEdit = (itemId, modifiedContent) => {
+    const updatedItems = this.todoItems.map(item => item.editContentIf(itemId, modifiedContent));
+    this.setState(updatedItems);
+  };
+
+  this.todoList = new TodoList(this.toggleComplete, this.toggleDelete, this.toggleEdit, this.saveEdit);
 
   new TodoInput(this.addItem);
 }

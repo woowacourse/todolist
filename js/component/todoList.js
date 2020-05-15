@@ -1,4 +1,4 @@
-export function TodoList(completeItem, deleteItem) {
+export function TodoList(toggleComplete, toggleDelete, toggleEdit, saveEdit) {
   const $todoList = document.querySelector("#todo-list");
 
   this.render = (template) => {
@@ -10,19 +10,40 @@ export function TodoList(completeItem, deleteItem) {
     if ($target.classList.contains("toggle")) {
       const selectedItem = $target.closest("li");
       const itemId = selectedItem.dataset.itemId;
-      completeItem(itemId);
+      toggleComplete(itemId);
     }
   };
 
-  this.deleteHandler = (event) => {
+  this.deleteToggleHandler = (event) => {
     const $target = event.target;
     if ($target.classList.contains("destroy")) {
       const selectedItem = $target.closest("li");
       const itemId = selectedItem.dataset.itemId;
-      deleteItem(itemId);
+      toggleDelete(itemId);
+    }
+  };
+
+  this.editToggleHandler = (event) => {
+    const $target = event.target;
+    if (!$target.classList.contains("toggle") && !$target.classList.contains("destroy")) {
+      const selectedItem = $target.closest("li");
+      const itemId = selectedItem.dataset.itemId;
+      toggleEdit(itemId);
+    }
+  };
+
+  this.saveEditHandler = (event) => {
+    const $target = event.target;
+    if (event.key === "Enter" && $target.classList.contains("edit")) {
+      const selectedItem = $target.closest("li");
+      const itemId = selectedItem.dataset.itemId;
+      const content = $target.value;
+      saveEdit(itemId, content);
     }
   };
 
   $todoList.addEventListener("click", this.completeToggleHandler);
-  $todoList.addEventListener("click", this.deleteHandler);
+  $todoList.addEventListener("click", this.deleteToggleHandler);
+  $todoList.addEventListener("dblclick", this.editToggleHandler);
+  $todoList.addEventListener("keyup", this.saveEditHandler);
 }

@@ -1,5 +1,5 @@
-export const todoItemTemplate = (id, content, completed) => {
-  return `<li class="${completed ? 'completed' : ''}" data-item-id="${id}">
+export const todoItemTemplate = (id, content, completed, editing) => {
+  return `<li class="${completed ? 'completed' : ''} ${editing ? 'editing' : ''}" data-item-id="${id}">
       <div class="view">
         <input class="toggle" type="checkbox" ${completed ? 'checked' : ''}>
         <label class="label">${content}</label>
