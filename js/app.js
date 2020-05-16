@@ -22,11 +22,14 @@ function TodoItem(content, status) {
 
 function TodoApp() {
   this.items = [];
-
   this.setState = updatedItem => {
     this.items = updatedItem;
     this.todoList.render(this.items);
   };
+
+  this.renderGroup = (items, type) => {
+    this.group.render(items, type);
+  }
 
   const onToggle = (event, index) => {
     const selectedItem = this.items[index];
@@ -38,6 +41,7 @@ function TodoApp() {
   const onDelete = (event, index) => {
     this.items.splice(index, 1);
     this.setState(this.items);
+    this.renderGroup(this.items);
   }
 
   const onDoubleClick = (event, index) => {
@@ -51,6 +55,7 @@ function TodoApp() {
     const newItem = new TodoItem(contents, "ready");
     this.items.push(newItem);
     this.setState(this.items);
+    this.renderGroup(this.items, "all");
   }
 
   const onUpdateContents = (index, event) => {
@@ -67,12 +72,30 @@ function TodoApp() {
     this.setState(this.items);
   }
 
+  const onGroupingAll = (event) => {
+    this.todoList.render(this.items);
+    this.renderGroup(this.items, "all");
+  }
+
+  const onGroupingActive = (event) => {
+    let activeItems = this.items.filter(item => item.status === "ready");
+    this.todoList.render(activeItems);
+    this.renderGroup(activeItems, "active");
+  }
+
+  const onGroupingCompleted = (event) => {
+    let completedItems = this.items.filter(item => item.status === "completed");
+    this.todoList.render(completedItems);
+    this.renderGroup(completedItems, "completed");
+  }
+
   this.todoList = new TodoList(onToggle,
     onDelete,
     onDoubleClick,
     onUpdateContents,
     onUpdateRollBack);
-  this.todoInput = new TodoInput(onInputContents)
+  new TodoInput(onInputContents)
+  this.group = new TodoGrouping(onGroupingAll, onGroupingActive, onGroupingCompleted);
 }
 
 function TodoInput(onInputContents) {
@@ -88,6 +111,31 @@ function TodoInput(onInputContents) {
   }
   this.isValid = (event, value) => {
     return event.key === "Enter" && value.trim().length !== 0;
+  }
+}
+
+function TodoGrouping(onGroupingAll, onGroupingActive, onGroupingCompleted) {
+  this.$todoContainer = document.querySelector(".count-container");
+  this.$todoContainer.addEventListener("click", event => this.showTodosByGrouping(event));
+
+  this.showTodosByGrouping = (event) => {
+    const $targetClass = event.target.classList;
+    if ($targetClass.contains("all")) {
+      onGroupingAll(event);
+    } else if ($targetClass.contains("active")) {
+      onGroupingActive(event);
+    } else if ($targetClass.contains("completed")) {
+      onGroupingCompleted(event);
+    }
+  }
+  this.render = (items, type) => {
+    if (type === "all") {
+      this.$todoContainer.innerHTML = groupingTemplate(items);
+    } else if (type === "active") {
+      this.$todoContainer.innerHTML = groupingByActiveTemplate(items);
+    } else if (type === "completed") {
+      this.$todoContainer.innerHTML = groupingByCompletedTemplate(items);
+    }
   }
 }
 
@@ -135,7 +183,18 @@ function TodoList(onToggle, onDelete, onDoubleClick, onUpdateContent, onRollback
   }
 }
 
+function findIndex(event, $target) {
+  const $itemList = $target.closest("ul");
+  const $item = $target.closest("li");
+  for (let i = 0; i < $itemList.childNodes.length; i++) {
+    if ($item === $itemList.childNodes[i]) {
+      return i;
+    }
+  }
+}
+
 function todoItemTemplate(todoItem) {
+
   if (todoItem.status === "completed") {
     return `<li class="${todoItem.status}">
           <div class="view">
@@ -157,14 +216,55 @@ function todoItemTemplate(todoItem) {
   }
 }
 
-function findIndex(event, $target) {
-  const $itemList = $target.closest("ul");
-  const $item = $target.closest("li");
-  for (let i = 0; i < $itemList.childNodes.length; i++) {
-    if ($item === $itemList.childNodes[i]) {
-      return i;
-    }
-  }
+function groupingTemplate(items) {
+  return `<div class="count-container">
+    <span class="todo-count">총 <strong>${items.length}</strong> 개</span>
+    <ul class="filters">
+      <li>
+        <a class="all selected" href="#/">전체보기</a>
+      </li>
+      <li>
+        <a class="active" href="#/active">해야할 일</a>
+      </li>
+      <li>
+        <a class="completed" href="#/completed">완료한 일</a>
+      </li>
+    </ul>
+  </div>`;
 }
 
-new TodoApp();
+function groupingByActiveTemplate(items) {
+  return `<div class="count-container">
+    <span class="todo-count">총 <strong>${items.length}</strong> 개</span>
+    <ul class="filters">
+      <li>
+        <a class="all" href="#/">전체보기</a>
+      </li>
+      <li>
+        <a class="active selected" href="#/active">해야할 일</a>
+      </li>
+      <li>
+        <a class="completed" href="#/completed">완료한 일</a>
+      </li>
+    </ul>
+  </div>`;
+}
+
+function groupingByCompletedTemplate(items) {
+  return `<div class="count-container">
+    <span class="todo-count">총 <strong>${items.length}</strong> 개</span>
+    <ul class="filters">
+      <li>
+        <a class="all" href="#/">전체보기</a>
+      </li>
+      <li>
+        <a class="active" href="#/active">해야할 일</a>
+      </li>
+      <li>
+        <a class="completed selected" href="#/completed">완료한 일</a>
+      </li>
+    </ul>
+  </div>`;
+}
+
+const todoApp = new TodoApp();
