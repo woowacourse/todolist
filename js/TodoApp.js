@@ -1,24 +1,16 @@
 import TodoList from "./components/TodoList.js";
 import TodoInput from "./components/TodoInput.js";
+import TodoCount from "./components/TodoCount.js";
+import TodoFilter from "./components/TodoFilter.js";
+
 import { getUUID } from "./util/uuid.js";
 import { DEFAULT_DATA } from "./util/data.js";
 import { STATUS } from "./util/constants.js";
 
-
-class TodoCount {
-  constructor(count) {
-    this.$todoCount = document.querySelector(".todo-count");
-    this.render(count);
-  }
-
-  render(count) {
-    this.$todoCount.innerHTML = `총 ${count} 개`;
-  }
-}
-
 export default class TodoApp {
   constructor() {
     this.items = DEFAULT_DATA || [];
+    this.filter = STATUS.ALL;
     this.todoList = new TodoList(
       this.items,
       {
@@ -30,12 +22,26 @@ export default class TodoApp {
     );
     this.todoInput = new TodoInput({ addTodoHandler: this.handleAddTodo.bind(this) });
     this.todoCount = new TodoCount(this.items.length);
+    this.todoFilter = new TodoFilter(this.filter, { filterHandler: this.handleFilter.bind(this) });
   }
 
   setState(items) {
     this.items = items;
-    this.todoList.render.call(this.todoList, this.items);
-    this.todoCount.render.call(this.todoCount, this.items.length);
+    let itemsToShow = this.items;
+    if (this.filter === STATUS.ACTIVE) {
+      itemsToShow = this.items.filter(item => item.status !== STATUS.COMPLETED);
+    }
+    if (this.filter === STATUS.COMPLETED) {
+      itemsToShow = this.items.filter(item => item.status === STATUS.COMPLETED);
+    }
+    this.todoList.render.call(this.todoList, itemsToShow);
+    this.todoCount.render.call(this.todoCount, itemsToShow.length);
+    this.todoFilter.render.call(this.todoFilter, this.filter);
+  }
+
+  setFilter(type) {
+    this.filter = type;
+    this.setState(this.items);
   }
 
   handleAddTodo(content) {
@@ -74,5 +80,9 @@ export default class TodoApp {
         status: item.status.replace("editing", "")
       }
     ));
+  }
+
+  handleFilter(type) {
+    this.setFilter(type);
   }
 }

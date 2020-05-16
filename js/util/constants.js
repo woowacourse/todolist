@@ -17,11 +17,14 @@ const CLASSNAME = {
 const STATUS = {
   COMPLETED: "completed",
   EDITING: "editing",
+  ACTIVE: "active",
+  ALL: "all"
 };
 
 const TAG = {
   LABEL: "LABEL",
-  INPUT: "INPUT"
+  INPUT: "INPUT",
+  A: "A"
 };
 
 export { EVENT, KEY, CLASSNAME, STATUS, TAG };
