@@ -5,7 +5,7 @@ import {
   todoItemTemplate,
 } from "./templates.js";
 
-import { GROUP_TYPE } from "./constants.js";
+import { EVENT_TYPE, GROUP_TYPE, INPUT_TYPE, KEY_TYPE } from "./constants.js";
 
 function TodoApp() {
   this.todoItems = [];
@@ -40,7 +40,7 @@ function TodoApp() {
     const index = this.todoItems.findIndex((item) => item.id === id);
     const todoItem = this.todoItems[index];
     if (todoItem.status === GROUP_TYPE.ACTIVE) {
-      todoItem.status = "editing";
+      todoItem.status = GROUP_TYPE.EDITING;
     }
     this.todoItems[index] = todoItem;
     this.setState(this.todoItems);
@@ -49,7 +49,7 @@ function TodoApp() {
   const onCommit = (event, id, content) => {
     const index = this.todoItems.findIndex((item) => item.id === id);
     const todoItem = this.todoItems[index];
-    if (todoItem.status === "editing") {
+    if (todoItem.status === GROUP_TYPE.EDITING) {
       todoItem.content = content;
       todoItem.status = GROUP_TYPE.ACTIVE;
       this.todoItems[index] = todoItem;
@@ -60,7 +60,7 @@ function TodoApp() {
   const onRollback = (event, id) => {
     const index = this.todoItems.findIndex((item) => item.id === id);
     const todoItem = this.todoItems[index];
-    if (todoItem.status === "editing") {
+    if (todoItem.status === GROUP_TYPE.EDITING) {
       todoItem.status = GROUP_TYPE.ACTIVE;
       this.todoItems[index] = todoItem;
       this.setState(this.todoItems);
@@ -104,7 +104,9 @@ function TodoApp() {
 function TodoInput(onAdd) {
   const $todoInput = document.querySelector("#new-todo-title");
 
-  $todoInput.addEventListener("keyup", (event) => this.addTodoItem(event));
+  $todoInput.addEventListener(EVENT_TYPE.KEYUP, (event) =>
+    this.addTodoItem(event)
+  );
 
   this.addTodoItem = (event) => {
     const $newTodoTarget = event.target;
@@ -115,25 +117,29 @@ function TodoInput(onAdd) {
   };
 
   this.isValid = function (event, s) {
-    return !!(event.key === "Enter" && s.trim());
+    return !!(event.key === KEY_TYPE.ENTER && s.trim());
   };
 }
 
 function TodoList(onToggle, onDelete, onDblClick, onRollback, onCommit) {
   this.$todoList = document.querySelector("#todo-list");
 
-  this.$todoList.addEventListener("click", (event) => this.onClick(event));
-
-  this.$todoList.addEventListener("dblclick", (event) => this.startEdit(event));
-
-  this.$todoList.addEventListener("keyup", (event) => this.finishEdit(event));
+  this.$todoList.addEventListener(EVENT_TYPE.CLICK, (event) =>
+    this.onClick(event)
+  );
+  this.$todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, (event) =>
+    this.startEdit(event)
+  );
+  this.$todoList.addEventListener(EVENT_TYPE.KEYUP, (event) =>
+    this.finishEdit(event)
+  );
 
   this.onClick = (event) => {
     const $target = event.target;
     const id = Number($target.closest("li").getAttribute("id"));
-    if ($target.classList.contains("toggle")) {
+    if ($target.classList.contains(INPUT_TYPE.TOGGLE)) {
       onToggle(event, id);
-    } else if ($target.classList.contains("destroy")) {
+    } else if ($target.classList.contains(INPUT_TYPE.DESTROY)) {
       onDelete(event, id);
     }
   };
@@ -150,9 +156,9 @@ function TodoList(onToggle, onDelete, onDblClick, onRollback, onCommit) {
     const $target = event.target;
     const id = Number($target.closest("li").getAttribute("id"));
     if ($target.classList.contains("edit")) {
-      if (event.key === "Enter") {
+      if (event.key === KEY_TYPE.ENTER) {
         onCommit(event, id, $target.value);
-      } else if (event.key === "Escape") {
+      } else if (event.key === KEY_TYPE.ESC) {
         onRollback(event, id);
       }
     }
@@ -172,7 +178,7 @@ function TodoItem(id, content, status) {
 function TodoCount(groupBy) {
   this.$todoCount = document.querySelector(".count-container");
 
-  this.$todoCount.addEventListener("click", (event) =>
+  this.$todoCount.addEventListener(EVENT_TYPE.CLICK, (event) =>
     this.groupByStatus(event)
   );
 
