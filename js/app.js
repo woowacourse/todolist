@@ -7,12 +7,17 @@ function TodoItem(content, status) {
     } else if (this.status === "ready") {
       this.status = "completed";
     }
-  }
+  };
   this.changeEditingMode = () => {
-    if (this.status === "ready") {
-      this.status = "editing";
-    }
-  }
+    this.status = "editing";
+  };
+  this.changeContents = (newContent) => {
+    this.content = newContent;
+    this.status = "ready";
+  };
+  this.rollbackStatus = () => {
+    this.status = "ready";
+  };
 }
 
 function TodoApp() {
@@ -48,7 +53,25 @@ function TodoApp() {
     this.setState(this.items);
   }
 
-  this.todoList = new TodoList(onToggle, onDelete, onDoubleClick);
+  const onUpdateContents = (index, event) => {
+    const selectedItem = this.items[index];
+    selectedItem.changeContents(event.target.value);
+    this.items[index] = selectedItem;
+    this.setState(this.items);
+  }
+
+  const onUpdateRollBack = (index, event) => {
+    const selectedItem = this.items[index];
+    selectedItem.rollbackStatus();
+    this.items[index] = selectedItem;
+    this.setState(this.items);
+  }
+
+  this.todoList = new TodoList(onToggle,
+    onDelete,
+    onDoubleClick,
+    onUpdateContents,
+    onUpdateRollBack);
   this.todoInput = new TodoInput(onInputContents)
 }
 
@@ -64,14 +87,17 @@ function TodoInput(onInputContents) {
     }
   }
   this.isValid = (event, value) => {
-    return !!(event.key === "Enter" && value.trim());
+    return event.key === "Enter" && value.trim().length !== 0;
   }
 }
 
-function TodoList(onToggle, onDelete, onDoubleClick) {
+function TodoList(onToggle, onDelete, onDoubleClick, onUpdateContent, onRollback) {
   this.$todoList = document.querySelector("#todo-list");
   this.$todoList.addEventListener("click", (event) => this.click(event));
   this.$todoList.addEventListener("dblclick", (event) => this.doubleClick(event));
+  this.$todoList.addEventListener("keyup", event => this.onUpdatedByEnter(event));
+  this.$todoList.addEventListener("keyup", event => this.onCancelByEsc(event));
+
   this.click = event => {
     const $target = event.target;
     if ($target.classList.contains("toggle")) {
@@ -89,6 +115,21 @@ function TodoList(onToggle, onDelete, onDoubleClick) {
       onDoubleClick(event, index);
     }
   }
+  this.onUpdatedByEnter = (event) => {
+    if (event.key === "Enter" && event.target.classList.contains("edit")) {
+      const $target = event.target;
+      const index = findIndex(event, $target)
+      onUpdateContent(index, event);
+    }
+  }
+  this.onCancelByEsc = (event) => {
+    if (event.key === "Escape" && event.target.classList.contains("edit")) {
+      const $target = event.target;
+      const index = findIndex(event, $target)
+      onRollback(index, event);
+    }
+  }
+
   this.render = items => {
     this.$todoList.innerHTML = items.map(todoItemTemplate).join("");
   }
