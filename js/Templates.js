@@ -8,3 +8,7 @@ export const listTemplate = todoItem => {
     <input class="edit" value="새로운 타이틀">
     </li>`;
 };
+
+export const countTemplate = list => {
+  return `총 <strong>${list.length}</strong> 개`;
+};
