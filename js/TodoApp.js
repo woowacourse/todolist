@@ -49,17 +49,17 @@ class TodoApp {
       alert(MESSAGE.EMPTY_NOT_ALLOWED);
       return;
     }
-    this.setState(this.items.concat({ id: getUUID(), content, isCompleted: false, isEditing: false }));
+    this.setState(this.items.concat({ _id: getUUID(), content, isCompleted: false, isEditing: false }));
   }
 
   handleDeleteTodo(id) {
     if (confirm(MESSAGE.CONFIRM_DELETE)) {
-      this.setState(this.items.filter(item => item.id !== id));
+      this.setState(this.items.filter(item => item._id !== id));
     }
   }
 
   handleToggleComplete(id) {
-    this.setState(this.items.map(item => item.id !== id ? item :
+    this.setState(this.items.map(item => item._id !== id ? item :
       {
         ...item,
         isCompleted: !item.isCompleted
@@ -68,7 +68,7 @@ class TodoApp {
   }
 
   handleToggleEditing(id) {
-    this.setState(this.items.map(item => item.id !== id ? item :
+    this.setState(this.items.map(item => item._id !== id ? item :
       {
         ...item,
         isEditing: !item.isEditing
@@ -77,7 +77,7 @@ class TodoApp {
   }
 
   handleEditTodo(id, content) {
-    this.setState(this.items.map(item => item.id !== id ? item :
+    this.setState(this.items.map(item => item._id !== id ? item :
       {
         ...item,
         content,

@@ -1,6 +1,6 @@
 import { STATUS } from "../util/constants.js";
 
-function template({ id, content, isCompleted, isEditing }) {
+function template({ _id: id, content, isCompleted, isEditing }) {
   function getStatusClass() {
     const classList = [];
     isCompleted && classList.push(STATUS.COMPLETED);
