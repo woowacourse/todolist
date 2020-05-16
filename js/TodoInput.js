@@ -14,7 +14,6 @@ export function TodoInput({ onAdd }) {
     if (this.isValid(event, $newTodoTarget.value)) {
       onAdd({
         name: $newTodoTarget.value,
-        completed: false,
       });
       $newTodoTarget.value = "";
     }
