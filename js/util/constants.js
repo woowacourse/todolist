@@ -27,4 +27,9 @@ const TAG = {
   A: "A"
 };
 
-export { EVENT, KEY, CLASSNAME, STATUS, TAG };
+const MESSAGE = {
+  EMPTY_NOT_ALLOWED: "🤥 빈 값을 입력할 수 없습니다.",
+  CONFIRM_DELETE: "🤔 정말 삭제하시겠습니까?"
+};
+
+export { EVENT, KEY, CLASSNAME, STATUS, TAG, MESSAGE };

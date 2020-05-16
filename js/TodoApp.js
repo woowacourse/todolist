@@ -5,7 +5,7 @@ import TodoFilter from "./components/TodoFilter.js";
 
 import { getUUID } from "./util/uuid.js";
 import { DEFAULT_DATA } from "./util/data.js";
-import { STATUS } from "./util/constants.js";
+import { MESSAGE, STATUS } from "./util/constants.js";
 
 export default class TodoApp {
   constructor() {
@@ -45,11 +45,17 @@ export default class TodoApp {
   }
 
   handleAddTodo(content) {
+    if (content.trim().length === 0) {
+      alert(MESSAGE.EMPTY_NOT_ALLOWED);
+      return;
+    }
     this.setState(this.items.concat({ id: getUUID(), title: content }));
   }
 
   handleDeleteTodo(id) {
-    this.setState(this.items.filter(item => item.id !== id));
+    if (confirm(MESSAGE.CONFIRM_DELETE)) {
+      this.setState(this.items.filter(item => item.id !== id));
+    }
   }
 
   handleToggleComplete(id) {
