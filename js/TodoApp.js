@@ -24,6 +24,12 @@ function TodoApp() {
       const index = this.todoItems.findIndex(item => item.contents === deleteItem.contents);
       this.todoItems.splice(index, 1);
       this.setState(this.todoItems);
+    },
+    onUpdateItem: (beforeContents, afterContents) => {
+      const updateItem = new TodoItem(afterContents);
+      const index = this.todoItems.findIndex(item => item.contents === beforeContents);
+      this.todoItems.splice(index, 1, updateItem);
+      this.setState(this.todoItems);
     }
   }
 
