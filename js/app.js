@@ -3,49 +3,48 @@ function TodoApp() {
 
   this.createdCount = 0;
 
-  this.setState = (updatedItems, updatedItemCount) => {
+  this.setState = (updatedItems) => {
 
     this.todoItems = updatedItems;
-    this.createdCount = updatedItemCount;
     this.todoList.render(updatedItems);
-    this.todoCount.render(updatedItemCount + 1);
+    this.todoCount.render(updatedItems.length);
   };
 
   const onToggle = (event, id) => {
     const index = this.todoItems.findIndex(item => item.id === id);
     const todoItem = this.todoItems[index];
     if (todoItem.status === "completed") {
-      todoItem.status = "default";
-    } else if (todoItem.status === "default") {
+      todoItem.status = "active";
+    } else if (todoItem.status === "active") {
       todoItem.status = "completed";
     }
     this.todoItems[index] = todoItem;
-    this.setState(this.todoItems, this.createdCount);
+    this.setState(this.todoItems);
   };
 
   const onDelete = (event, id) => {
     const index = this.todoItems.findIndex(item => item.id === id);
     this.todoItems.splice(index, 1)
-    this.setState(this.todoItems, this.createdCount);
+    this.setState(this.todoItems);
   }
 
   const onDblClick = (event, id) => {
     const index = this.todoItems.findIndex(item => item.id === id);
     const todoItem = this.todoItems[index];
-    if (todoItem.status === "default") {
+    if (todoItem.status === "active") {
       todoItem.status = "editing";
     }
     this.todoItems[index] = todoItem;
-    this.setState(this.todoItems, this.createdCount);
+    this.setState(this.todoItems);
   };
 
   const onRollback = (event, id) => {
     const index = this.todoItems.findIndex(item => item.id === id);
     const todoItem = this.todoItems[index];
     if (todoItem.status === "editing") {
-      todoItem.status = "default";
+      todoItem.status = "active";
       this.todoItems[index] = todoItem;
-      this.setState(this.todoItems, this.createdCount);
+      this.setState(this.todoItems);
     }
   }
   const onCommit = (event, id, content) => {
@@ -53,25 +52,37 @@ function TodoApp() {
     const todoItem = this.todoItems[index];
     if (todoItem.status === "editing") {
       todoItem.content = content;
-      todoItem.status = "default";
+      todoItem.status = "active";
       this.todoItems[index] = todoItem;
-      this.setState(this.todoItems, this.createdCount);
+      this.setState(this.todoItems);
     }
   }
 
   const onAdd = (contents) => {
-    const newTodoItem = new TodoItem(++this.createdCount, contents, "default");
+    const newTodoItem = new TodoItem(++this.createdCount, contents, "active");
     this.todoItems.push(newTodoItem);
-    this.setState(this.todoItems, this.createdCount);
+    this.setState(this.todoItems);
   };
+
+  const groupBy = (event, type) => {
+    const $target = event.target;
+    if ($target.classList.contains(type)) {
+      let items;
+      if (type === "all") {
+        items = this.todoItems;
+      } else {
+        items = this.todoItems.filter(item => item.status === type);
+      }
+      this.todoList.render(items);
+      this.todoCount.render(items.length, type);
+    }
+  }
 
   this.todoList = new TodoList(onToggle, onDelete, onDblClick, onRollback, onCommit);
 
-  this.todoCount = new TodoCount();
+  this.todoCount = new TodoCount(groupBy);
 
   new TodoInput(onAdd);
-
-  new TodoCount(this.createdCount);
 }
 
 function TodoInput(onAdd) {
@@ -162,14 +173,64 @@ function todoItemTemplate(todoItem) {
   }
 }
 
-function TodoCount() {
+function TodoCount(groupBy) {
 
   this.$todoCount = document.querySelector(".count-container");
 
-  this.render = (count) => {
-    this.$todoCount.innerHTML = `총 <strong>${count}</strong> 개`;
+  this.$todoCount.addEventListener('click', event => this.groupByStatus(event));
+
+  this.groupByStatus = (event) => {
+    if (event.target.classList.contains("active")) {
+      groupBy(event, "active");
+    } else if (event.target.classList.contains("completed")) {
+      groupBy(event, "completed");
+    } else if (event.target.classList.contains("all")) {
+      groupBy(event, "all");
+    }
   }
 
+  this.render = (total, type) => {
+    if (type === "all" || type === undefined) {
+      this.$todoCount.innerHTML = `<span class="todo-count">총 <strong>${total}</strong> 개</span>
+    <ul class="filters">
+      <li>
+        <a class="all selected" href="#/">전체보기</a>
+      </li>
+      <li>
+        <a class="active" href="#/active">해야할 일</a>
+      </li>
+      <li>
+        <a class="completed" href="#/completed">완료한 일</a>
+      </li>
+    </ul>`;
+    } else if (type === "active") {
+      this.$todoCount.innerHTML = `<span class="todo-count">총 <strong>${total}</strong> 개</span>
+    <ul class="filters">
+      <li>
+        <a class="all" href="#/">전체보기</a>
+      </li>
+      <li>
+        <a class="active selected" href="#/active">해야할 일</a>
+      </li>
+      <li>
+        <a class="completed" href="#/completed">완료한 일</a>
+      </li>
+    </ul>`;
+    } else if (type === "completed") {
+      this.$todoCount.innerHTML = `<span class="todo-count">총 <strong>${total}</strong> 개</span>
+    <ul class="filters">
+      <li>
+        <a class="all" href="#/">전체보기</a>
+      </li>
+      <li>
+        <a class="active" href="#/active">해야할 일</a>
+      </li>
+      <li>
+        <a class="completed selected" href="#/completed">완료한 일</a>
+      </li>
+    </ul>`;
+    }
+  }
 }
 
 new TodoApp();
