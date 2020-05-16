@@ -4,9 +4,9 @@ export default function Todo() {
   this.todoListItem = [];
   this.todoListViewer = new TodoListViewer();
 
-  this.setState = (updatedState) => {
+  this.setState = (updatedState, option="all") => {
     this.todoListItem = updatedState;
-    this.todoListViewer.setState(this.todoListItem);
+    this.todoListViewer.setState(this.todoListItem, option);
   };
 
   new EditText({
@@ -16,21 +16,22 @@ export default function Todo() {
         .map((todoItem) => todoItem.inputToggle());
       this.setState(this.todoListItem);
     },
-     savedToggle: (id, content) => {
-        this.todoListItem
-          .filter((todoItem) => todoItem.id == id)
-          .map((todoItem) => {
-            todoItem.setState(content, todoItem.complete)
-            todoItem.inputToggle()
-          });
-        this.setState(this.todoListItem);
-      },
-      unsavedToggle: id => {
-        this.todoListItem
+    savedToggle: (id, content) => {
+      this.todoListItem
+        .filter((todoItem) => todoItem.id == id)
+        .map((todoItem) => {
+          todoItem.setState(content, todoItem.complete)
+          todoItem.inputToggle()
+        });
+      this.setState(this.todoListItem);
+    },
+    unsavedToggle: id => {
+      this.todoListItem
         .filter((todoItem) => todoItem.id == id)
         .map(todoItem => todoItem.inputToggle())
-        this.setState(this.todoListItem);
-      }}
+      this.setState(this.todoListItem);
+    }
+  }
   );
 
   new TodoDataInput({
@@ -64,9 +65,51 @@ export default function Todo() {
       this.setState(this.todoListItem);
     },
   });
+
+  new ChangeViewClick({
+    showAll: () => {
+      this.setState(this.todoListItem);
+    },
+    todoAll: () => {
+      this.setState(this.todoListItem, "todo");
+    },
+    completeAll: () => {
+      this.setState(this.todoListItem, "complete");
+    }
+  })
 }
 
-function EditText({ inputToggle, savedToggle, unsavedToggle}) {
+function ChangeViewClick({ showAll, todoAll, completeAll }) {
+  this.$filters = document.querySelector(".filters");
+
+  this.$filters.addEventListener("click", (event) =>
+    this.click(event)
+  );
+
+  this.clearSelected = () => {
+    const tags = [...this.$filters.children]
+    tags.map(x => x.querySelector("a").classList.remove("selected"));
+  }
+
+  this.click = event => {
+    event.preventDefault();
+    const $eventTarget = event.target;
+    this.clearSelected()
+    $eventTarget.classList.add("selected");
+    if($eventTarget.className.indexOf("all") !== -1) {
+      showAll()
+    }
+    if($eventTarget.className.indexOf("active") !== -1){
+      todoAll()
+    }
+    if($eventTarget.className.indexOf("completed") !== -1){
+      completeAll();
+    }
+  }
+
+}
+
+function EditText({ inputToggle, savedToggle, unsavedToggle }) {
   this.$todoList = document.querySelector("#todo-list");
   this.$todoList.addEventListener("click", (event) =>
     this.toggleInputItem(event)
@@ -92,7 +135,7 @@ function EditText({ inputToggle, savedToggle, unsavedToggle}) {
       const $editInput = $parent.querySelector(".edit");
       savedToggle($parent.dataset.id, $editInput.value);
     }
-    else if (event.key === "Escape"){
+    else if (event.key === "Escape") {
       const $parent = $labelButton.closest("li");
       unsavedToggle($parent.dataset.id);
     }
@@ -166,19 +209,25 @@ function TodoDataInput({ itemAdd }) {
 // 상위 컴포넌트에게 todoListItem을 받아서 화면에 보여주기만 한다.
 function TodoListViewer() {
   this.$todoList = document.querySelector("#todo-list");
-  this.$countContainer = document.querySelector(".count-container");
+  this.$countContainer = document.querySelector(".todo-count");
 
 
-  this.setState = (updatedTodoItem) => {
+  this.setState = (updatedTodoItem, option = "all") => {
     const todoItems = updatedTodoItem;
-    this.render(todoItems);
+    this.render(todoItems, option);
   };
 
-  this.render = (items) => {
-    const template = items.map(todoItemTemplate);
+  this.render = (items, option) => {
+    let template = null;
+    if (option === "all") {
+      template = items.map(todoItemTemplate);
+    } else {
+      const state = option === "complete" ? true : false;
+      template = items.filter(item => item.complete === state)
+        .map(todoItemTemplate);
+    }
     const countTemplate = TodoItemCount(items.length)
     this.$todoList.innerHTML = template.join("");
-    this.$countContainer.insertAdjacentHTML(1,"test");
-    // this.$countContainer.innerHTML(countTemplate);
+    this.$countContainer.innerHTML = countTemplate;
   };
 }

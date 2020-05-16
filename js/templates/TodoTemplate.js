@@ -12,5 +12,5 @@ export const todoItemTemplate = (data) => `
 
 
 export const TodoItemCount = length => `
-<span class="todo-count">총 <strong>${length +1}</strong> 개</span>
+총 <strong>${length}</strong> 개
 `
