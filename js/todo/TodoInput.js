@@ -5,10 +5,14 @@ export default function TodoInput(todoInputMethods) {
   $todoInput.addEventListener(EVENT_TYPE.KEYPRESS, e => this.onPressEnterKey(e));
 
   this.onPressEnterKey = e => {
-    if (e.key && e.key === KEY_TYPE.ENTER) {
+    if (isEnter(e.key)) {
       const $newTodoTarget = e.target;
       todoInputMethods.onAddItem($newTodoTarget.value);
       $newTodoTarget.value = "";
     }
+  }
+
+  const isEnter = $key => {
+    return $key && $key === KEY_TYPE.ENTER;
   }
 }

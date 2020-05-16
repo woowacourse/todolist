@@ -18,7 +18,16 @@ function TodoApp() {
     }
   };
 
-  const todoList = new TodoList();
+  this.todoListMethods = {
+    onDeleteItem: contents => {
+      const deleteItem = new TodoItem(contents);
+      const index = this.todoItems.findIndex(item => item.contents === deleteItem.contents);
+      this.todoItems.splice(index, 1);
+      this.setState(this.todoItems);
+    }
+  }
+
+  const todoList = new TodoList(this.todoListMethods);
   new TodoInput(this.todoInputMethods);
 }
 

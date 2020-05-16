@@ -1,9 +1,9 @@
 import { itemTemplate } from '../template/template.js';
 import { EVENT_TYPE } from '../utils/constants.js';
 
-export default function TodoList() {
+export default function TodoList(todoListMethods) {
   this.$todoList = document.querySelector('#todo-list');
-  this.$todoList.addEventListener(EVENT_TYPE.CLICK, e => this.onClickCheckBox(e))
+  this.$todoList.addEventListener(EVENT_TYPE.CLICK, e => this.onClickItem(e))
 
   this.setState = updatedTodoItems => {
     this.render(updatedTodoItems);
@@ -14,17 +14,37 @@ export default function TodoList() {
     this.$todoList.innerHTML = template.join("");
   }
 
-  this.onClickCheckBox = e => {
+  this.onClickItem = e => {
     const $target = e.target;
-    if ($target && $target.nodeName === 'INPUT') {
-      const $list = $target.closest('li');
-      const isCompleted = $list.classList.contains('completed');
-
-      if (!isCompleted) {
-        $list.classList.add('completed');
-      } else {
-        $list.classList.remove('completed');
-      }
+    if (isCheckBox($target)) {
+      onClickCheckBox($target);
     }
+    if (isDeleteBtn($target)) {
+      onClickDeleteBtn($target);
+    }
+  }
+
+  const isCheckBox = $target => {
+    return $target && $target.nodeName === 'INPUT' && $target.className === 'toggle';
+  }
+
+  const onClickCheckBox = $target => {
+    const classList = $target.closest('li').classList;
+    const isCompleted = classList.contains('completed');
+
+    if (!isCompleted) {
+      classList.add('completed');
+    } else {
+      classList.remove('completed');
+    }
+  }
+
+  const isDeleteBtn = $target => {
+    return $target && $target.nodeName === 'BUTTON';
+  }
+
+  const onClickDeleteBtn = $target => {
+    const contents = $target.previousElementSibling.innerText;
+    todoListMethods.onDeleteItem(contents);
   }
 }
