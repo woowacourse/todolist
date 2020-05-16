@@ -1,6 +1,6 @@
 import { EVENT, KEY } from "../util/constants.js";
 
-export default class TodoInput {
+class TodoInput {
   constructor({ addTodoHandler }) {
     this.$todoInput = document.querySelector("#new-todo-title");
     this.$todoInput.addEventListener(EVENT.KEY_UP, event => this.addTodo(event));
@@ -14,3 +14,5 @@ export default class TodoInput {
     }
   }
 }
+
+export default TodoInput;

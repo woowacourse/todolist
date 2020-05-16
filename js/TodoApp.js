@@ -4,12 +4,12 @@ import TodoCount from "./components/TodoCount.js";
 import TodoFilter from "./components/TodoFilter.js";
 
 import { getUUID } from "./util/uuid.js";
-import { DEFAULT_DATA } from "./util/data.js";
 import { MESSAGE, STATUS } from "./util/constants.js";
+import { MOCK_DATA } from "./util/data.js";
 
-export default class TodoApp {
+class TodoApp {
   constructor() {
-    this.items = DEFAULT_DATA || [];
+    this.items = MOCK_DATA || [];
     this.filter = STATUS.ALL;
     this.todoList = new TodoList(
       this.items,
@@ -29,10 +29,10 @@ export default class TodoApp {
     this.items = items;
     let itemsToShow = this.items;
     if (this.filter === STATUS.ACTIVE) {
-      itemsToShow = this.items.filter(item => item.status !== STATUS.COMPLETED);
+      itemsToShow = this.items.filter(item => !item.isCompleted);
     }
     if (this.filter === STATUS.COMPLETED) {
-      itemsToShow = this.items.filter(item => item.status === STATUS.COMPLETED);
+      itemsToShow = this.items.filter(item => item.isCompleted);
     }
     this.todoList.render.call(this.todoList, itemsToShow);
     this.todoCount.render.call(this.todoCount, itemsToShow.length);
@@ -49,7 +49,7 @@ export default class TodoApp {
       alert(MESSAGE.EMPTY_NOT_ALLOWED);
       return;
     }
-    this.setState(this.items.concat({ id: getUUID(), title: content }));
+    this.setState(this.items.concat({ id: getUUID(), content, isCompleted: false, isEditing: false }));
   }
 
   handleDeleteTodo(id) {
@@ -62,7 +62,7 @@ export default class TodoApp {
     this.setState(this.items.map(item => item.id !== id ? item :
       {
         ...item,
-        status: item.status === STATUS.COMPLETED ? null : STATUS.COMPLETED
+        isCompleted: !item.isCompleted
       }
     ));
   }
@@ -71,9 +71,7 @@ export default class TodoApp {
     this.setState(this.items.map(item => item.id !== id ? item :
       {
         ...item,
-        status: item.status && item.status.includes(STATUS.EDITING)
-          ? item.status.replace(STATUS.EDITING, "")
-          : [item.status, STATUS.EDITING].join(" ")
+        isEditing: !item.isEditing
       }
     ));
   }
@@ -82,8 +80,8 @@ export default class TodoApp {
     this.setState(this.items.map(item => item.id !== id ? item :
       {
         ...item,
-        title: content,
-        status: item.status.replace("editing", "")
+        content,
+        isEditing: !item.isEditing
       }
     ));
   }
@@ -92,3 +90,5 @@ export default class TodoApp {
     this.setFilter(type);
   }
 }
+
+export default TodoApp;

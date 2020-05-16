@@ -1,7 +1,7 @@
 import template from "./TodoItem.js";
 import { CLASSNAME, EVENT, KEY, TAG } from "../util/constants.js";
 
-export default class TodoList {
+class TodoList {
   constructor(items, { toggleCompleteHandler, deleteHandler, toggleEditingHandler, editHandler }) {
     this.$todoList = document.querySelector("#todo-list");
     this.render(items);
@@ -64,3 +64,5 @@ export default class TodoList {
     return event.target.closest("li").querySelector("label").innerText;
   }
 }
+
+export default TodoList;

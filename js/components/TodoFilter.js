@@ -5,7 +5,7 @@ const button = ({ type, selected, name }) => `<li>
   <a class="${type} ${selected && "selected"}" href="#/">${name}</a>
 </li>`;
 
-export default class TodoFilter {
+class TodoFilter {
   constructor(filter, { filterHandler }) {
     this.filterHandler = filterHandler;
     this.$buttons = document.querySelector(".filters");
@@ -34,3 +34,5 @@ export default class TodoFilter {
     }
   }
 }
+
+export default TodoFilter;
