@@ -1,17 +1,15 @@
-export function TodoInput({ onAdd }) {
-    const $todoInput = document.querySelector("#new-todo-title");
-
-    $todoInput.addEventListener("keydown", event => this.addTodoItem(event));
+export function TodoInput({ onAdd }, todoInput) {
+    todoInput.addEventListener("keydown", event => this.addTodoItem(event));
 
     this.isValid = (event, value) => {
-        return event.target.value === value;
+        return (event.key ==="Enter")
+            && value.trim().length !== 0;
     }
 
     this.addTodoItem = event => {
-        event.preventDefault();
         const $newTodoTarget = event.target;
-        if (this.isValid(event, $newTodoTarget.value)
-        && event.key === "Enter") {
+        if (this.isValid(event, $newTodoTarget.value)) {
+            event.preventDefault();
             onAdd($newTodoTarget.value);
             $newTodoTarget.value = "";
         }

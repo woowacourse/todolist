@@ -1,15 +1,13 @@
 import { todoItemTemplate } from '../util/templates.js'
 
-export function TodoList() {
-    const $todoList = document.querySelector("#new-todo-title");
-
+export function TodoList(todoList) {
     this.setState = updatedTodoItems => {
         this.todoItems = updatedTodoItems;
         this.render(this.todoItems);
     };
 
     this.render = items => {
-        const template = items.map(item => todoItemTemplate(item));
-        $todoList.innerHTML = template.join("");
+        const template = items.map(todoItemTemplate);
+        todoList.innerHTML = template.join("");
     };
 }

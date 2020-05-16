@@ -3,13 +3,11 @@ import { TodoItem } from './TodoItem.js'
 import { TodoList } from './TodoList.js';
 
 export function TodoApp() {
-    this.todoList = new TodoList();
-    this.todoItems = [];
+    this.$todoList = document.querySelector("#todo-list");
+    this.$todoInput = document.querySelector("#new-todo-title");
 
-    this.setState = updatedItems => {
-        this.todoItems = updatedItems;
-        this.todoList.setState(this.todoItems);
-    };
+    this.todoItems = [];
+    this.todoList = new TodoList(this.$todoList);
 
     new TodoInput({
         onAdd: contents => {
@@ -17,5 +15,10 @@ export function TodoApp() {
             this.todoItems.push(newTodoItem);
             this.setState(this.todoItems);
         }
-    });
+    }, this.$todoInput);
+
+    this.setState = updatedItems => {
+        this.todoItems = updatedItems;
+        this.todoList.setState(this.todoItems);
+    };
 }
