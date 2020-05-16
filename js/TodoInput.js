@@ -13,6 +13,6 @@ export function TodoInput({ onAdd }) {
   };
 
   this.isValid = (event, title) => {
-    return event.key === "Enter";
+    return event.key === "Enter" && title !== null && title !== "";
   }
 }

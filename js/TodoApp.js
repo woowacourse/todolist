@@ -20,25 +20,25 @@ function TodoApp() {
 
   this.setState = updatedItems => {
     this.todoItems = updatedItems;
+    showList(this.todoItems);
   };
 
   new TodoInput({
     onAdd: newTodoName => {
-      const newTodoItem = new TodoItem(newTodoName, null);
+      const newTodoItem = new TodoItem(null, newTodoName, false);
       const updatedList = [...this.todoItems, newTodoItem];
       this.setState(updatedList);
-      showList(updatedList);
     }
   });
 
   const uncheckItem = ($classList, index) => {
     $classList.remove("completed");
-    this.todoItems[index].completed = null;
+    this.todoItems[index].isCompleted = false;
   }
 
   const checkItem = ($classList, index) => {
     $classList.toggle("completed");
-    this.todoItems[index].completed = "completed";
+    this.todoItems[index].isCompleted = true;
   }
 
   const clickCheckBox = event => {
@@ -63,7 +63,7 @@ function TodoApp() {
     event.preventDefault();
     if (confirm("삭제하시겠습니까?")) {
       const $list = $target.previousElementSibling;
-      const updatedList = [...this.todoItems].filter(item => item.name !== $list.innerText);
+      const updatedList = [...this.todoItems].filter(todoItem => todoItem.content !== $list.innerText);
       this.setState(updatedList);
     }
   };
@@ -88,13 +88,13 @@ function TodoApp() {
 
   const showActiveItems = event => {
     event.preventDefault();
-    const list = [...this.todoItems].filter(todoItem => todoItem.completed === null);
+    const list = [...this.todoItems].filter(todoItem => todoItem.isCompleted === false);
     showList(list);
   }
 
   const showCompletedItems = event => {
     event.preventDefault();
-    const list = [...this.todoItems].filter(todoItem => todoItem.completed === "completed");
+    const list = [...this.todoItems].filter(todoItem => todoItem.isCompleted === true);
     showList(list);
   }
 

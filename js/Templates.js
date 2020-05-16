@@ -1,8 +1,8 @@
-export const listTemplate = data => {
-  return `<li class="${data.completed === null ? "" : data.completed}">
+export const listTemplate = todoItem => {
+  return `<li class="${todoItem.isCompleted ? "completed" : ""}">
   <div class="view">
-    <input class="toggle" type="checkbox" ${data.completed === null ? "" : "checked"}>
-    <label class="label">${data.name}</label>
+    <input class="toggle" type="checkbox" ${todoItem.isCompleted ? "checked" : "unchecked"}>
+    <label class="label">${todoItem.content}</label>
   <button class="destroy"></button>
     </div>
     <input class="edit" value="새로운 타이틀">
