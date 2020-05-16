@@ -1,4 +1,4 @@
-export function TodoList(toggleComplete, toggleDelete, toggleEdit, saveEdit) {
+export function TodoList(toggleComplete, deleteItem, toggleEdit, saveEdit) {
   const $todoList = document.querySelector("#todo-list");
 
   this.render = (template) => {
@@ -19,7 +19,7 @@ export function TodoList(toggleComplete, toggleDelete, toggleEdit, saveEdit) {
     if ($target.classList.contains("destroy")) {
       const selectedItem = $target.closest("li");
       const itemId = selectedItem.dataset.itemId;
-      toggleDelete(itemId);
+      deleteItem(itemId);
     }
   };
 

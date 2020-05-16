@@ -1,3 +1,3 @@
-import {TodoApp} from "./component/todoApp.js";
+import {TodoApp} from "./component/TodoApp.js";
 
 new TodoApp();

@@ -1,4 +1,4 @@
-import {todoItemTemplate} from "../templates/todoItemTemplate.js";
+import {todoItemTemplate} from "../templates/TodoItemTemplate.js";
 
 export function TodoItem(content, completed = false, editing = false) {
   this.id = Date.now();
@@ -6,6 +6,8 @@ export function TodoItem(content, completed = false, editing = false) {
   this.renderingHtml = () => todoItemTemplate(this.id, content, completed, editing);
 
   this.is = (id) => this.id === Number(id) || this.id === id;
+
+  this.isComplete = () => completed;
 
   this.toggleCompleteIf = (id) => {
     if (this.is(id)) {
