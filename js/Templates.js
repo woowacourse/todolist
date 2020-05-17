@@ -1,5 +1,5 @@
 export const todoItemTemplate = (data) => {
-  return `<li class="${data.isCompleted ? "completed " : " "} ${
+  return `<li class="${data.isCompleted ? "completed " : "active"} ${
     data.isEditing ? "editing" : ""
   }"  
  

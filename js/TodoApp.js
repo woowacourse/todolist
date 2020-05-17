@@ -6,19 +6,24 @@ import {TodoItem} from "./TodoItem.js";
 function TodoApp() {
   const $todoList = document.querySelector("#todo-list");
   const $count = document.querySelector(".todo-count");
+  const $countContainer = document.querySelector(".count-container");
 
   this.todoItems = [];
 
+  this.render = (updatedItems) => {
+    todoList.render(updatedItems);
+    ShowCount(updatedItems);
+  };
+
   this.setState = (updatedItems) => {
     this.todoItems = updatedItems;
-    todoList.setState(updatedItems);
-    ShowList();
+    this.render(updatedItems);
   };
 
   const todoList = new TodoList();
 
-  const ShowList = () => {
-    $count.innerHTML = `총 <strong>${this.todoItems.length}</strong> 개`;
+  const ShowCount = (updatedItems) => {
+    $count.innerHTML = `총 <strong>${updatedItems.length}</strong> 개`;
   };
 
   new TodoInput({
@@ -29,12 +34,72 @@ function TodoApp() {
     },
   });
 
+  const handleFilterButton = (event) => {
+    const $target = event.target;
+    if ($target.classList.contains("all")) {
+      this.render(this.todoItems);
+      $countContainer.innerHTML = `
+      <span class="todo-count">총 <strong>0</strong> 개</span>
+    <ul class="filters">
+      <li>
+        <a class="all selected" href="#/">전체보기</a>
+      </li>
+      <li>
+        <a class="active" href="#/active">해야할 일</a>
+      </li>
+      <li>
+        <a class="completed" href="#/completed">완료한 일</a>
+      </li>
+    </ul>`;
+    }
+
+    if ($target.classList.contains("active")) {
+      const filtered = this.todoItems.filter(function (item) {
+        return !item.isCompleted;
+      });
+      this.render(filtered);
+      $countContainer.innerHTML = `
+      <span class="todo-count">총 <strong>0</strong> 개</span>
+    <ul class="filters">
+      <li>
+        <a class="all" href="#/">전체보기</a>
+      </li>
+      <li>
+        <a class="active selected" href="#/active">해야할 일</a>
+      </li>
+      <li>
+        <a class="completed" href="#/completed">완료한 일</a>
+      </li>
+    </ul>`;
+    }
+
+    if ($target.classList.contains("completed")) {
+      const filtered = this.todoItems.filter(function (item) {
+        return item.isCompleted;
+      });
+      this.render(filtered);
+      $countContainer.innerHTML = `
+      <span class="todo-count">총 <strong>0</strong> 개</span>
+    <ul class="filters">
+      <li>
+        <a class="all" href="#/">전체보기</a>
+      </li>
+      <li>
+        <a class="active" href="#/active">해야할 일</a>
+      </li>
+      <li>
+        <a class="completed selected" href="#/completed">완료한 일</a>
+      </li>
+    </ul>`;
+    }
+  };
+
   const handleUpdateLabel = (event) => {
     const $target = event.target;
     if (
       !$target.classList.contains("edit") ||
       (event.key !== "Enter" && event.key !== "Escape") ||
-      $target.value === ""
+      $target.value.trim() === ""
     ) {
       return;
     }
@@ -114,6 +179,7 @@ function TodoApp() {
     $todoList.addEventListener("click", handleDeleteButton);
     $todoList.addEventListener("dblclick", handleEditLabel);
     $todoList.addEventListener("keyup", handleUpdateLabel);
+    $countContainer.addEventListener("click", handleFilterButton);
   }
 
   this.init = () => {

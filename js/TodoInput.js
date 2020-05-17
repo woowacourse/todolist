@@ -6,7 +6,7 @@ export function TodoInput({ onAdd }) {
 
   this.isValid = function (event, value) {
     event.preventDefault();
-    return event.key === "Enter" && value !== "";
+    return event.key === "Enter" && value.trim() !== "";
   };
 
   this.addTodoItem = (event) => {
