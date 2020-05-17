@@ -29,7 +29,29 @@ function TodoApp() {
     },
   });
 
-  const HandleCheckBox = (event) => {
+  const handleDeleteButton = (event) => {
+    const $target = event.target;
+    if (!$target.classList.contains("destroy")) {
+      return;
+    }
+
+    const $checkedItem = $target.closest("li");
+
+    const deletedItems = this.todoItems.map((item) => {
+      if (item.isEquals($checkedItem.dataset.itemId)) {
+        return;
+      }
+      return item;
+    });
+
+    const filtered = deletedItems.filter(function (el) {
+      return el != null;
+    });
+
+    this.setState(filtered);
+  };
+
+  const handleCheckBox = (event) => {
     const $target = event.target;
     if (!$target.classList.contains("toggle")) {
       return;
@@ -47,7 +69,8 @@ function TodoApp() {
   };
 
   function initEventListener() {
-    $todoList.addEventListener("click", HandleCheckBox);
+    $todoList.addEventListener("click", handleCheckBox);
+    $todoList.addEventListener("click", handleDeleteButton);
   }
 
   this.init = () => {
