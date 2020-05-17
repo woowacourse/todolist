@@ -2,7 +2,7 @@ import { TodoInput } from './TodoInput.js'
 import { TodoItem } from './TodoItem.js'
 import { TodoList } from './TodoList.js';
 
-export function TodoApp() {
+function TodoApp() {
     this.$todoList = document.querySelector("#todo-list");
     this.$todoInput = document.querySelector("#new-todo-title");
 
@@ -22,3 +22,5 @@ export function TodoApp() {
         this.todoList.setState(this.todoItems);
     };
 }
+
+new TodoApp();
