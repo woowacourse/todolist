@@ -10,10 +10,7 @@ export function TodoDelete({ onDelete }) {
     }
     event.preventDefault();
     if (confirm("삭제하시겠습니까?")) {
-      const $list = $target.closest("li");
-      const nodes = Array.from($todoList.children);
-      let index = nodes.indexOf($list);
-      onDelete(index);
+      onDelete($target.previousElementSibling.innerText);
     }
   }
 }

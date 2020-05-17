@@ -3,6 +3,7 @@ import { TodoDelete } from './TodoDelete.js';
 import { TodoList } from './TodoList.js';
 import { TodoItem } from './TodoItem.js';
 import { TodoListCount } from './TodoListCount.js';
+import { TodoListCheckBox } from './TodoListCheckBox.js';
 
 function TodoApp() {
   const $todoList = document.querySelector("#todo-list");
@@ -34,36 +35,18 @@ function TodoApp() {
   });
 
   new TodoDelete({
-    onDelete: index => {
-      const updatedList = [...this.todoItems];
-      updatedList.splice(index, 1);
-      this.setState(updatedList);
+    onDelete: deletedContent => {
+      this.setState([...this.todoItems].filter(todoItem => todoItem.content !== deletedContent));
     }
   })
 
-  const uncheckItem = ($classList, index) => {
-    $classList.remove("completed");
-    this.todoItems[index].isCompleted = false;
-  }
-
-  const checkItem = ($classList, index) => {
-    $classList.toggle("completed");
-    this.todoItems[index].isCompleted = true;
-  }
-
-  const clickCheckBox = event => {
-    const $target = event.target;
-    if ($target.type !== "checkbox") {
-      return;
+  new TodoListCheckBox({
+    onCheck: clickedContent => {
+      let clickedItem = this.todoItems.find(todoItem => todoItem.content === clickedContent);
+      clickedItem.isCompleted = !clickedItem.isCompleted;
+      this.setState(this.todoItems);
     }
-    const $list = $target.closest("li");
-    const $classList = $list.classList;
-    const nodes = Array.from($todoList.children);
-    let index = nodes.indexOf($list);
-
-    $classList.contains("completed") ? uncheckItem($classList, index)
-      : checkItem($classList, index);
-  };
+  })
 
   const switchToEditMode = event => {
     event.preventDefault();
