@@ -9,6 +9,6 @@ export function TodoListCheckBox({ onCheck }) {
       return;
     }
 
-    onCheck($target.nextElementSibling.innerText);
+    onCheck($target.closest("li").id);
   }
 }

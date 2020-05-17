@@ -11,7 +11,10 @@ function TodoApp() {
   const $active = document.querySelector(".active");
   const $completed = document.querySelector(".completed");
 
-  this.todoItems = [];
+  this.todoItems = [
+    new TodoItem("0.1", "운동", false),
+    new TodoItem("0.2", "공부", false)
+  ];
 
   const todoList = new TodoList();
   const todoListCount = new TodoListCount();
@@ -35,16 +38,20 @@ function TodoApp() {
   });
 
   new TodoDelete({
-    onDelete: deletedContent => {
-      this.setState([...this.todoItems].filter(todoItem => todoItem.content !== deletedContent));
+    onDelete: id => {
+      this.setState([...this.todoItems].filter(todoItem => todoItem._id !== id));
     }
   })
 
   new TodoListCheckBox({
-    onCheck: clickedContent => {
-      let clickedItem = this.todoItems.find(todoItem => todoItem.content === clickedContent);
-      clickedItem.isCompleted = !clickedItem.isCompleted;
-      this.setState(this.todoItems);
+    onCheck: id => {
+      const updatedTodoList = [...this.todoItems].map(todoItem => {
+        if (todoItem._id === id) {
+          return new TodoItem(id, todoItem.content, !todoItem.isCompleted);
+        }
+        return todoItem;
+      })
+      this.setState(updatedTodoList);
     }
   })
 
@@ -94,7 +101,6 @@ function TodoApp() {
   }
 
   const initEventListener = () => {
-    $todoList.addEventListener('click', clickCheckBox);
     $todoList.addEventListener('dblclick', switchToEditMode);
     $todoList.addEventListener('keyup', switchToViewMode);
     $all.addEventListener('click', showAllItems);
