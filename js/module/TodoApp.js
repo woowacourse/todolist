@@ -27,6 +27,7 @@ function TodoApp() {
     };
 
     const completedTodoItem = event => {
+        event.preventDefault();
         const $target = event.target;
         const isCompletedButton = $target.classList.contains("toggle");
         if (isCompletedButton) {
@@ -36,9 +37,30 @@ function TodoApp() {
             this.todoList.setState(this.todoItems);
         }
     };
+    
+    const removeTodoItem = event => {
+        event.preventDefault();
+        const $target = event.target;
+        const isDeleteButton = $target.classList.contains("destroy");
+        if (isDeleteButton) {
+            removeTargetTodoItem($target);
+        }
+    }
+
+    const removeTargetTodoItem = ($target) => {
+        const todoItemId = Number.parseInt($target.closest("div").dataset.itemId);
+        const targetItem = this.todoItems.find(item => item.id === todoItemId);
+        const isConfirmDelete = confirm(`${targetItem.content}를 삭제하시겠습니까?`);
+        if (isConfirmDelete) {
+            const targetItemIndex = this.todoItems.indexOf(targetItem);
+            this.todoItems.splice(targetItemIndex, 1);
+            this.todoList.setState(this.todoItems);
+        }
+    }
 
     const initEventListener = () => {
         this.$todoList.addEventListener(EVENT_TYPE.CLICK, completedTodoItem);
+        this.$todoList.addEventListener(EVENT_TYPE.CLICK, removeTodoItem);
     }
 
     this.init = () => {
