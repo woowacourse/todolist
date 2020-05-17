@@ -12,6 +12,7 @@ function TodoApp() {
   this.setState = (updatedItems) => {
     this.todoItems = updatedItems;
     todoList.setState(updatedItems);
+    ShowList();
   };
 
   const todoList = new TodoList();
@@ -25,7 +26,6 @@ function TodoApp() {
       const newTodoItem = new TodoItem(contents.name);
       this.todoItems.push(newTodoItem);
       this.setState(this.todoItems);
-      ShowList();
     },
   });
 
@@ -68,7 +68,7 @@ function TodoApp() {
     });
 
     this.setState(editingItems);
-  }
+  };
 
   const handleDeleteButton = (event) => {
     const $target = event.target;
