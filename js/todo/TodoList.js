@@ -2,6 +2,8 @@ import { itemTemplate } from '../template/template.js';
 import { EVENT_TYPE, KEY_TYPE, TODO_STATE } from '../utils/constants.js';
 
 export default function TodoList(todoListMethods) {
+  const { onUpdateItem, onDeleteItem, onCompleteItem } = todoListMethods;
+
   const $todoList = document.querySelector('#todo-list');
   $todoList.addEventListener(EVENT_TYPE.CLICK, e => this.onClickItem(e))
   $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, e => this.onDoubleClickItem(e))
@@ -52,6 +54,35 @@ export default function TodoList(todoListMethods) {
     }
   }
 
+  const onClickCheckBox = $target => {
+    const contents = $target.nextElementSibling.innerText;
+    const classList = $target.closest('li').classList;
+    const isCompleted = classList.contains('completed');
+
+    if (!isCompleted) {
+      classList.add('completed');
+      onCompleteItem(contents, TODO_STATE.COMPLETED);
+    } else {
+      classList.remove('completed');
+      onCompleteItem(contents, TODO_STATE.ACTIVE);
+    }
+  }
+
+  const onClickDeleteBtn = $target => {
+    const contents = $target.previousElementSibling.innerText;
+    onDeleteItem(contents);
+  }
+
+  const onPressEnter = (beforeContents, afterContents, $target) => {
+    onUpdateItem(beforeContents, afterContents);
+    $target.closest('li').classList.remove('editing');
+  }
+
+  const onPressEsc = ($target, beforeContents) => {
+    $target.value = beforeContents;
+    $target.closest('li').classList.remove('editing');
+  }
+
   const isLabel = $target => {
     return $target && $target.nodeName === 'LABEL';
   }
@@ -60,27 +91,8 @@ export default function TodoList(todoListMethods) {
     return $target && $target.nodeName === 'INPUT' && $target.className === 'toggle';
   }
 
-  const onClickCheckBox = $target => {
-    const contents = $target.nextElementSibling.innerText;
-    const classList = $target.closest('li').classList;
-    const isCompleted = classList.contains('completed');
-
-    if (!isCompleted) {
-      classList.add('completed');
-      todoListMethods.onCompleteItem(contents, TODO_STATE.COMPLETED);
-    } else {
-      classList.remove('completed');
-      todoListMethods.onCompleteItem(contents, TODO_STATE.ACTIVE);
-    }
-  }
-
   const isDeleteBtn = $target => {
     return $target && $target.nodeName === 'BUTTON';
-  }
-
-  const onClickDeleteBtn = $target => {
-    const contents = $target.previousElementSibling.innerText;
-    todoListMethods.onDeleteItem(contents);
   }
 
   const isInput = $target => {
@@ -93,15 +105,5 @@ export default function TodoList(todoListMethods) {
 
   const isEscape = $key => {
     return $key && $key === KEY_TYPE.ESC;
-  }
-
-  const onPressEnter = (beforeContents, afterContents, $target) => {
-    todoListMethods.onUpdateItem(beforeContents, afterContents);
-    $target.closest('li').classList.remove('editing');
-  }
-
-  const onPressEsc = ($target, beforeContents) => {
-    $target.value = beforeContents;
-    $target.closest('li').classList.remove('editing');
   }
 }

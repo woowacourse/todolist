@@ -1,6 +1,8 @@
 import { EVENT_TYPE, TODO_STATE } from '../utils/constants.js';
 
 export default function TodoFilter(todoFilterMethods) {
+  const { onFilter } = todoFilterMethods;
+
   const $filters = document.querySelector('.filters');
   $filters.addEventListener(EVENT_TYPE.CLICK, e => this.onClickFilter(e));
 
@@ -11,13 +13,13 @@ export default function TodoFilter(todoFilterMethods) {
     this.removeSelected();
     classList.add('selected');
     if (isAll($target, classList)) {
-      todoFilterMethods.onFilter(TODO_STATE.ALL);
+      onFilter(TODO_STATE.ALL);
     }
     if (isActive($target, classList)) {
-      todoFilterMethods.onFilter(TODO_STATE.ACTIVE);
+      onFilter(TODO_STATE.ACTIVE);
     }
     if (isCompleted($target, classList)) {
-      todoFilterMethods.onFilter(TODO_STATE.COMPLETED);
+      onFilter(TODO_STATE.COMPLETED);
     }
   }
 
