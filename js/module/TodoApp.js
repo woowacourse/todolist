@@ -6,6 +6,7 @@ import { TodoList } from './TodoList.js';
 function TodoApp() {
     this.$todoList = document.querySelector("#todo-list");
     this.$todoInput = document.querySelector("#new-todo-title");
+    this.$todoCount = document.querySelector("body > section > div.count-container > span > strong");
 
     this.todoItems = [];
     this.todoList = new TodoList(this.$todoList);
@@ -23,6 +24,7 @@ function TodoApp() {
     this.setState = updatedItems => {
         this.todoItems = updatedItems;
         this.todoList.setState(this.todoItems);
+        this.$todoCount.innerText = this.todoItems.length;
     };
 
     const completedTodoItem = event => {
