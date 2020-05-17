@@ -1,6 +1,6 @@
-import { TodoInput } from "./TodoInput.js";
-import { TodoList } from "./TodoList.js";
-import { TodoItem } from "./TodoItem.js";
+import {TodoInput} from "./TodoInput.js";
+import {TodoList} from "./TodoList.js";
+import {TodoItem} from "./TodoItem.js";
 
 // 부모 컴포넌트
 function TodoApp() {
@@ -28,6 +28,47 @@ function TodoApp() {
       ShowList();
     },
   });
+
+  const handleUpdateLabel = (event) => {
+    const $target = event.target;
+    if (
+      !$target.classList.contains("edit") ||
+      (event.key !== "Enter" && event.key !== "Escape") ||
+      $target.value === ""
+    ) {
+      return;
+    }
+
+    const $checkedItem = $target.closest("li");
+    const updatingItems = this.todoItems.map((item) => {
+      if (item.isEquals($checkedItem.dataset.itemId)) {
+        if (event.key === "Escape") {
+          return item.editingItem();
+        }
+        return item.updateItem($target.value);
+      }
+      return item;
+    });
+
+    this.setState(updatingItems);
+  };
+
+  const handleEditLabel = (event) => {
+    const $target = event.target;
+    if (!$target.classList.contains("label")) {
+      return;
+    }
+
+    const $checkedItem = $target.closest("li");
+    const editingItems = this.todoItems.map((item) => {
+      if (item.isEquals($checkedItem.dataset.itemId)) {
+        return item.editingItem();
+      }
+      return item;
+    });
+
+    this.setState(editingItems);
+  }
 
   const handleDeleteButton = (event) => {
     const $target = event.target;
@@ -71,6 +112,8 @@ function TodoApp() {
   function initEventListener() {
     $todoList.addEventListener("click", handleCheckBox);
     $todoList.addEventListener("click", handleDeleteButton);
+    $todoList.addEventListener("dblclick", handleEditLabel);
+    $todoList.addEventListener("keyup", handleUpdateLabel);
   }
 
   this.init = () => {

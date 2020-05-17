@@ -1,12 +1,20 @@
-export function TodoItem(name, isCompleted = false) {
+export function TodoItem(name, isCompleted = false, isEditing = false) {
   this.name = name;
   this.isCompleted = isCompleted;
+  this.isEditing = isEditing;
   this.id = Date.now();
 
   this.isEquals = (id) => this.id === Number(id);
 
   this.completedToggle = () => {
-    const item = new TodoItem(name, !isCompleted);
-    return item;
+    return new TodoItem(name, !isCompleted);
+  };
+
+  this.editingItem = () => {
+    return new TodoItem(name, isCompleted, !isEditing);
+  };
+
+  this.updateItem = (updatingName) => {
+    return new TodoItem(updatingName, isCompleted, !isEditing);
   };
 }
