@@ -80,25 +80,40 @@ function TodoApp() {
 
   const showAllItems = event => {
     event.preventDefault();
+    $active.classList.remove("selected");
+    $completed.classList.remove("selected");
+    if (!$all.classList.contains("selected")) {
+      $all.classList.toggle("selected");
+    }
     showList(this.todoItems);
   }
 
   const showActiveItems = event => {
     event.preventDefault();
-    const list = [...this.todoItems].filter(todoItem => todoItem.isCompleted === false);
+    $all.classList.remove("selected");
+    $completed.classList.remove("selected");
+    if (!$active.classList.contains("selected")) {
+      $active.classList.toggle("selected");
+    }
+    const list = [...this.todoItems].filter(todoItem => !todoItem.isCompleted);
     showList(list);
   }
 
   const showCompletedItems = event => {
     event.preventDefault();
-    const list = [...this.todoItems].filter(todoItem => todoItem.isCompleted === true);
+    $all.classList.remove("selected");
+    $active.classList.remove("selected");
+    if (!$completed.classList.contains("selected")) {
+      $completed.classList.toggle("selected");
+    }
+    const list = [...this.todoItems].filter(todoItem => todoItem.isCompleted);
     showList(list);
   }
 
   const initEventListener = () => {
     $todoList.addEventListener('click', clickCheckBox);
     $todoList.addEventListener('dblclick', switchToEditMode);
-    $todoList.addEventListener('keydown', switchToViewMode);
+    $todoList.addEventListener('keyup', switchToViewMode);
     $all.addEventListener('click', showAllItems);
     $active.addEventListener('click', showActiveItems);
     $completed.addEventListener('click', showCompletedItems);
