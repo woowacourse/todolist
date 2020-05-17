@@ -1,5 +1,4 @@
-import { STATUS } from "../util/constants.js";
-import {EVENT_TYPE} from "../util/constants.js";
+import { STATUS, EVENT_TYPE, KEY_TYPE } from "../util/constants.js";
 import { TodoInput } from './TodoInput.js'
 import { TodoItem } from './TodoItem.js'
 import { TodoList } from './TodoList.js';
@@ -58,9 +57,42 @@ function TodoApp() {
         }
     }
 
+    const setEditMode = event => {
+        event.preventDefault();
+        const $target = event.target;
+        const isDeleteButton = $target.classList.contains("destroy");
+        const isCompletedButton = $target.classList.contains("toggle");
+        if (!isDeleteButton && !isCompletedButton) {
+            const todoItemId = Number.parseInt($target.closest("div").dataset.itemId);
+            const targetItem = this.todoItems.find(item => item.id === todoItemId);
+            targetItem.status = STATUS.EDIT;
+            this.todoList.setState(this.todoItems);
+            document.querySelector("#todo-list > li.editing > input").addEventListener(EVENT_TYPE.KEY_DOWN, editMode);
+        }
+    }
+
+    const editMode = event => {
+        const $target = event.target;
+        const todoItemId = Number.parseInt($target.previousSibling.previousSibling.dataset.itemId);
+        const targetItem = this.todoItems.find(item => item.id === todoItemId);
+        if (event.target.value !== 0 && event.key === KEY_TYPE.ESC) {
+            event.preventDefault();
+            targetItem.status = STATUS.TODO;
+            this.todoList.setState(this.todoItems);
+            return;
+        }
+        if ($target.value.trim() !== 0 && event.key === KEY_TYPE.ENTER) {
+            const updateItem = new TodoItem(targetItem.id, $target.value, STATUS.TODO);
+            const targetItemIndex = this.todoItems.indexOf(targetItem);
+            this.todoItems.splice(targetItemIndex, 1, updateItem);
+            this.todoList.setState(this.todoItems);
+        }
+    }
+
     const initEventListener = () => {
         this.$todoList.addEventListener(EVENT_TYPE.CLICK, completedTodoItem);
         this.$todoList.addEventListener(EVENT_TYPE.CLICK, removeTodoItem);
+        this.$todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, setEditMode);
     }
 
     this.init = () => {

@@ -1,8 +1,10 @@
+import { EVENT_TYPE, KEY_TYPE } from "../util/constants.js";
+
 export function TodoInput({ onAdd }, todoInput) {
-    todoInput.addEventListener("keydown", event => this.addTodoItem(event));
+    todoInput.addEventListener(EVENT_TYPE.KEY_DOWN, event => this.addTodoItem(event));
 
     this.isValid = (event, value) => {
-        return (event.key ==="Enter")
+        return (event.key === KEY_TYPE.ENTER)
             && value.trim().length !== 0;
     }
 

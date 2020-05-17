@@ -1,9 +1,17 @@
 export const STATUS = {
     TODO: "todo",
-    COMPLETED: "completed"
+    COMPLETED: "completed",
+    EDIT: "editing"
 };
 
 export const EVENT_TYPE = {
     CLICK: "click",
-    KEY_PRESS: "keypress"
+    KEY_PRESS: "keypress",
+    DOUBLE_CLICK: "dblclick",
+    KEY_DOWN: "keydown"
 };
+
+export const KEY_TYPE = {
+    ESC: "Escape",
+    ENTER: "Enter"
+}
