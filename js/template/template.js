@@ -1,5 +1,5 @@
 export const itemTemplate = (item) => `
-      <li>
+      <li class="${item.state}">
         <div class="view">
           <input class="toggle" type="checkbox">
           <label class="label">${item.contents}</label>

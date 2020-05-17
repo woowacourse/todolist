@@ -8,3 +8,9 @@ export const KEY_TYPE = {
   ENTER: "Enter",
   ESC: "Escape"
 };
+
+export const TODO_STATE = {
+  ALL: "all",
+  ACTIVE: "active",
+  COMPLETED: "completed"
+}

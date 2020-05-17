@@ -1,5 +1,5 @@
 import { itemTemplate } from '../template/template.js';
-import { EVENT_TYPE, KEY_TYPE } from '../utils/constants.js';
+import { EVENT_TYPE, KEY_TYPE, TODO_STATE } from '../utils/constants.js';
 
 export default function TodoList(todoListMethods) {
   const $todoList = document.querySelector('#todo-list');
@@ -7,12 +7,17 @@ export default function TodoList(todoListMethods) {
   $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, e => this.onDoubleClickItem(e))
   $todoList.addEventListener(EVENT_TYPE.KEYUP, e => this.onPressKey(e))
 
-  this.setState = updatedTodoItems => {
-    this.render(updatedTodoItems);
+  this.setState = (updatedTodoItems, filter) => {
+    this.render(updatedTodoItems, filter);
   }
 
-  this.render = items => {
-    const template = items.map(itemTemplate);
+  this.render = (items, filter) => {
+    let template;
+    if (filter === TODO_STATE.ALL) {
+      template = items.map(itemTemplate);
+    } else {
+      template = items.filter(item => item.state === filter).map(itemTemplate);
+    }
     $todoList.innerHTML = template.join("");
   }
 
@@ -56,13 +61,16 @@ export default function TodoList(todoListMethods) {
   }
 
   const onClickCheckBox = $target => {
+    const contents = $target.nextElementSibling.innerText;
     const classList = $target.closest('li').classList;
     const isCompleted = classList.contains('completed');
 
     if (!isCompleted) {
       classList.add('completed');
+      todoListMethods.onCompleteItem(contents, TODO_STATE.COMPLETED);
     } else {
       classList.remove('completed');
+      todoListMethods.onCompleteItem(contents, TODO_STATE.ACTIVE);
     }
   }
 
