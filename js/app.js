@@ -1,3 +1,5 @@
+import {todoItemTemplate} from "./templates.js"
+
 function TodoApp() {
     this.todoItems = [];
 
@@ -9,7 +11,6 @@ function TodoApp() {
     });
 };
 
-// 입력 받는 컴포넌트
 function TodoInput({onAdd}) {
     const $todoInput = document.querySelector("#new-todo-title");
 
@@ -22,20 +23,6 @@ function TodoInput({onAdd}) {
             $newTodoTarget.value = "";
         }
     };
-}
-
-// todoList 보여주는 컴포넌트
-
-function todoItemTemplate(items) {
-    return `<li>
-        <div class="view">
-          <input class="toggle" type="checkbox">
-          <label class="label">${items}</label>
-          <button class="destroy"></button>
-        </div>
-        <input class="edit" value="새로운 타이틀">
-      </li>`
-
 }
 
 function TodoList(items) {
