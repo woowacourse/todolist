@@ -1,7 +1,6 @@
 import {todoItem} from "../utils/templates.js";
 import {EVENT_TYPE, INSERT_LOCATION, KEY_TYPE} from "../utils/constants.js";
 
-const _localStorage = window.localStorage;
 let todoItems = [];
 
 function TodoApp() {
@@ -20,8 +19,19 @@ function TodoApp() {
     }
   }
 
+  const onDeleteTotoItemHandler = event => {
+    if (event.target.classList.contains('destroy')) {
+      const targetValue = event.target.previousSibling.innerHTML;
+      const idx = todoItems.findIndex(item => item === targetValue);
+
+      event.target.closest('li').remove();
+      todoItems.splice(idx, 1);
+      localStorage.setItem('todos', JSON.stringify(todoItems));
+    }
+  }
+
   const initItemList = () => {
-    todoItems = JSON.parse(_localStorage.getItem("todos"));
+    todoItems = JSON.parse(localStorage.getItem("todos"));
     if (!todoItems || !todoItems.length) {
       todoItems = [];
       return;
@@ -33,6 +43,7 @@ function TodoApp() {
 
   const initEventListeners = () => {
     $todoInput.addEventListener(EVENT_TYPE.KEY_UP, onAddTodoItemHandler);
+    $todoList.addEventListener(EVENT_TYPE.CLICK, onDeleteTotoItemHandler);
   }
 
   const init = () => {
