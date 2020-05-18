@@ -3,7 +3,8 @@ export const KEY_TYPE = {
 };
 
 export const EVENT_TYPE = {
-  KEY_DOWN: "keydown"
+  KEY_DOWN: "keydown",
+  KEY_UP: "keyup"
 }
 
 export const INSERT_LOCATION = {

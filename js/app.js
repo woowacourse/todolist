@@ -32,7 +32,7 @@ function TodoApp() {
   }
 
   const initEventListeners = () => {
-    $todoInput.addEventListener(EVENT_TYPE.KEY_DOWN, onAddTodoItemHandler);
+    $todoInput.addEventListener(EVENT_TYPE.KEY_UP, onAddTodoItemHandler);
   }
 
   const init = () => {
