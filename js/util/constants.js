@@ -14,4 +14,10 @@ export const EVENT_TYPE = {
 export const KEY_TYPE = {
     ESC: "Escape",
     ENTER: "Enter"
+};
+
+export const TAG_TYPE = {
+    ALL: "#/",
+    ACTIVE: "#/active",
+    COMPLETED: "#/completed"
 }

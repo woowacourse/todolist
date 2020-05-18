@@ -1,7 +1,8 @@
-import { STATUS, EVENT_TYPE, KEY_TYPE } from "../util/constants.js";
-import { TodoInput } from './TodoInput.js'
-import { TodoItem } from './TodoItem.js'
+import { STATUS, EVENT_TYPE, KEY_TYPE, TAG_TYPE } from "../util/constants.js";
+import { TodoInput } from './TodoInput.js';
+import { TodoItem } from './TodoItem.js';
 import { TodoList } from './TodoList.js';
+import { TodoCount } from './TodoCount.js';
 
 function TodoApp() {
     this.$todoList = document.querySelector("#todo-list");
@@ -13,6 +14,25 @@ function TodoApp() {
 
     let todoItemIndex = this.todoItems.length;
 
+    new TodoCount(event => {
+        event.preventDefault();
+        const $target = event.target;
+        const tag = $target.getAttribute("href");
+        if (tag === TAG_TYPE.ALL) {
+            this.setState(this.todoItems);
+            return;
+        }
+        if (tag === TAG_TYPE.ACTIVE) {
+            const activeItems = this.todoItems.filter(item => item.status === STATUS.TODO);
+            this.setState(activeItems);
+            return;
+        }
+        if (tag === TAG_TYPE.COMPLETED) {
+            const completedItems = this.todoItems.filter(item => item.status === STATUS.COMPLETED);
+            this.setState(completedItems);
+        }
+    });
+
     new TodoInput({
         onAdd: contents => {
             const newTodoItem = new TodoItem(todoItemIndex++, contents, STATUS.TODO);
@@ -22,9 +42,9 @@ function TodoApp() {
     }, this.$todoInput);
 
     this.setState = updatedItems => {
-        this.todoItems = updatedItems;
-        this.todoList.setState(this.todoItems);
-        this.$todoCount.innerText = this.todoItems.length;
+        const showItems = updatedItems;
+        this.todoList.setState(showItems);
+        this.$todoCount.innerText = showItems.length;
     };
 
     const completedTodoItem = event => {
