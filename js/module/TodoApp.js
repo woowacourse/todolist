@@ -54,8 +54,8 @@ function TodoApp() {
         const isConfirmDelete = confirm(`${targetItem.content}를 삭제하시겠습니까?`);
         if (isConfirmDelete) {
             const targetItemIndex = this.todoItems.indexOf(targetItem);
-            this.todoItems.splice(targetItemIndex, 1);
-            this.todoList.setState(this.todoItems);
+            this.todoItems.splice(targetItemIndex, 1)
+            this.setState(this.todoItems);
         }
     }
 
