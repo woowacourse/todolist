@@ -1,6 +1,6 @@
 export const todoItemTemplate = (items,index) => {
-    return `<li>
-        <div class="view" data-index="${index}">
+    return `<li data-index="${index}">
+        <div class="view">
           <input class="toggle" type="checkbox">
           <label class="label">${items}</label>
           <button class="destroy"></button>

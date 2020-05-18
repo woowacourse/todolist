@@ -1,6 +1,9 @@
 import {todoItemTemplate} from "./templates.js"
+import {isEnterKey} from "./utils.js"
 
 function TodoApp() {
+    const $todoList = document.querySelector("#todo-list");
+
     this.todoItems = [];
 
     new TodoInput({
@@ -10,12 +13,39 @@ function TodoApp() {
         }
     });
 
-    new TodoDelete({
-        onDelete: index => {
+    const initEventListeners = () => {
+        $todoList.addEventListener("click", event => this.clickEvent(event));
+        $todoList.addEventListener("keydown", event => this.updateEvent(event));
+    }
+
+    this.updateEvent = event => {
+        const $target = event.target;
+
+        if (isEnterKey(event)) {
+            const index = $target.closest("li").dataset.index;
+            this.todoItems.splice(index, 1, $target.value);
+            new TodoList(this.todoItems);
+            $target.closest("li").classList.remove("editing");
+        }
+    }
+
+    this.clickEvent = event => {
+        const $target = event.target;
+
+        if ($target.classList.contains("destroy")) {
+            const index = $target.closest("li").dataset.index;
             this.todoItems.splice(index, 1);
             new TodoList(this.todoItems);
         }
-    })
+
+        if ($target.classList.contains("label")) {
+            $target.closest("li").classList.add("editing")
+        }
+    }
+
+    this.init = () => {
+        initEventListeners();
+    }
 }
 
 function TodoInput({onAdd}) {
@@ -25,25 +55,11 @@ function TodoInput({onAdd}) {
 
     this.addTodoItem = event => {
         const $newTodoTarget = event.target;
-        if (event.keyCode === 13) {
+        if (isEnterKey(event)) {
             onAdd($newTodoTarget.value);
             $newTodoTarget.value = "";
         }
     };
-}
-
-function TodoDelete({onDelete}) {
-    const $list = document.querySelector("#todo-list");
-
-    $list.addEventListener("click", event => this.delete(event))
-
-    this.delete = event => {
-        const $target = event.target;
-        if ($target.classList.contains("destroy")) {
-            const index = $target.closest("div").dataset.index;
-            onDelete(index);
-        }
-    }
 }
 
 function TodoList(items) {
@@ -60,5 +76,5 @@ function TodoList(items) {
 }
 
 const index = new TodoApp();
-
+index.init();
 
