@@ -6,5 +6,5 @@ export const EVENT_TYPE = {
 
 export const KEY_TYPE = {
     ENTER : "Enter" ,
-    ESC : "Esc"
+    ESC : "Escape"
 }
