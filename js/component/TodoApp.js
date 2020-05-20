@@ -10,6 +10,7 @@ export function TodoApp() {
   this.setItems = (updatedItems) => {
     this.todoItems = updatedItems;
     this.render();
+
   };
 
   this.setFilter = (updatedFilter) => {
@@ -17,14 +18,15 @@ export function TodoApp() {
     this.render();
   };
 
-  this.filters = new TodoFilter(this.setFilter);
-  this.todoFilter = this.filters.getFilter();
+  const filters = new TodoFilter(this.setFilter);
+
+  this.todoFilter = filters.getFilter();
 
   this.render = () => {
     this.todoList.render(this.todoItems, this.todoFilter);
     const showItemCount = this.todoItems.filter(item => this.todoFilter.expression(item)).length;
     this.todoCount.render(showItemCount);
-    this.filters.render(this.todoFilter);
+    filters.render(this.todoFilter);
   };
 
   this.addItem = (content) => {
