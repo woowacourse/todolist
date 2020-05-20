@@ -17,12 +17,14 @@ export function TodoApp() {
     this.render();
   };
 
-  this.todoFilter = new TodoFilter(this.setFilter).getFilter();
+  this.filters = new TodoFilter(this.setFilter);
+  this.todoFilter = this.filters.getFilter();
 
   this.render = () => {
     this.todoList.render(this.todoItems, this.todoFilter);
     const showItemCount = this.todoItems.filter(item => this.todoFilter.expression(item)).length;
     this.todoCount.render(showItemCount);
+    this.filters.render(this.todoFilter);
   };
 
   this.addItem = (content) => {
