@@ -1,8 +1,9 @@
 export function TodoList(toggleComplete, deleteItem, toggleEdit, saveEdit) {
   const $todoList = document.querySelector("#todo-list");
 
-  this.render = (template) => {
-    $todoList.innerHTML = template;
+  this.render = (todoItems, todoFilter) => {
+    const itemsTemplate = todoItems.map(item => item.getTemplate(todoFilter)).join("");
+    $todoList.innerHTML = itemsTemplate;
   };
 
   this.completeToggleHandler = (event) => {

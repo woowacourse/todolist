@@ -1,36 +1,33 @@
 const COMPLETED_FILTER = {
   condition: "completed",
-  filter: item => item.isComplete(),
+  expression: item => item.isComplete(),
 };
 
 const ACTIVE_FILTER = {
   condition: "active",
-  filter: item => !item.isComplete(),
+  expression: item => !item.isComplete(),
 };
 
 const ALL_FILTER = {
   condition: "",
-  filter: item => true,
+  expression: item => true,
 };
 
-export function TodoFilter(renderFilteredItems) {
+export function TodoFilter(changeFilter) {
   const $filters = document.querySelector(".filters");
 
   this.filters = [COMPLETED_FILTER, ACTIVE_FILTER, ALL_FILTER];
 
   this.getFilter = (url) => {
-    const [filter] = this.filters.filter(filter => url.includes(filter.condition));
-    return filter.filter;
-  };
-
-  this.render = (url) => {
-      renderFilteredItems(this.getFilter(url));
+    const evaluatedUrl = url ? url : window.location.href;
+    const [filter] = this.filters.filter(filter => evaluatedUrl.includes(filter.condition));
+    return filter;
   };
 
   this.filterHandler = (event) => {
     const $target = event.target;
     if ($target.tagName === "A") {
-      this.render($target.href);
+      changeFilter(this.getFilter($target.href));
     }
   };
 

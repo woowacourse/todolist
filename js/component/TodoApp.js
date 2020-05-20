@@ -5,57 +5,54 @@ import {TodoCount} from "./TodoCount.js";
 import {TodoFilter} from "./TodoFilter.js";
 
 export function TodoApp() {
-  this.todoItems = [];
+  this.todoItems = [new TodoItem("예시입니다.")];
 
-  this.setState = (updatedItems) => {
+  this.setItems = (updatedItems) => {
     this.todoItems = updatedItems;
     this.render();
   };
 
-  this.addItem = (content) => {
-    const newItem = new TodoItem(content);
-    this.setState([...this.todoItems, newItem]);
+  this.setFilter = (updatedFilter) => {
+    this.todoFilter = updatedFilter;
+    this.render();
   };
+
+  this.todoFilter = new TodoFilter(this.setFilter).getFilter();
 
   this.render = () => {
-    this.todoFilter.render(window.location.href);
+    this.todoList.render(this.todoItems, this.todoFilter);
+    const showItemCount = this.todoItems.filter(item => this.todoFilter.expression(item)).length;
+    this.todoCount.render(showItemCount);
   };
 
-  this.renderFilteredItems = (filter) => {
-    const todoItemsToShow = this.todoItems.filter(item => filter(item));
-    this.todoList.render(this.todoItemsTemplate(todoItemsToShow));
-    this.todoCount.render(todoItemsToShow.length);
-  };
-
-  this.todoItemsTemplate = (todoItemsToShow) => {
-    return todoItemsToShow.map(item => item.renderingHtml()).join("");
+  this.addItem = (content) => {
+    const newItem = new TodoItem(content);
+    this.setItems([...this.todoItems, newItem]);
   };
 
   this.toggleComplete = (itemId) => {
     const updatedItems = this.todoItems.map(item => item.toggleCompleteIf(itemId));
-    this.setState(updatedItems);
+    this.setItems(updatedItems);
   };
 
   this.deleteItem = (itemId) => {
     const updateItems = this.todoItems.filter(item => !item.is(itemId));
-    this.setState(updateItems);
+    this.setItems(updateItems);
   };
 
   this.toggleEdit = (itemId) => {
     const updatedItems = this.todoItems.map(item => item.toggleEditIf(itemId));
-    this.setState(updatedItems);
+    this.setItems(updatedItems);
   };
 
   this.saveEdit = (itemId, modifiedContent) => {
     const updatedItems = this.todoItems.map(item => item.editContentIf(itemId, modifiedContent));
-    this.setState(updatedItems);
+    this.setItems(updatedItems);
   };
 
   this.todoList = new TodoList(this.toggleComplete, this.deleteItem, this.toggleEdit, this.saveEdit);
 
   this.todoCount = new TodoCount();
-
-  this.todoFilter = new TodoFilter(this.renderFilteredItems);
 
   new TodoInput(this.addItem);
 

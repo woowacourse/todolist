@@ -3,7 +3,7 @@ import {todoItemTemplate} from "../templates/TodoItemTemplate.js";
 export function TodoItem(content, completed = false, editing = false) {
   this.id = Date.now();
 
-  this.renderingHtml = () => todoItemTemplate(this.id, content, completed, editing);
+  this.getTemplate = (todoFilter) => todoItemTemplate(this.id, content, completed, editing, todoFilter.expression(this));
 
   this.is = (id) => this.id === Number(id) || this.id === id;
 

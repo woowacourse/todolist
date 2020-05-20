@@ -3,9 +3,13 @@ export function TodoInput(addItem) {
 
   this.addItemEventHandler = (event) => {
     if (event.key === "Enter") {
-      // TODO: Add input validation
-      addItem($todoInput.value);
-      $todoInput.value = "";
+      const content = $todoInput.value;
+      if (content) {
+        addItem($todoInput.value);
+        $todoInput.value = "";
+        return;
+      }
+      alert("값을 입력해주세요.");
     }
   };
 
