@@ -2,11 +2,12 @@ import {TodoInput} from "./TodoInput.js";
 import {TodoList} from "./TodoList.js";
 import {TodoItem} from "./TodoItem.js";
 import {TodoFilter} from "./TodoFilter.js";
+import {TodoCount} from "./TodoCount.js";
+import {TodoCheckBox} from "./TodoCheckBox.js";
 
 // 부모 컴포넌트
 function TodoApp() {
   const $todoList = document.querySelector("#todo-list");
-  // const $count = document.querySelector(".todo-count");
   const $countContainer = document.querySelector(".count-container");
 
   this.todoItems = [];
@@ -101,20 +102,8 @@ function TodoApp() {
   };
 
   const handleCheckBox = (event) => {
-    const $target = event.target;
-    if (!$target.classList.contains("toggle")) {
-      return;
-    }
-
-    const $checkedItem = $target.closest("li");
-    const updatedItems = this.todoItems.map((item) => {
-      if (item.isEquals($checkedItem.dataset.itemId)) {
-        return item.completedToggle();
-      }
-      return item;
-    });
-
-    this.setState(updatedItems);
+    const todoCheckBox = new TodoCheckBox();
+    todoCheckBox.handleCheckBox(event, this.todoItems, this.setState);
   };
 
   function initEventListener() {
