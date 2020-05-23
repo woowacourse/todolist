@@ -2,20 +2,22 @@ import TodoInput from './TodoInput.js';
 import TodoList from './TodoList.js';
 import TodoItem from './TodoItem.js';
 import uuid from './utils/uuid.js';
+import TodoCount from './TodoCount.js';
 
 function TodoApp() {
-  const $todoList = document.querySelector("#todo-list")
-
   this.todoItems = []
 
   this.render = updatedItems => {
     todoList.render(updatedItems)
+    todoCount.render(updatedItems);
   }
 
   this.setState = updatedItems => {
     this.todoItems = updatedItems
     this.render(updatedItems)
   }
+
+  const todoCount = new TodoCount();
 
   const todoList = new TodoList({
     onRemove: id => {
