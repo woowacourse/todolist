@@ -18,6 +18,10 @@ function TodoApp() {
   }
 
   const todoList = new TodoList({
+    onRemove: id => {
+      const updatedItems = this.todoItems.filter(todoItem => todoItem.id !== id)
+      this.setState(updatedItems)
+    },
     onCompleted: id => {
       const updatedItems = this.todoItems.map(todoItem => {
         if (todoItem.id === id) {
