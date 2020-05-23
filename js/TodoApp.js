@@ -6,14 +6,15 @@ import {TodoFilter} from "./TodoFilter.js";
 // 부모 컴포넌트
 function TodoApp() {
   const $todoList = document.querySelector("#todo-list");
-  const $count = document.querySelector(".todo-count");
+  // const $count = document.querySelector(".todo-count");
   const $countContainer = document.querySelector(".count-container");
 
   this.todoItems = [];
 
   this.render = (updatedItems) => {
+    const todoCount = new TodoCount();
     todoList.render(updatedItems);
-    ShowCount(updatedItems);
+    todoCount.showCount(updatedItems);
   };
 
   this.setState = (updatedItems) => {
@@ -22,10 +23,6 @@ function TodoApp() {
   };
 
   const todoList = new TodoList();
-
-  const ShowCount = (items) => {
-    $count.innerHTML = `총 <strong>${items.length}</strong> 개`;
-  };
 
   new TodoInput({
     onAdd: (contents) => {
