@@ -1,12 +1,12 @@
-import {TodoInput} from "./TodoInput.js";
-import {TodoList} from "./TodoList.js";
-import {TodoItem} from "./TodoItem.js";
-import {TodoFilter} from "./TodoFilter.js";
-import {TodoCount} from "./TodoCount.js";
-import {TodoCheckBox} from "./TodoCheckBox.js";
-import {TodoUpdate} from "./TodoUpdate.js";
-import {TodoEdit} from "./TodoEdit.js";
-import {TodoDelete} from "./TodoDelete.js";
+import { TodoInput } from "./TodoInput.js";
+import { TodoList } from "./TodoList.js";
+import { TodoItem } from "./TodoItem.js";
+import { TodoFilter } from "./TodoFilter.js";
+import { TodoCount } from "./TodoCount.js";
+import { TodoCheckBox } from "./TodoCheckBox.js";
+import { TodoUpdate } from "./TodoUpdate.js";
+import { TodoEdit } from "./TodoEdit.js";
+import { TodoDelete } from "./TodoDelete.js";
 
 // 부모 컴포넌트
 function TodoApp() {
