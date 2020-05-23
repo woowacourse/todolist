@@ -6,6 +6,7 @@ import {TodoCount} from "./TodoCount.js";
 import {TodoCheckBox} from "./TodoCheckBox.js";
 import {TodoUpdate} from "./TodoUpdate.js";
 import {TodoEdit} from "./TodoEdit.js";
+import {TodoDelete} from "./TodoDelete.js";
 
 // 부모 컴포넌트
 function TodoApp() {
@@ -51,25 +52,8 @@ function TodoApp() {
   };
 
   const handleDeleteButton = (event) => {
-    const $target = event.target;
-    if (!$target.classList.contains("destroy")) {
-      return;
-    }
-
-    const $checkedItem = $target.closest("li");
-
-    const deletedItems = this.todoItems.map((item) => {
-      if (item.isEquals($checkedItem.dataset.itemId)) {
-        return;
-      }
-      return item;
-    });
-
-    const filtered = deletedItems.filter(function (el) {
-      return el != null;
-    });
-
-    this.setState(filtered);
+    const todoDelete = new TodoDelete();
+    todoDelete.handleDelete(event, this.todoItems, this.setState);
   };
 
   const handleCheckBox = (event) => {
