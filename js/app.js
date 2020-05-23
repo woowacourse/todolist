@@ -1,55 +1,92 @@
-import {todoItem} from "../utils/templates.js";
-import {EVENT_TYPE, INSERT_LOCATION, KEY_TYPE} from "../utils/constants.js";
+import {todoItem, todoCount} from "../utils/templates.js";
+import {EVENT_TYPE, KEY_TYPE} from "../utils/constants.js";
+import {nanoid} from "../lib/nanoid.js";
 
-let todoItems = [];
-
-function TodoApp() {
+function TodoInput(addTodo) {
   const $todoInput = document.querySelector("#new-todo-title");
+
+  $todoInput.addEventListener(EVENT_TYPE.KEY_UP, (event) => {
+    if (event.key === KEY_TYPE.ENTER && $todoInput.value.trim() !== "") {
+      addTodo($todoInput.value);
+      $todoInput.value = "";
+    }
+  });
+}
+
+function TodoList(removeTodo, toggleTodo) {
   const $todoList = document.querySelector("#todo-list");
 
-  const onAddTodoItemHandler = event => {
-    const todoValue = $todoInput.value;
-    if (event.key === KEY_TYPE.ENTER && todoValue.trim() !== "") {
-      $todoList.insertAdjacentHTML(INSERT_LOCATION.BEFORE_END, todoItem(todoValue));
-      todoItems.push(todoValue);
-      localStorage.setItem("todos", JSON.stringify(todoItems));
-      $todoInput.value = "";
-
-      console.log(localStorage.getItem("todos"));
-    }
+  const render = todoItems => {
+    $todoList.innerHTML = todoItems.map(todoItem).join("");
   }
 
-  const onDeleteTotoItemHandler = event => {
+  $todoList.addEventListener(EVENT_TYPE.CLICK, event => {
+    const id = event.target.closest("li").dataset.todoId;
     if (event.target.classList.contains('destroy')) {
-      const targetValue = event.target.previousSibling.innerHTML;
-      const idx = todoItems.findIndex(item => item === targetValue);
-
-      event.target.closest('li').remove();
-      todoItems.splice(idx, 1);
-      localStorage.setItem('todos', JSON.stringify(todoItems));
+      removeTodo(id);
     }
+
+    if (event.target.classList.contains('toggle')) {
+      toggleTodo(id);
+    }
+  });
+
+  return {
+    render
+  };
+}
+
+function TodoCount() {
+  const $todoCount = document.querySelector(".todo-count");
+  const render = todoItems => {
+    $todoCount.innerHTML = todoCount(todoItems.length);
   }
+
+  return {
+    render
+  };
+}
+
+function TodoApp() {
+  let todoItems = [];
+
+  const onAddTodoItemHandler = (todoValue) => {
+    setState(todoItems.concat({
+      id: nanoid(),
+      title: todoValue,
+      state: false
+    }));
+  }
+
+  const onDeleteTotoItemHandler = id => {
+    setState(todoItems.filter(todoItem => todoItem.id !== id))
+  }
+
+  const onToggleTodoItemHandler = id => {
+    setState(todoItems.map(todoItem => todoItem.id === id ? {...todoItem, state: !todoItem.state} : todoItem));
+  }
+
 
   const initItemList = () => {
-    todoItems = JSON.parse(localStorage.getItem("todos"));
-    if (!todoItems || !todoItems.length) {
-      todoItems = [];
-      return;
-    }
-    Array.from(todoItems).forEach(todo => {
-      $todoList.insertAdjacentHTML(INSERT_LOCATION.BEFORE_END, todoItem(todo));
-    });
+    const todoItems = JSON.parse(localStorage.getItem("todos")) || [];
+
+    setState(todoItems);
   }
 
-  const initEventListeners = () => {
-    $todoInput.addEventListener(EVENT_TYPE.KEY_UP, onAddTodoItemHandler);
-    $todoList.addEventListener(EVENT_TYPE.CLICK, onDeleteTotoItemHandler);
+  const setState = newTodoItems => {
+    todoItems = [...newTodoItems];
+    todoList.render(todoItems);
+    todoCount.render(todoItems);
+    localStorage.setItem("todos", JSON.stringify(todoItems));
   }
 
   const init = () => {
     initItemList();
-    initEventListeners();
   }
+
+  new TodoInput(onAddTodoItemHandler);
+  const todoList = new TodoList(onDeleteTotoItemHandler, onToggleTodoItemHandler);
+  const todoCount = new TodoCount();
 
   return {
     init
