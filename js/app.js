@@ -54,11 +54,36 @@ function TodoList(removeTodo, toggleTodo, editTodo) {
   };
 }
 
-function TodoCount() {
+function TodoCount(onAll, onActive, onCompleted) {
   const $todoCount = document.querySelector(".todo-count");
+  const $allTodoButton = document.querySelector(".all");
+  const $activeButton = document.querySelector(".active-button");
+  const $completedButton = document.querySelector(".completed-button");
+
   const render = todoItems => {
     $todoCount.innerHTML = todoCount(todoItems.length);
   }
+
+  $allTodoButton.addEventListener(EVENT_TYPE.CLICK, () => {
+    onAll();
+    $allTodoButton.classList.add("selected")
+    $activeButton.classList.remove("selected")
+    $completedButton.classList.remove("selected")
+  })
+
+  $activeButton.addEventListener(EVENT_TYPE.CLICK, () => {
+    onActive();
+    $allTodoButton.classList.remove("selected")
+    $activeButton.classList.add("selected")
+    $completedButton.classList.remove("selected")
+  })
+
+  $completedButton.addEventListener(EVENT_TYPE.CLICK, () => {
+    onCompleted();
+    $allTodoButton.classList.remove("selected")
+    $activeButton.classList.remove("selected")
+    $completedButton.classList.add("selected")
+  })
 
   return {
     render
@@ -68,12 +93,25 @@ function TodoCount() {
 function TodoApp() {
   let todoItems = [];
 
-  const onAddTodoItemHandler = (todoValue) => {setState(
-    todoItems.concat({
-      id: nanoid(),
-      title: todoValue,
-      state: false
-    }));
+  const onAddTodoItemHandler = (todoValue) => {
+    setState(
+      todoItems.concat({
+        id: nanoid(),
+        title: todoValue,
+        state: false
+      }));
+  }
+
+  const onClickAllItemsButtonHandler = () => {
+    setState(todoItems)
+  }
+
+  const onClickWillDoItemsButtonHandler = () => {
+    setStateWithoutStorage(todoItems.filter(todoItems => !todoItems.state))
+  }
+
+  const onClickDoneItemsButtonHandler = () => {
+    setStateWithoutStorage(todoItems.filter(todoItems => todoItems.state))
   }
 
   const onDeleteTotoItemHandler = id => {
@@ -91,7 +129,6 @@ function TodoApp() {
 
   const initItemList = () => {
     const todoItems = JSON.parse(localStorage.getItem("todos")) || [];
-
     setState(todoItems);
   }
 
@@ -102,13 +139,18 @@ function TodoApp() {
     localStorage.setItem("todos", JSON.stringify(todoItems));
   }
 
+  const setStateWithoutStorage = newTodoItems => {
+    todoList.render(newTodoItems);
+    todoCount.render(newTodoItems);
+  }
+
   const init = () => {
     initItemList();
   }
 
   new TodoInput(onAddTodoItemHandler);
   const todoList = new TodoList(onDeleteTotoItemHandler, onToggleTodoItemHandler, onEditTodoItemHandler);
-  const todoCount = new TodoCount();
+  const todoCount = new TodoCount(onClickAllItemsButtonHandler, onClickWillDoItemsButtonHandler, onClickDoneItemsButtonHandler);
 
   return {
     init
