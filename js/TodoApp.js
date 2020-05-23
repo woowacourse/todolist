@@ -5,6 +5,7 @@ import {TodoFilter} from "./TodoFilter.js";
 import {TodoCount} from "./TodoCount.js";
 import {TodoCheckBox} from "./TodoCheckBox.js";
 import {TodoUpdate} from "./TodoUpdate.js";
+import {TodoEdit} from "./TodoEdit.js";
 
 // 부모 컴포넌트
 function TodoApp() {
@@ -45,20 +46,8 @@ function TodoApp() {
   };
 
   const handleEditLabel = (event) => {
-    const $target = event.target;
-    if (!$target.classList.contains("label")) {
-      return;
-    }
-
-    const $checkedItem = $target.closest("li");
-    const editingItems = this.todoItems.map((item) => {
-      if (item.isEquals($checkedItem.dataset.itemId)) {
-        return item.editingItem();
-      }
-      return item;
-    });
-
-    this.setState(editingItems);
+    const todoEdit = new TodoEdit();
+    todoEdit.handleEdit(event, this.todoItems, this.setState);
   };
 
   const handleDeleteButton = (event) => {
