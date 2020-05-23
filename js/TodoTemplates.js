@@ -6,5 +6,5 @@ export const todoItemTemplate = (todoItem) => `
           <button class="destroy"></button>
         </div>
         <input class="edit" value="${todoItem.content}">
-      </li>\`;
+      </li>
 `

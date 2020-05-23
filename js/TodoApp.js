@@ -30,6 +30,15 @@ function TodoApp() {
         return todoItem
       })
       this.setState(updatedItems)
+    },
+    onUpdate: (id, content) => {
+      const updatedItems = this.todoItems.map(todoItem => {
+        if (todoItem.id === id) {
+          todoItem.updateContent(content)
+        }
+        return todoItem
+      })
+      this.setState(updatedItems)
     }
   });
 
