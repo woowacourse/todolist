@@ -4,4 +4,8 @@ export default class TodoItem {
     this.content = content
     this.isCompleted = isCompleted
   }
+
+  toggleCompleted() {
+    this.isCompleted = !this.isCompleted
+  }
 }

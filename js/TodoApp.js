@@ -17,7 +17,17 @@ function TodoApp() {
     this.render(updatedItems)
   }
 
-  const todoList = new TodoList();
+  const todoList = new TodoList({
+    onCompleted: id => {
+      const updatedItems = this.todoItems.map(todoItem => {
+        if (todoItem.id === id) {
+          todoItem.toggleCompleted()
+        }
+        return todoItem
+      })
+      this.setState(updatedItems)
+    }
+  });
 
   new TodoInput({
     onAdd: contents => {
