@@ -1,6 +1,7 @@
 import {TodoInput} from "./TodoInput.js";
 import {TodoList} from "./TodoList.js";
 import {TodoItem} from "./TodoItem.js";
+import {TodoFilter} from "./TodoFilter.js";
 
 // 부모 컴포넌트
 function TodoApp() {
@@ -35,36 +36,8 @@ function TodoApp() {
   });
 
   const handleFilterButton = (event) => {
-    const $target = event.target;
-
-    const $allButton = document.querySelector(".all");
-    const $activeButton = document.querySelector(".active");
-    const $completedButton = document.querySelector(".completed");
-
-    $allButton.classList.remove("selected");
-    $activeButton.classList.remove("selected");
-    $completedButton.classList.remove("selected");
-
-    if ($target.classList.contains("all")) {
-      $allButton.classList.add("selected");
-      this.render(this.todoItems);
-    }
-
-    if ($target.classList.contains("active")) {
-      const filtered = this.todoItems.filter(function (item) {
-        return !item.isCompleted;
-      });
-      $activeButton.classList.add("selected");
-      this.render(filtered);
-    }
-
-    if ($target.classList.contains("completed")) {
-      const filtered = this.todoItems.filter(function (item) {
-        return item.isCompleted;
-      });
-      $completedButton.classList.add("selected");
-      this.render(filtered);
-    }
+    const todoFilter = new TodoFilter();
+    todoFilter.applyFilter(event, this.todoItems, this.render);
   };
 
   const handleUpdateLabel = (event) => {
