@@ -7,31 +7,31 @@ import { TodoListCheckBox } from './TodoListCheckBox.js';
 
 function TodoApp() {
   const $todoList = document.querySelector("#todo-list");
-  const $all = document.querySelector(".all");
-  const $active = document.querySelector(".active");
-  const $completed = document.querySelector(".completed");
+
+  let id = 3;
 
   this.todoItems = [
-    new TodoItem("0.1", "운동", false),
-    new TodoItem("0.2", "공부", false)
+    new TodoItem(1, "운동", false),
+    new TodoItem(2, "공부", false)
   ];
 
   const todoList = new TodoList();
-  const todoListCount = new TodoListCount();
 
-  const showList = (list) => {
-    todoList.setState(list);
-    todoListCount.setState(list);
-  }
+  const todoListCount = new TodoListCount({
+    selectedTodoItems: selectedTodoItems => {
+      todoList.setState(selectedTodoItems);
+    }
+  });
 
   this.setState = updatedItems => {
-    this.todoItems = updatedItems;
-    showList(this.todoItems);
+    this.todoItems = [...updatedItems];
+    todoListCount.updateList(this.todoItems);
+    todoList.setState(this.todoItems);
   };
 
   new TodoInput({
     onAdd: newTodoName => {
-      const newTodoItem = new TodoItem(null, newTodoName, false);
+      const newTodoItem = new TodoItem(id++, newTodoName, false);
       const updatedList = [...this.todoItems, newTodoItem];
       this.setState(updatedList);
     }
@@ -44,10 +44,11 @@ function TodoApp() {
   })
 
   new TodoListCheckBox({
-    onCheck: id => {
+    onCheck: checkedListId => {
+      const listId = parseInt(checkedListId);
       const updatedTodoList = [...this.todoItems].map(todoItem => {
-        if (todoItem._id === id) {
-          return new TodoItem(id, todoItem.content, !todoItem.isCompleted);
+        if (todoItem._id === listId) {
+          return new TodoItem(listId, todoItem.content, !todoItem.isCompleted);
         }
         return todoItem;
       })
@@ -68,48 +69,16 @@ function TodoApp() {
     document.getSelection().anchorNode.classList.remove("editing");
   };
 
-  const showAllItems = event => {
-    event.preventDefault();
-    $active.classList.remove("selected");
-    $completed.classList.remove("selected");
-    if (!$all.classList.contains("selected")) {
-      $all.classList.toggle("selected");
-    }
-    showList(this.todoItems);
-  }
-
-  const showActiveItems = event => {
-    event.preventDefault();
-    $all.classList.remove("selected");
-    $completed.classList.remove("selected");
-    if (!$active.classList.contains("selected")) {
-      $active.classList.toggle("selected");
-    }
-    const list = [...this.todoItems].filter(todoItem => !todoItem.isCompleted);
-    showList(list);
-  }
-
-  const showCompletedItems = event => {
-    event.preventDefault();
-    $all.classList.remove("selected");
-    $active.classList.remove("selected");
-    if (!$completed.classList.contains("selected")) {
-      $completed.classList.toggle("selected");
-    }
-    const list = [...this.todoItems].filter(todoItem => todoItem.isCompleted);
-    showList(list);
-  }
-
   const initEventListener = () => {
     $todoList.addEventListener('dblclick', switchToEditMode);
     $todoList.addEventListener('keyup', switchToViewMode);
-    $all.addEventListener('click', showAllItems);
-    $active.addEventListener('click', showActiveItems);
-    $completed.addEventListener('click', showCompletedItems);
   };
 
   this.init = () => {
     initEventListener();
+    todoListCount.init();
+    todoListCount.updateList(this.todoItems);
+    todoList.setState(this.todoItems);
   };
 }
 

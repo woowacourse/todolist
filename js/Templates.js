@@ -1,5 +1,5 @@
 export const listTemplate = todoItem => {
-  return `<li id="${todoItem._id}" class="${todoItem.isCompleted ? "completed" : ""}">
+  return `<li id=${todoItem._id} class="${todoItem.isCompleted ? "completed" : ""}">
   <div class="view">
     <input class="toggle" type="checkbox" ${todoItem.isCompleted ? "checked" : "unchecked"}>
     <label class="label">${todoItem.content}</label>
