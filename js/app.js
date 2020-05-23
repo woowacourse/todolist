@@ -13,7 +13,7 @@ function TodoInput(addTodo) {
   });
 }
 
-function TodoList(removeTodo, toggleTodo) {
+function TodoList(removeTodo, toggleTodo, editTodo) {
   const $todoList = document.querySelector("#todo-list");
 
   const render = todoItems => {
@@ -30,6 +30,24 @@ function TodoList(removeTodo, toggleTodo) {
       toggleTodo(id);
     }
   });
+
+  $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, event => {
+    event.target.closest("li").classList.add("editing");
+  })
+
+  $todoList.addEventListener(EVENT_TYPE.KEY_DOWN, event => {
+    const targetList = event.target.closest("li");
+    const id = targetList.dataset.todoId;
+
+    if (event.key === "Escape") {
+      targetList.classList.remove("editing");
+    }
+    if (event.key === "Enter") {
+      const data = event.target.closest(".edit").closest("input").value
+      editTodo(id, data)
+      targetList.classList.remove("editing");
+    }
+  })
 
   return {
     render
@@ -50,8 +68,8 @@ function TodoCount() {
 function TodoApp() {
   let todoItems = [];
 
-  const onAddTodoItemHandler = (todoValue) => {
-    setState(todoItems.concat({
+  const onAddTodoItemHandler = (todoValue) => {setState(
+    todoItems.concat({
       id: nanoid(),
       title: todoValue,
       state: false
@@ -64,6 +82,10 @@ function TodoApp() {
 
   const onToggleTodoItemHandler = id => {
     setState(todoItems.map(todoItem => todoItem.id === id ? {...todoItem, state: !todoItem.state} : todoItem));
+  }
+
+  const onEditTodoItemHandler = (id, data) => {
+    setState(todoItems.map(todoItem => todoItem.id === id ? {...todoItem, title: data} : todoItem));
   }
 
 
@@ -85,7 +107,7 @@ function TodoApp() {
   }
 
   new TodoInput(onAddTodoItemHandler);
-  const todoList = new TodoList(onDeleteTotoItemHandler, onToggleTodoItemHandler);
+  const todoList = new TodoList(onDeleteTotoItemHandler, onToggleTodoItemHandler, onEditTodoItemHandler);
   const todoCount = new TodoCount();
 
   return {
