@@ -22,8 +22,8 @@ function TodoApp() {
 
   const todoList = new TodoList();
 
-  const ShowCount = (updatedItems) => {
-    $count.innerHTML = `총 <strong>${updatedItems.length}</strong> 개`;
+  const ShowCount = (items) => {
+    $count.innerHTML = `총 <strong>${items.length}</strong> 개`;
   };
 
   new TodoInput({
@@ -36,61 +36,34 @@ function TodoApp() {
 
   const handleFilterButton = (event) => {
     const $target = event.target;
+
+    const $allButton = document.querySelector(".all");
+    const $activeButton = document.querySelector(".active");
+    const $completedButton = document.querySelector(".completed");
+
+    $allButton.classList.remove("selected");
+    $activeButton.classList.remove("selected");
+    $completedButton.classList.remove("selected");
+
     if ($target.classList.contains("all")) {
+      $allButton.classList.add("selected");
       this.render(this.todoItems);
-      $countContainer.innerHTML = `
-      <span class="todo-count">총 <strong>0</strong> 개</span>
-    <ul class="filters">
-      <li>
-        <a class="all selected" href="#/">전체보기</a>
-      </li>
-      <li>
-        <a class="active" href="#/active">해야할 일</a>
-      </li>
-      <li>
-        <a class="completed" href="#/completed">완료한 일</a>
-      </li>
-    </ul>`;
     }
 
     if ($target.classList.contains("active")) {
       const filtered = this.todoItems.filter(function (item) {
         return !item.isCompleted;
       });
+      $activeButton.classList.add("selected");
       this.render(filtered);
-      $countContainer.innerHTML = `
-      <span class="todo-count">총 <strong>0</strong> 개</span>
-    <ul class="filters">
-      <li>
-        <a class="all" href="#/">전체보기</a>
-      </li>
-      <li>
-        <a class="active selected" href="#/active">해야할 일</a>
-      </li>
-      <li>
-        <a class="completed" href="#/completed">완료한 일</a>
-      </li>
-    </ul>`;
     }
 
     if ($target.classList.contains("completed")) {
       const filtered = this.todoItems.filter(function (item) {
         return item.isCompleted;
       });
+      $completedButton.classList.add("selected");
       this.render(filtered);
-      $countContainer.innerHTML = `
-      <span class="todo-count">총 <strong>0</strong> 개</span>
-    <ul class="filters">
-      <li>
-        <a class="all" href="#/">전체보기</a>
-      </li>
-      <li>
-        <a class="active" href="#/active">해야할 일</a>
-      </li>
-      <li>
-        <a class="completed selected" href="#/completed">완료한 일</a>
-      </li>
-    </ul>`;
     }
   };
 
