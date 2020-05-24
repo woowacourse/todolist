@@ -1,4 +1,5 @@
 import { todoItemTemplate } from './TodoTemplates.js';
+import { EVENT, KEY } from './utils/constants.js'
 
 export default function TodoList({ onRemove, onCompleted, onUpdate }) {
   const $todoList = document.querySelector("#todo-list")
@@ -8,9 +9,9 @@ export default function TodoList({ onRemove, onCompleted, onUpdate }) {
     $todoList.innerHTML = template.join("")
   }
 
-  $todoList.addEventListener("click", event => onCheckBoxHandler(event))
-  $todoList.addEventListener("click", event => onRemoveHandler(event))
-  $todoList.addEventListener("dblclick", event => onEditHandler(event))
+  $todoList.addEventListener(EVENT.CLICK, event => onCheckBoxHandler(event))
+  $todoList.addEventListener(EVENT.CLICK, event => onRemoveHandler(event))
+  $todoList.addEventListener(EVENT.CLICK, event => onEditHandler(event))
 
   const onRemoveHandler = event => {
     if (event.target.classList.contains("destroy")) {
@@ -40,7 +41,7 @@ export default function TodoList({ onRemove, onCompleted, onUpdate }) {
   }
 
   const onFinishEditHandler = event => {
-    if (event.key && event.key !== "Enter" || event.key === "Escape") {
+    if (event.key && event.key !== KEY.ENTER || event.key === KEY.ESC) {
       return
     }
     if (event.target.classList.contains("edit")) {

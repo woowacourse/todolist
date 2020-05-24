@@ -1,7 +1,9 @@
+import { EVENT, KEY } from './utils/constants.js'
+
 export default function TodoInput({ onAdd }) {
   const $todoInput = document.querySelector("#new-todo-title")
 
-  $todoInput.addEventListener("keyup", event => this.addTodoItem(event))
+  $todoInput.addEventListener(EVENT.KEY_UP, event => this.addTodoItem(event))
 
   this.addTodoItem = event => {
     const $target = event.target
@@ -13,6 +15,6 @@ export default function TodoInput({ onAdd }) {
 
   this.isValid = (event, value) => {
     event.preventDefault()
-    return event.key === "Enter" && value.trim() !== ""
+    return event.key === KEY.ENTER && value.trim() !== ""
   }
 }

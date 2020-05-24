@@ -4,6 +4,7 @@ import TodoItem from './TodoItem.js';
 import uuid from './utils/uuid.js';
 import TodoCount from './TodoCount.js';
 import TodoFilter from './TodoFilter.js';
+import { STATUS } from './utils/constants.js';
 
 function TodoApp() {
   this.todoItems = []
@@ -62,10 +63,10 @@ function TodoApp() {
   })
 
   const filterTodoItems = selected => {
-    if (selected === "active") {
+    if (selected === STATUS.ACTIVE) {
       return this.todoItems.filter(todoItem => !todoItem.isCompleted)
     }
-    if (selected === "completed") {
+    if (selected === STATUS.COMPLETED) {
       return this.todoItems.filter(todoItem => todoItem.isCompleted)
     }
     return this.todoItems
