@@ -9,7 +9,7 @@ export const TodoItem = class {
   create() {
     return `<li class="${this.getStatus()}" data-id="${this.id}">
         <div class="view">
-          <input class="toggle" type="checkbox" ${(this.isChecked())}>
+          <input class="toggle" type="checkbox" ${(this.checked())}>
           <label class="label">${this.value}</label>
           <button class="destroy"></button>
         </div>
@@ -24,16 +24,16 @@ export const TodoItem = class {
     return classList.join(" ");
   }
 
-  isChecked() {
+  checked() {
     return this.isCompleted ? "checked" : "";
   }
 
-  isComplete(id) {
+  checkCompleted(id) {
     this.isCompleted = this.isSameId(id) ? !this.isCompleted : this.isCompleted;
     return this;
   }
 
-  isEdit(id) {
+  checkEditing(id) {
     this.isEditing = this.isSameId(id) ? !this.isEditing : this.isEditing;
     return this;
   }

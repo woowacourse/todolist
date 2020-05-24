@@ -6,13 +6,13 @@ const TodoApp = class {
   constructor() {
     this.todoItems = [];
     this.todoInput = new TodoInput({
-      onAdd: this.addTodoHandler.bind(this)
+      onAdd: this.addTodo.bind(this)
     })
     this.todoList = new TodoList({
-      onComplete: this.completeTodoHandler.bind(this),
+      onComplete: this.completeTodo.bind(this),
       onDelete: this.deleteTodoHandler.bind(this),
-      toggleEdit: this.toggleEditingTodoHandler.bind(this),
-      onEdit: this.editTodoHandler.bind(this)
+      toggleEdit: this.toggleEditingTodo.bind(this),
+      onEdit: this.editTodo.bind(this)
     })
   }
 
@@ -21,14 +21,14 @@ const TodoApp = class {
     this.todoList.render(this.todoItems);
   }
 
-  addTodoHandler(item) {
+  addTodo(item) {
     this.todoItems.push(new TodoItem(item));
     this.setState(this.todoItems);
   }
 
-  completeTodoHandler(id) {
+  completeTodo(id) {
     this.setState(
-      this.todoItems.map(item => item.isComplete(id))
+      this.todoItems.map(item => item.checkCompleted(id))
     );
   }
 
@@ -38,13 +38,13 @@ const TodoApp = class {
     )
   }
 
-  toggleEditingTodoHandler(id) {
+  toggleEditingTodo(id) {
     this.setState(
-      this.todoItems.map(item => item.isEdit(id))
+      this.todoItems.map(item => item.checkEditing(id))
     )
   }
 
-  editTodoHandler(id, value) {
+  editTodo(id, value) {
     this.setState(
       this.todoItems.map(item => item.edit(id, value))
     )
