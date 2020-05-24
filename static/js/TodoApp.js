@@ -1,70 +1,35 @@
-import {EVENT_TYPE, KEY_CODE} from "./utils/constants.js";
 import {todoItemTemplate} from "./utils/templates.js";
-import {STATE} from "./utils/constants.js";
+import {TodoInput} from "./components/TodoInput.js";
+import {TodoCheck} from "./components/TodoCheck.js";
+import {TodoEdit} from "./components/TodoEdit.js";
+import {TodoDelete} from "./components/TodoDelete.js";
 
 function TodoApp() {
     this.todo_items = [];
-
-    const $input = document.querySelector("#new-todo-title");
     const $todo_list = document.querySelector("#todo-list");
 
-    const onInputHandler = event => {
-        if (event.code === KEY_CODE.ENTER) {
-            this.todo_items.push($input.value);
-            this.render(this.todo_items);
-            $input.value = "";
-        }
-    };
-
-    const onCheckHandler = event => {
-        // Todo : 좀 더 좋은 방식
-        // Todo : node element의 차이? (parentNode, parentElement)
-        if (event.target.className === "toggle") {
-            if (event.target.checked) {
-                event.target.parentElement.parentElement.className = STATE.COMPLETED;
-            } else{
-                event.target.parentElement.parentElement.className = STATE.VIEW;
-            }
-        }
-    };
-
-    const onDeleteHandler = event => {
-        if (event.target.className === "destroy") {
-            event.target.parentElement.parentElement.className = STATE.COMPLETED;
-            const index = event.target.parentElement.parentElement.getAttribute("data-index");
-            this.todo_items = this.todo_items.slice(parseInt(index));
+    new TodoInput({
+        onAdd: item => {
+            this.todo_items.push(item);
             this.render(this.todo_items);
         }
-    };
+    });
 
-    const onEditHandler = event => {
-        if (event.target.className === "label" && event.type === EVENT_TYPE.DOUBLE_CLICK) {
-            event.target.parentElement.parentElement.className = STATE.EDITING;
-        }
+    new TodoCheck();
 
-        if (event.target.className === "edit"
-            && event.target.parentElement.className === STATE.EDITING
-            && event.key === KEY_CODE.ESC) {
-            event.target.parentElement.className = STATE.VIEW;
-        }
-
-        if (event.target.className === "edit"
-            && event.target.parentElement.className === STATE.EDITING
-            && event.key === KEY_CODE.ENTER) {
-            event.target.parentElement.className = STATE.VIEW;
-            const index = event.target.parentElement.getAttribute("data-index");
-            this.todo_items[index] = event.target.value;
+    new TodoEdit({
+        onEdit: (index, modifiedContent) => {
+            this.todo_items[index] = modifiedContent;
             this.render(this.todo_items);
         }
-    };
+    });
 
-    const initEventListeners = () => {
-        $input.addEventListener(EVENT_TYPE.KEY_DOWN, onInputHandler);
-        $todo_list.addEventListener(EVENT_TYPE.CLICK, onCheckHandler);
-        $todo_list.addEventListener(EVENT_TYPE.CLICK, onDeleteHandler);
-        $todo_list.addEventListener(EVENT_TYPE.DOUBLE_CLICK, onEditHandler);
-        $todo_list.addEventListener(EVENT_TYPE.KEY_DOWN, onEditHandler);
-    };
+    new TodoDelete({
+        onDelete: deleteIndex => {
+            this.todo_items.splice(deleteIndex, 1);
+            this.render(this.todo_items);
+        }
+    });
 
     // Todo : 수정할 때마다 다 지우고 다시 render 해야 할까?
     this.render = function (todo_items) {
@@ -74,11 +39,6 @@ function TodoApp() {
         });
         $todo_list.innerHTML = template.join("");
     };
-
-    this.init = () => {
-        initEventListeners();
-    }
 }
 
 const todoApp = new TodoApp();
-todoApp.init();
