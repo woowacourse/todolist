@@ -14,3 +14,9 @@ export const STATE = {
     EDITING : "editing",
     COMPLETED : "completed"
 };
+
+export const MESSAGE = {
+    NOT_EMPTY: "🤔 값을 입력해주세요",
+    COMMON: '에러가 발생했습니다.',
+    CONFIRM_DELETE: "정말 지우시겠습니까?"
+};
