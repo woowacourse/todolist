@@ -1,14 +1,24 @@
-import {todoItemTemplate} from "../utils/Templates.js";
+import {EVENT_TYPE} from "../utils/constans.js";
 
-export const TodoList = function () {
-  const $todoList = document.querySelector("#todo-list");
+export const TodoList = class {
+  constructor({onComplete}) {
+    this.$todoList = document.querySelector("#todo-list");
+    this.$todoList.addEventListener(EVENT_TYPE.CLICK, this.completeTodo.bind(this));
+    this.completeTodoHandler = onComplete;
+  }
 
-  const render = items => {
-    const template = items.map(todoItemTemplate);
-    $todoList.innerHTML = template.join("");
+  render(items) {
+    const template = items.map(item => item.create());
+    this.$todoList.innerHTML = template.join("");
   };
 
-  return {
-    render
+  completeTodo(event) {
+    const $target = event.target;
+    const isNotComplete = !$target.classList.contains("toggle");
+    if (isNotComplete) {
+      return;
+    }
+    const id = $target.closest("li").dataset.id;
+    this.completeTodoHandler(id);
   }
 }

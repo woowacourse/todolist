@@ -1,25 +1,32 @@
 import {EVENT_TYPE, KEY_TYPE} from "../utils/constans.js";
 
-export const TodoInput = function ({onAdd}) {
-  const $todoInput = document.querySelector("#new-todo-title");
+export const TodoInput = class {
+  constructor({onAdd}) {
+    this.todoId = 0;
+    this.$todoInput = document.querySelector("#new-todo-title");
+    this.$todoInput.addEventListener(EVENT_TYPE.KEY_PRESS, this.addTodoItem.bind(this));
+    this.addTodoHandler = onAdd;
+  }
 
-  const addTodoItem = event => {
+  addTodoItem(event) {
     const $newTodoTarget = event.target;
-    if (isValid(event, $newTodoTarget.value)) {
-      onAdd($newTodoTarget.value);
-      $newTodoTarget.value = "";
+    if (this.isNotValid(event)) {
+      return;
     }
+
+    const item = {
+      id: `${this.todoId++}`,
+      value: $newTodoTarget.value,
+      isCompleted: false
+    }
+    this.addTodoHandler(item);
+    $newTodoTarget.value = "";
   };
 
-  const isValid = function (event, value) {
-    const isEnter = event.key === KEY_TYPE.ENTER;
-    const isNotEmpty = value !== "";
-    return isEnter && isNotEmpty;
-  }
+  isNotValid(event) {
+    const isNotEnter = event.key !== KEY_TYPE.ENTER;
+    const isEmpty = event.target.value === "";
 
-  const init = () => {
-    $todoInput.addEventListener(EVENT_TYPE.KEY_PRESS, event => addTodoItem(event));
+    return isNotEnter || isEmpty;
   }
-
-  init();
 }

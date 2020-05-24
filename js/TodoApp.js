@@ -1,22 +1,33 @@
 import {TodoInput} from "./component/TodoInput.js";
 import {TodoList} from "./component/TodoList.js";
+import {TodoItem} from "./component/TodoItem.js";
 
-const TodoApp = function () {
-  this.todoItems = [];
+const TodoApp = class {
+  constructor() {
+    this.todoItems = [];
+    this.todoInput = new TodoInput({
+      onAdd: this.addTodoHandler.bind(this)
+    })
+    this.todoList = new TodoList({
+      onComplete: this.completeTodoHandler.bind(this)
+    })
+  }
 
-  const setState = updatedItems => {
+  setState(updatedItems) {
     this.todoItems = updatedItems;
-    todoList.render(this.todoItems);
+    this.todoList.render(this.todoItems);
   };
 
-  const todoInput = new TodoInput({
-    onAdd: item => {
-      this.todoItems.push(item);
-      setState(this.todoItems);
-    }
-  });
+  addTodoHandler(item) {
+    this.todoItems.push(new TodoItem(item));
+    this.setState(this.todoItems);
+  }
 
-  const todoList = new TodoList();
+  completeTodoHandler(id) {
+    this.setState(
+      this.todoItems.map(item => item.isSameId(id) ? item.complete() : item)
+    );
+  }
 }
 
 new TodoApp();
