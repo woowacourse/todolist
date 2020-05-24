@@ -9,3 +9,9 @@ export const KEY_TYPE = {
   ENTER: "Enter",
   ESC: "Escape"
 };
+
+export const FILTER = {
+  ALL: "all",
+  ACTIVE: "active",
+  COMPLETED: "completed"
+}
