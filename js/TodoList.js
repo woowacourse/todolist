@@ -35,15 +35,21 @@ export default function TodoList({ onRemove, onCompleted, onUpdate }) {
     if (!$todoItem.classList.contains("editing")) {
       $todoItem.classList.toggle("editing")
       const $editInput = $todoItem.querySelector(".edit")
-      $editInput.addEventListener("keypress", onFinishEditHandler)
+      $editInput.addEventListener(EVENT.KEY_UP, onFinishEditHandler)
       $editInput.focus()
     }
   }
 
   const onFinishEditHandler = event => {
-    if (event.key && event.key !== KEY.ENTER || event.key === KEY.ESC) {
+    if (event.key === KEY.ESC) {
+      const $todoItem = event.target.closest("li")
+      $todoItem.classList.toggle("editing")
+    }
+
+    if (event.key && event.key !== KEY.ENTER) {
       return
     }
+
     if (event.target.classList.contains("edit")) {
       const $todoItem = event.target.closest("li")
       const id = $todoItem.dataset.id
