@@ -77,6 +77,7 @@ function TodoApp() {
     }
 
     this.init = () => {
+        render();
         $todo_all_selected.addEventListener(EVENT_TYPE.CLICK, function () {
             render();
         });
