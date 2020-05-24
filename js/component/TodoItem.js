@@ -6,14 +6,22 @@ export const TodoItem = class {
   }
 
   create() {
-    return `<li class="${this.isCompleted ? "completed" : ""}" data-id="${this.id}">
+    return `<li class="${this.getStatus()}" data-id="${this.id}">
         <div class="view">
-          <input class="toggle" type="checkbox" ${this.isCompleted ? "checked" : ""}>
+          <input class="toggle" type="checkbox" ${(this.isChecked())}>
           <label class="label">${this.value}</label>
           <button class="destroy"></button>
         </div>
         <input class="edit" value="${this.value}">
       </li>`;
+  }
+
+  getStatus() {
+    return this.isCompleted ? "completed" : "";
+  }
+
+  isChecked() {
+    return this.isCompleted ? "checked" : "";
   }
 
   isComplete(id) {
