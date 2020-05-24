@@ -9,6 +9,7 @@ import {TodoItem} from "../TodoItem.js";
 function TodoApp() {
     this.todo_items = [];
     const $todo_list = document.querySelector("#todo-list");
+    const $todo_count = document.querySelector("#count-value");
 
     new TodoInput({
         onAdd: content => {
@@ -45,12 +46,9 @@ function TodoApp() {
 
     // Todo : 수정할 때마다 다 지우고 다시 render 해야 할까?
     this.render = function (todo_items) {
-        // const template = [];
-        // todo_items.forEach( function (item, index, array) {
-        //   template.push(todoItemTemplate(item, index));
-        // });
         const template  = todo_items.map(todoItemTemplate);
         $todo_list.innerHTML = template.join("");
+        $todo_count.innerHTML = todo_items.length;
     };
 }
 
