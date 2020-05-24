@@ -14,7 +14,8 @@ export const TodoInput = class {
       const item = {
         id: `${this.todoId++}`,
         value: $newTodoTarget.value,
-        isCompleted: false
+        isCompleted: false,
+        isEditing: false
       }
       this.addTodoHandler(item);
       $newTodoTarget.value = "";

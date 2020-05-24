@@ -1,8 +1,9 @@
 export const TodoItem = class {
-  constructor({id, value, isCompleted}) {
+  constructor({id, value, isCompleted, isEditing}) {
     this.id = id;
     this.value = value;
     this.isCompleted = isCompleted;
+    this.isEditing = isEditing;
   }
 
   create() {
@@ -17,7 +18,10 @@ export const TodoItem = class {
   }
 
   getStatus() {
-    return this.isCompleted ? "completed" : "";
+    const classList = [];
+    classList.push(this.isCompleted ? "completed" : "");
+    classList.push(this.isEditing ? "editing" : "");
+    return classList.join(" ");
   }
 
   isChecked() {
@@ -26,6 +30,17 @@ export const TodoItem = class {
 
   isComplete(id) {
     this.isCompleted = this.isSameId(id) ? !this.isCompleted : this.isCompleted;
+    return this;
+  }
+
+  isEdit(id) {
+    this.isEditing = this.isSameId(id) ? !this.isEditing : this.isEditing;
+    return this;
+  }
+
+  edit(id, value) {
+    this.isEditing = this.isSameId(id) ? !this.isEditing : this.isEditing;
+    this.value = this.isSameId(id) ? value : this.value;
     return this;
   }
 
