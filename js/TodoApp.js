@@ -1,6 +1,7 @@
 import {TodoInput} from "./component/TodoInput.js";
 import {TodoList} from "./component/TodoList.js";
 import {TodoItem} from "./component/TodoItem.js";
+import {TodoCount} from "./component/TodoCount.js";
 
 const TodoApp = class {
   constructor() {
@@ -14,11 +15,13 @@ const TodoApp = class {
       toggleEdit: this.toggleEditingTodo.bind(this),
       onEdit: this.editTodo.bind(this)
     })
+    this.todoCount = new TodoCount(this.todoItems.length);
   }
 
   setState(updatedItems) {
     this.todoItems = updatedItems;
     this.todoList.render(this.todoItems);
+    this.todoCount.render(this.todoItems.length);
   }
 
   addTodo(item) {
