@@ -1,5 +1,6 @@
 import {EVENT_TYPE, KEY_CODE} from "./utils/constants.js";
 import {todoItemTemplate} from "./utils/templates.js";
+import {STATE} from "./utils/constants.js";
 
 function TodoApp() {
     this.todo_items = [];
@@ -18,13 +19,18 @@ function TodoApp() {
     const onCheckHandler = event => {
         // Todo : 좀 더 좋은 방식
         // Todo : node element의 차이? (parentNode, parentElement)
-        if (event.target == "input.toggle") {
-            event.target.parentElement.className = "completed";
+        if (event.target.className === "toggle") {
+            if (event.target.checked) {
+                event.target.parentElement.className = STATE.COMPLETED;
+            } else{
+                event.target.parentElement.className =  STATE.VIEW;
+            }
         }
     };
 
     const onDeleteHandler = event => {
         if (event.target.className === "destroy") {
+            event.target.parentElement.parentElement.className = STATE.COMPLETED;
             const index = event.target.parentElement.getAttribute("data-index");
             this.todo_items = this.todo_items.slice(parseInt(index));
             this.render(this.todo_items);

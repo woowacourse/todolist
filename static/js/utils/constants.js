@@ -6,3 +6,9 @@ export const EVENT_TYPE = {
 export const KEY_CODE = {
     ENTER : "Enter"
 };
+
+export const STATE = {
+    VIEW : "view",
+    EDITING : "editing",
+    COMPLETED : "completed"
+};
