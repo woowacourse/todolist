@@ -10,7 +10,9 @@ export const TodoInput = class {
 
   addTodoItem(event) {
     const $newTodoTarget = event.target;
-    if (this.isValid(event)) {
+    const isEnter = event.key === KEY_TYPE.ENTER;
+    const isNotEmpty = event.target.value !== "";
+    if (isEnter && isNotEmpty) {
       const item = {
         id: `${this.todoId++}`,
         value: $newTodoTarget.value,
@@ -20,12 +22,5 @@ export const TodoInput = class {
       this.addTodoHandler(item);
       $newTodoTarget.value = "";
     }
-  };
-
-  isValid(event) {
-    const isEnter = event.key === KEY_TYPE.ENTER;
-    const isNotEmpty = event.target.value !== "";
-
-    return isEnter && isNotEmpty;
   }
 }
