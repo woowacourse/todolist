@@ -3,6 +3,7 @@ import TodoList from './TodoList.js';
 import TodoItem from './TodoItem.js';
 import uuid from './utils/uuid.js';
 import TodoCount from './TodoCount.js';
+import TodoFilter from './TodoFilter.js';
 
 function TodoApp() {
   this.todoItems = []
@@ -51,6 +52,24 @@ function TodoApp() {
       this.setState(this.todoItems)
     }
   })
+
+  const todoFilter = new TodoFilter({
+    onSelect: selected => {
+      todoFilter.render(selected)
+      const filteredTodoItems = filterTodoItems(selected);
+      this.render(filteredTodoItems)
+    }
+  })
+
+  const filterTodoItems = selected => {
+    if (selected === "active") {
+      return this.todoItems.filter(todoItem => !todoItem.isCompleted)
+    }
+    if (selected === "completed") {
+      return this.todoItems.filter(todoItem => todoItem.isCompleted)
+    }
+    return this.todoItems
+  }
 
 }
 
