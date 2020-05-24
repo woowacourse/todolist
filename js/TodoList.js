@@ -35,7 +35,7 @@ export default function TodoList({ onRemove, onCompleted, onUpdate }) {
     if (!$todoItem.classList.contains("editing")) {
       $todoItem.classList.toggle("editing")
       const $editInput = $todoItem.querySelector(".edit")
-      $editInput.addEventListener(EVENT.KEY_UP, onFinishEditHandler)
+      $editInput.addEventListener("keydown", onFinishEditHandler)
       $editInput.focus()
     }
   }
