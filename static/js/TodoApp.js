@@ -14,8 +14,17 @@ function TodoApp() {
         }
     };
 
+    const onCheckHandler = event => {
+        // Todo : 좀 더 좋은 방식
+        // Todo : node element의 차이? (parentNode, parentElement)
+        if (event.target == "input.toggle") {
+            event.target.parentNode.className = "completed";
+        }
+    };
+
     const initEventListeners = () => {
-        $input.addEventListener(EVENT_TYPE.KEY_DOWN, onInputHandler)
+        $input.addEventListener(EVENT_TYPE.KEY_DOWN, onInputHandler);
+        $todo_list.addEventListener(EVENT_TYPE.CLICK, onCheckHandler);
     };
 
     this.init = () => {
