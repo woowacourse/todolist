@@ -16,16 +16,12 @@ export const TodoItem = class {
       </li>`;
   }
 
-  isSameId(id) {
-    return this.id === id;
+  isComplete(id) {
+    this.isCompleted = this.isSameId(id) ? !this.isCompleted : this.isCompleted;
+    return this;
   }
 
-  complete() {
-    const item = {
-      id: this.id,
-      value: this.value,
-      isCompleted: !this.isCompleted
-    }
-    return new TodoItem(item);
+  isSameId(id) {
+    return this.id === id;
   }
 }

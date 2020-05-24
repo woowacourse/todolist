@@ -9,7 +9,8 @@ const TodoApp = class {
       onAdd: this.addTodoHandler.bind(this)
     })
     this.todoList = new TodoList({
-      onComplete: this.completeTodoHandler.bind(this)
+      onComplete: this.completeTodoHandler.bind(this),
+      onDelete: this.deleteTodoHandler.bind(this)
     })
   }
 
@@ -25,8 +26,14 @@ const TodoApp = class {
 
   completeTodoHandler(id) {
     this.setState(
-      this.todoItems.map(item => item.isSameId(id) ? item.complete() : item)
+      this.todoItems.map(item => item.isComplete(id))
     );
+  }
+
+  deleteTodoHandler(id) {
+    this.setState(
+      this.todoItems.filter(item => !item.isSameId(id))
+    )
   }
 }
 
