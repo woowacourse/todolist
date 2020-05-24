@@ -10,16 +10,24 @@ function TodoApp() {
     this.todo_items = [];
     const $todo_list = document.querySelector("#todo-list");
     const $todo_count = document.querySelector("#count-value");
+    const $todo_all_selected = document.querySelector(".count-container .all.selected").parentElement;
+    const $todo_active = document.querySelector(".count-container .active").parentElement;
+    const $todo_completed = document.querySelector(".completed");
 
     new TodoInput({
         onAdd: content => {
             const new_todo_item = new TodoItem(this.todo_items.length, content, STATE.VIEW);
             this.todo_items.push(new_todo_item);
-            this.render(this.todo_items);
+            this.render();
         }
     });
 
-    new TodoCheck();
+    new TodoCheck({
+        onCheck: (index, STATE) => {
+            this.todo_items[index].state = STATE;
+            this.render(this.todo_items);
+        }
+    });
 
     new TodoEdit({
         startEdit: (index) => {

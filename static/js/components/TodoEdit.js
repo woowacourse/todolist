@@ -13,7 +13,6 @@ export function TodoEdit({startEdit, cancelEdit, endEdit}) { // Todo : 왜 {onEd
         if (event.target.className === "edit"
             && event.target.parentElement.className === STATE.EDITING
             && event.key === KEY_CODE.ESC) {
-            // event.target.parentElement.className = STATE.VIEW;
             const index = event.target.parentElement.getAttribute("data-index");
             cancelEdit(index);
         }
