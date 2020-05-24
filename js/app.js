@@ -1,4 +1,5 @@
 import {itemTemplate, totalCountTemplate} from '../utils/templates.js'
+import {EVENT_TYPE, KEY_TYPE} from "../utils/Constants.js";
 
 function TodoList() {
     const $newTodoTitle = document.querySelector("#new-todo-title");
@@ -7,10 +8,11 @@ function TodoList() {
     const $filters = document.querySelector(".filters");
 
     const insertTodo = event => {
-        if (event.key !== 'Enter' || $newTodoTitle.value === "") {
+        if (event.key !== KEY_TYPE.ENTER || $newTodoTitle.value === "") {
             return;
         }
         $todoList.insertAdjacentHTML("afterbegin", itemTemplate($newTodoTitle.value));
+        $newTodoTitle.value = "";
         updateTodoCount();
     }
 
@@ -34,10 +36,10 @@ function TodoList() {
     }
 
     const finishEditTodo = event => {
-        if (event.key !== 'Enter' && event.key !== 'Escape') {
+        if (event.key !== KEY_TYPE.ENTER && event.key !== KEY_TYPE.ESC) {
             return;
         }
-        if (event.key === 'Enter') {
+        if (event.key === KEY_TYPE.ENTER) {
             console.log(event.target.querySelector("label"))
             event.target.parentNode.querySelector("label").innerHTML = event.target.value;
         }
@@ -77,12 +79,12 @@ function TodoList() {
     }
 
     this.init = () => {
-        $newTodoTitle.addEventListener('keypress', insertTodo);
-        $todoList.addEventListener('click', makeCompleted);
-        $todoList.addEventListener('click', deleteTodo);
-        $todoList.addEventListener('dblclick', editTodo);
-        $todoList.addEventListener('keydown', finishEditTodo);
-        $filters.addEventListener('click', changeFilter);
+        $newTodoTitle.addEventListener(EVENT_TYPE.KEY_DOWN, insertTodo);
+        $todoList.addEventListener(EVENT_TYPE.CLICK, makeCompleted);
+        $todoList.addEventListener(EVENT_TYPE.CLICK, deleteTodo);
+        $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, editTodo);
+        $todoList.addEventListener(EVENT_TYPE.KEY_DOWN, finishEditTodo);
+        $filters.addEventListener(EVENT_TYPE.CLICK, changeFilter);
         updateTodoCount();
     }
 
