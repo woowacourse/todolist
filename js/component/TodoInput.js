@@ -10,23 +10,21 @@ export const TodoInput = class {
 
   addTodoItem(event) {
     const $newTodoTarget = event.target;
-    if (this.isNotValid(event)) {
-      return;
+    if (this.isValid(event)) {
+      const item = {
+        id: `${this.todoId++}`,
+        value: $newTodoTarget.value,
+        isCompleted: false
+      }
+      this.addTodoHandler(item);
+      $newTodoTarget.value = "";
     }
-
-    const item = {
-      id: `${this.todoId++}`,
-      value: $newTodoTarget.value,
-      isCompleted: false
-    }
-    this.addTodoHandler(item);
-    $newTodoTarget.value = "";
   };
 
-  isNotValid(event) {
-    const isNotEnter = event.key !== KEY_TYPE.ENTER;
-    const isEmpty = event.target.value === "";
+  isValid(event) {
+    const isEnter = event.key === KEY_TYPE.ENTER;
+    const isNotEmpty = event.target.value !== "";
 
-    return isNotEnter || isEmpty;
+    return isEnter && isNotEmpty;
   }
 }
