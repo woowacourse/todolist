@@ -48,12 +48,41 @@ function TodoList() {
         $todoCount.innerHTML = totalCountTemplate($todoList.childElementCount);
     }
 
+    const changeFilter = event => {
+        if (event.target.nodeName === 'A') {
+            $filters.querySelector(".selected").classList.remove("selected");
+            event.target.classList.add("selected");
+        }
+        if (event.target.classList.contains('all')) {
+            $todoList.querySelectorAll('li').forEach(li => li.classList.remove('hidden'));
+        }
+        if (event.target.classList.contains('active')) {
+            $todoList.querySelectorAll('li').forEach(li => {
+                if (li.classList.contains('completed')) {
+                    li.classList.add('hidden');
+                } else {
+                    li.classList.remove('hidden');
+                }
+            });
+        }
+        if (event.target.classList.contains('completed')) {
+            $todoList.querySelectorAll('li').forEach(li => {
+                if (li.classList.contains('completed')) {
+                    li.classList.remove('hidden');
+                } else {
+                    li.classList.add('hidden');
+                }
+            });
+        }
+    }
+
     this.init = () => {
         $newTodoTitle.addEventListener('keypress', insertTodo);
         $todoList.addEventListener('click', makeCompleted);
         $todoList.addEventListener('click', deleteTodo);
         $todoList.addEventListener('dblclick', editTodo);
         $todoList.addEventListener('keydown', finishEditTodo);
+        $filters.addEventListener('click', changeFilter);
         updateTodoCount();
     }
 
