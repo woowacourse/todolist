@@ -16,11 +16,10 @@ function TodoApp() {
     const $todo_completed = document.querySelector(".count-container .completed");
 
     new TodoInput({
-        onAdd: async content => {
-            const response = await api.todos.create(content);
-            const new_todo_item = new TodoItem(this.todo_items.length, "", response.content, response.isCompleted);
-            this.todo_items.push(new_todo_item);
-            render();
+        onAdd: content => {
+            api.todos.create(content)
+                .then(setState)
+                .then(render);
         }
     });
 
@@ -28,35 +27,44 @@ function TodoApp() {
         onCheck: (index, STATE) => {
             // const selected = this.todo_items.filter(todo_item => todo_item.id === id);
             // const index = this.todo_items.indexOf(selected); // Todo : 왜 indexOf 안되나? (===, == -> false)
+
             this.todo_items[index].state = STATE;
             render();
         }
     });
 
     new TodoEdit({
-        startEdit: (index) => {
+        startEdit: (id) => {
+            const index = this.todo_items.findIndex(todo_item => todo_item.id === id);
             this.todo_items[index].state = STATE.EDITING;
             render();
         },
-        cancelEdit: (index) => {
+        cancelEdit: (id) => {
+            const index = this.todo_items.findIndex(todo_item => todo_item.id === id);
             this.todo_items[index].state = STATE.VIEW;
             render();
         },
-        endEdit: (index, modifiedContent) => {
-            this.todo_items[index].content = modifiedContent;
-            this.todo_items[index].state = STATE.VIEW;
-            render();
+        endEdit: (id, modifiedContent) => {
+            api.todos.update(id, modifiedContent)
+                .then(setState)
+                .then(render);
         }
     });
 
     new TodoDelete({
-        onDelete: index => {
-            this.todo_items.splice(index, 1);
-            render();
+        onDelete: (id) => {
+            api.todos.delete(id)
+                .then(setState)
+                .then(render);
         }
     });
 
     // Todo : 수정할 때마다 다 지우고 다시 render 해야 할까?
+    const setState = async () => {
+        const responses = await api.todos.get();
+        this.todo_items = responses.map((response, index) => new TodoItem(index, response._id, response.content, response.isCompleted));
+    };
+
     const render = (state) => {
         let render_todo_items = findTodoItemsByState(state, this.todo_items);
 
@@ -80,14 +88,11 @@ function TodoApp() {
     }
 
     this.init = async () => {
-        const responses = await api.todos.get();
         // responses.forEach(function(response, index) {
         //     this.todo_items.push(new TodoItem(index, response._id, response.content, response.isCompleted));
         // }); //  Todo : 왜 this.todo_items 인식 못하지? todo_items도 인식 못하는 데 어떻게 해야되나
 
-        this.todo_items = responses.map((response, index) => new TodoItem(index, response._id, response.content, response.isCompleted));
-
-        render();
+        setState().then(render);
         $todo_all_selected.addEventListener(EVENT_TYPE.CLICK, function () {
             render();
         });

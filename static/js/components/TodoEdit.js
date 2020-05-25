@@ -5,24 +5,22 @@ export function TodoEdit({startEdit, cancelEdit, endEdit}) { // Todo : 왜 {onEd
 
     const onEditHandler = event => {
         if (event.target.className === "label" && event.type === EVENT_TYPE.DOUBLE_CLICK) {
-            // event.target.parentElement.parentElement.className = STATE.EDITING;
-            const index = event.target.parentElement.parentElement.getAttribute("data-index");
-            startEdit(index);
+            const id = event.target.parentElement.parentElement.getAttribute("data-id");
+            startEdit(id);
         }
 
         if (event.target.className === "edit"
             && event.target.parentElement.className === STATE.EDITING
             && event.key === KEY_CODE.ESC) {
-            const index = event.target.parentElement.getAttribute("data-index");
-            cancelEdit(index);
+            const id = event.target.parentElement.getAttribute("data-id");
+            cancelEdit(id);
         }
 
         if (event.target.className === "edit"
             && event.target.parentElement.className === STATE.EDITING
             && event.key === KEY_CODE.ENTER) {
-            event.target.parentElement.className = STATE.VIEW;
-            const index = event.target.parentElement.getAttribute("data-index");
-            endEdit(index, event.target.value, STATE.VIEW);
+            const id = event.target.parentElement.getAttribute("data-id");
+            endEdit(id, event.target.value, STATE.VIEW);
         }
     };
 

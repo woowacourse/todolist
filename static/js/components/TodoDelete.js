@@ -6,8 +6,8 @@ export function TodoDelete({onDelete}) {
     const onDeleteHandler = event => {
         if (event.target.className === "destroy") {
             if (confirm(MESSAGE.CONFIRM_DELETE)) {
-                const index = event.target.parentElement.parentElement.getAttribute("data-index");
-                onDelete(index);
+                const id = event.target.parentElement.parentElement.getAttribute("data-id");
+                onDelete(id);
             }
         }
     };

@@ -14,9 +14,9 @@ const METHOD = {
         return {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Accept": "application/json"
             },
-            body: JSON.stringify(
+            body: (
                 data
             )
         };
@@ -50,11 +50,11 @@ const api = (() => {
         create(data) {
             return request(`/moonyoungchae`, METHOD.POST(data));
         },
-        update(data, id) {
-            return request(`/moonyoungchae`, METHOD.PUT(data));
+        update(id, data) {
+            return request(`/moonyoungchae/`+id+"/aaa", METHOD.PUT(data));
         },
         delete(id) {
-            return request(`/moonyoungchae`, METHOD.DELETE());
+            return request(`/moonyoungchae/`+id, METHOD.DELETE());
         }
     };
 
