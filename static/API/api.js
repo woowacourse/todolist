@@ -32,9 +32,9 @@ const METHOD = {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(
-                data
-            )
+            body: JSON.stringify({
+                content: data
+            })
         };
     }
 };
@@ -45,16 +45,16 @@ const api = (() => {
 
     const todos = {
         get() {
-            return request(`/eastjun`, METHOD.GET());
+            return request(`/moonyoungchae`, METHOD.GET());
         },
         create(data) {
-            return request(`/tommy`, METHOD.POST(data));
+            return request(`/moonyoungchae`, METHOD.POST(data));
         },
         update(data, id) {
-            return request(`/tommy`, METHOD.PUT(data));
+            return request(`/moonyoungchae`, METHOD.PUT(data));
         },
         delete(id) {
-            return request(`/tommy`, METHOD.DELETE());
+            return request(`/moonyoungchae`, METHOD.DELETE());
         }
     };
 

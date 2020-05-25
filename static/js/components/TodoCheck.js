@@ -8,7 +8,6 @@ export function TodoCheck({onCheck}) {
         // Todo : node element의 차이? (parentNode, parentElement)
         if (event.target.className === "toggle") {
             const index = event.target.parentElement.parentElement.getAttribute("data-index");
-            var checked = event.target.checked;
             if (event.target.checked) {
                 onCheck(index, STATE.COMPLETED);
             } else{
