@@ -62,7 +62,7 @@ function TodoApp() {
     // Todo : 수정할 때마다 다 지우고 다시 render 해야 할까?
     const setState = async () => {
         const responses = await api.todos.get();
-        this.todo_items = responses.map((response, index) => new TodoItem(index, response._id, response.content, response.isCompleted));
+        this.todo_items = responses.map(response => new TodoItem(response._id, response.content, response.isCompleted));
     };
 
     const render = (state) => {

@@ -2,7 +2,7 @@ import {STATE} from "./constants.js";
 
 export const todoItemTemplate = (todo_item) => {
     const isChecked = todo_item.status === STATE.COMPLETED;
-    return `<li class = ${todo_item.state} data-index=${todo_item.index} data-id=${todo_item.id}>
+    return `<li class = ${todo_item.state} data-id=${todo_item.id}>
         <div>
           <input class="toggle" type="checkbox" checked=${isChecked}>
           <label class="label">${todo_item.content}</label>
