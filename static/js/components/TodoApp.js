@@ -6,9 +6,9 @@ import {TodoDelete} from "./TodoDelete.js";
 import {STATE} from "../utils/constants.js";
 import {TodoItem} from "../TodoItem.js";
 import {EVENT_TYPE} from "../utils/constants.js";
+import api from "../../API/api.js";
 
 function TodoApp() {
-    this.todo_items = [];
     const $todo_list = document.querySelector("#todo-list");
     const $todo_count = document.querySelector("#count-value");
     const $todo_all_selected = document.querySelector(".count-container .all.selected").parentElement;
@@ -17,7 +17,7 @@ function TodoApp() {
 
     new TodoInput({
         onAdd: content => {
-            const new_todo_item = new TodoItem(this.todo_items.length, content, STATE.VIEW);
+            const new_todo_item = new TodoItem("ID", content, false);
             this.todo_items.push(new_todo_item);
             render();
         }
@@ -76,7 +76,14 @@ function TodoApp() {
         return results;
     }
 
-    this.init = () => {
+    this.init = async () => {
+        const responses = await api.todos.get();
+        // responses.forEach(function(response, index) {
+        //     this.todo_items.push(new TodoItem(index, response._id, response.content, response.isCompleted));
+        // }); //  Todo : 왜 this.todo_items 인식 못하지? todo_items도 인식 못하는 데 어떻게 해야되나
+
+        this.todo_items = responses.map(response => new TodoItem(response._id, response.content, response.isCompleted));
+
         render();
         $todo_all_selected.addEventListener(EVENT_TYPE.CLICK, function () {
             render();
