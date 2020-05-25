@@ -16,8 +16,9 @@ function TodoApp() {
     const $todo_completed = document.querySelector(".count-container .completed");
 
     new TodoInput({
-        onAdd: content => {
-            const new_todo_item = new TodoItem("ID", content, false);
+        onAdd: async content => {
+            const response = await api.todos.create(content);
+            const new_todo_item = new TodoItem(this.todo_items.length, "", response.content, response.isCompleted);
             this.todo_items.push(new_todo_item);
             render();
         }
