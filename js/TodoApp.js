@@ -41,7 +41,13 @@ const TodoApp = class {
     return showItems;
   }
 
-  addTodo(item) {
+  addTodo(value) {
+    const item = {
+      id: `${this.todoItems.length}`,
+      value: value,
+      isCompleted: false,
+      isEditing: false
+    }
     this.todoItems.push(new TodoItem(item));
     this.setState(this.todoItems);
   }
