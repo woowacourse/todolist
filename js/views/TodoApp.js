@@ -14,6 +14,10 @@ class TodoApp {
       onDelete: id => {
         this.deleteItem(id);
         this.setState(this.todoItems);
+      },
+      onUpdate: (id, content) => {
+        this.updateItem(id, content);
+        this.setState(this.todoItems);
       }
     });
 
@@ -36,6 +40,14 @@ class TodoApp {
   deleteItem(id) {
     this.todoItems = this.todoItems.filter(todoItem => todoItem.id !== id)
   }
+
+  updateItem(id, content) {
+    this.todoItems.filter(todoItem => todoItem.id === id)
+    .map(todoItem => {
+      todoItem.content = content;
+    });
+  };
+
 
   setState(updatedItems) {
     this.todoItems = updatedItems;
