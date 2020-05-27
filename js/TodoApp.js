@@ -1,30 +1,52 @@
 // 부모 컴포넌트
-import {KEY_TYPE} from "./constants.js";
+import {KEY_TYPE, EVENT_TYPE} from "./constants.js";
 import {todoItemTemplate} from "./templates.js";
 
 function TodoApp() {
     this.todoItems = [];
 
+
     this.setState = updatedItems => {
-        const newTodoList = new TodoList();
+        const todoList = new TodoList();
         this.todoItems = updatedItems;
-        newTodoList.setState(this.todoItems);
+        todoList.setState(this.todoItems);
     };
 
     new TodoInput({
         onAdd: item => {
-            const newTodoItem = new TodoItem(item);
+            const newTodoItem = new TodoItem(this.todoItems.length, item,false);
             this.todoItems.push(newTodoItem);
             this.setState(this.todoItems);
         }
     });
+
+    new TodoComplete({
+        onComplete: itemId => {
+            this.todoItems[itemId].completed = !this.todoItems[itemId].completed;
+            this.setState(this.todoItems);
+        }
+    });
+}
+
+function TodoComplete({onComplete}) {
+    const $todoList = document.querySelector("#todo-list");
+
+    $todoList.addEventListener(EVENT_TYPE.CLICK, event => this.onToggleCompleteItem(event));
+
+    this.onToggleCompleteItem = event => {
+        const $target = event.target;
+        $target.closest("li").classList.toggle("completed");
+        const itemId = $target.closest("li").dataset.id;
+        onComplete(itemId);
+    };
+
 }
 
 // 입력 받는 컴포넌트
 function TodoInput({ onAdd }) {
     const $todoInput = document.querySelector("#new-todo-title");
 
-    $todoInput.addEventListener("keydown", event => this.addTodoItem(event));
+    $todoInput.addEventListener(EVENT_TYPE.KEYDOWN, event => this.addTodoItem(event));
 
     this.addTodoItem = event => {
         const $newTodoTarget = event.target;
@@ -42,7 +64,7 @@ function TodoInput({ onAdd }) {
 // todoList 보여주는 컴포넌트
 function TodoList() {
 
-    this.$todoList = document.querySelector("#todo-list");
+    const $todoList = document.querySelector("#todo-list");
 
     this.setState = updatedTodoItems => {
         this.todoItems = updatedTodoItems;
@@ -51,12 +73,14 @@ function TodoList() {
 
     this.render = items => {
         const template = items.map(todoItemTemplate);
-        this.$todoList.innerHTML = template.join("");
+        $todoList.innerHTML = template.join("");
     };
 }
 
-function TodoItem(item) {
+function TodoItem(id, item, completed) {
+    this.id = id;
     this.title = item;
+    this.completed = completed;
 }
 
 const todoApp = new TodoApp();
