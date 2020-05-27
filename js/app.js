@@ -14,10 +14,20 @@ function TodoApp() {
     const $newTodoTarget = event.target;
     if (isEnterKey(event)) {
       this.todoItems.push($newTodoTarget.value);
-      new TodoList(this.todoItems, currentFilter);
       $newTodoTarget.value = "";
+      return new TodoList(findItemsByFilter(currentFilter), currentFilter);
     }
   };
+
+  const findItemsByFilter = currentFilter => {
+    if (currentFilter === FILTER_TYPE.ALL) {
+      return this.todoItems;
+    }
+    if (currentFilter === FILTER_TYPE.COMPLETED) {
+      return this.completed;
+    }
+    return findActiveItems(this.todoItems, this.completed);
+  }
 
   this.updateItem = event => {
     const $target = event.target;
@@ -37,20 +47,28 @@ function TodoApp() {
 
     if ($target.classList.contains("all")) {
       new TodoList(this.todoItems, FILTER_TYPE.ALL);
+      currentFilter = FILTER_TYPE.ALL;
     }
 
     if ($target.classList.contains("completed")) {
       new TodoList(this.completed, FILTER_TYPE.COMPLETED);
+      currentFilter = FILTER_TYPE.COMPLETED;
     }
 
     if ($target.classList.contains("active")) {
-      const activeItems = JSON.parse(JSON.stringify(this.todoItems));
-      this.completed.forEach(x => {
-        const idx = activeItems.indexOf(x);
-        activeItems.splice(idx, 1);
-      })
+      const activeItems = findActiveItems(this.todoItems, this.completed);
       new TodoList(activeItems, FILTER_TYPE.ACTIVE);
+      currentFilter = FILTER_TYPE.ACTIVE;
     }
+  }
+
+  function findActiveItems(todoItems, completed) {
+    const activeItems = JSON.parse(JSON.stringify(todoItems));
+    completed.forEach(x => {
+      const idx = activeItems.indexOf(x);
+      activeItems.splice(idx, 1);
+    })
+    return activeItems;
   }
 
   this.clickItem = event => {
