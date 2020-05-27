@@ -1,15 +1,16 @@
 import { ERROR_MESSAGE, KEY_TYPE } from '../../utils/constants.js';
 
-export function TodoInput({ onAdd }) {
-  const $todoInput = document.querySelector("#new-todo-title");
+export class TodoInput {
+  constructor({ onAdd }) {
+    this.$todoInput = document.querySelector("#new-todo-title");
+    this.$todoInput.addEventListener("keydown", event => this.addTodoItem(event));
+    this.onAdd = onAdd;
+  }
 
-  $todoInput.addEventListener("keydown", event => this.addTodoItem(event));
-
-  this.isValid = (event, value) => {
+  isValid(event, value) {
     if (event.key && event.key !== KEY_TYPE.ENTER) {
       return false;
     }
-
     if (!value) {
       alert(ERROR_MESSAGE.EMPTY)
       return false;
@@ -17,11 +18,11 @@ export function TodoInput({ onAdd }) {
     return true;
   }
 
-  this.addTodoItem = event => {
+  addTodoItem(event) {
     const $newTodoTarget = event.target;
 
     if (this.isValid(event, $newTodoTarget.value)) {
-      onAdd($newTodoTarget.value);
+      this.onAdd($newTodoTarget.value);
       $newTodoTarget.value = "";
     }
   };

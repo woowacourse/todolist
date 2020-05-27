@@ -3,5 +3,10 @@ export const ERROR_MESSAGE = {
 
 };
 export const KEY_TYPE = {
-  ENTER: "Enter"
+  ENTER: "Enter",
+  CLICK: "click"
+};
+export const STATE = {
+  COMPLETE: "completed",
+  NOT_COMPLETE: ""
 };
