@@ -1,32 +1,32 @@
-export const allTodoItemTemplate = (items, index) => {
-    return `<li data-index="${index}">
+export const todoItemTemplate = (item) => {
+    return `<li data-id="${item.id}">
         <div class="view">
           <input class="toggle" type="checkbox">
-          <label class="label">${items}</label>
+          <label class="label">${item.title}</label>
           <button class="destroy"></button>
         </div>
-        <input class="edit" value="${items}">
+        <input class="edit" value="${item}">
       </li>`
 }
 
-export const completedTodoItemTemplate = (items, index) => {
-    return `<li data-index="${index}" class="completed">
+export const completedItemTemplate = (item) => {
+    return `<li data-id="${item.id}" class="completed">
         <div class="view">
           <input class="toggle" type="checkbox">
-          <label class="label">${items}</label>
+          <label class="label">${item.title}</label>
           <button class="destroy"></button>
         </div>
-        <input class="edit" value="${items}">
+        <input class="edit" value="${item}">
       </li>`
 }
 
-export const activeTodoItemTemplate = (items, index) => {
-    return `<li data-index="${index}">
+export const activeTodoItemTemplate = (item) => {
+    return `<li data-id="${item.id}">
         <div class="view">
           <input class="toggle" type="checkbox">
-          <label class="label">${items}</label>
+          <label class="label">${item.title}</label>
           <button class="destroy"></button>
         </div>
-        <input class="edit" value="${items}">
+        <input class="edit" value="${item}">
       </li>`
 }
