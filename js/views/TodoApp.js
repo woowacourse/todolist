@@ -10,6 +10,10 @@ class TodoApp {
       onToggle: id => {
         this.toggleStatus(id);
         this.setState(this.todoItems);
+      },
+      onDelete: id => {
+        this.deleteItem(id);
+        this.setState(this.todoItems);
       }
     });
 
@@ -24,9 +28,13 @@ class TodoApp {
 
   toggleStatus(id) {
     this.todoItems.filter(todoItem => todoItem.id === id)
-      .map(todoItem => {
-        todoItem.status = (todoItem.status === STATE.COMPLETE ? STATE.NOT_COMPLETE : STATE.COMPLETE)
-      });
+    .map(todoItem => {
+      todoItem.status = (todoItem.status === STATE.COMPLETE ? STATE.NOT_COMPLETE : STATE.COMPLETE)
+    });
+  }
+
+  deleteItem(id) {
+    this.todoItems = this.todoItems.filter(todoItem => todoItem.id !== id)
   }
 
   setState(updatedItems) {
