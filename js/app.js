@@ -19,17 +19,17 @@ function TodoApp() {
         completed: false
       });
       $newTodoTarget.value = "";
-      return new TodoList(this.todoItems, FILTER_TYPE.ALL);
+      return new TodoList(findItemsToPrint(this.todoItems, currentFilter));
     }
   };
 
   this.clickItem = event => {
     const $target = event.target;
-    const targetId = $target.closest("li").dataset.id;
-    const targetItem = findTargetItem(targetId);
+    const targetItem = findTargetItem($target);
 
     if ($target.classList.contains("destroy")) {
-      this.todoItems.splice(targetId, 1);
+      const index = this.todoItems.indexOf(targetItem);
+      this.todoItems.splice(index, 1);
       new TodoList(this.todoItems);
     }
 
@@ -39,26 +39,22 @@ function TodoApp() {
 
     if ($target.classList.contains("toggle")) {
       $target.closest("li").classList.toggle("completed")
-      targetItem.completed = true;
+      targetItem.completed = $target.closest('li').classList.contains('completed');
     }
   }
 
-  const findTargetItem = targetId => {
-    for (let i in this.todoItems) {
-      if (this.todoItems[i].id == targetId) {
-        return this.todoItems[i];
-      }
-    }
-    return undefined;
+  const findTargetItem = $target => {
+    const targetId = $target.closest("li").dataset.id;
+    return this.todoItems.filter(item => item.id == targetId)[0];
   }
 
   this.updateItem = event => {
     const $target = event.target;
     if (isEnterKey(event)) {
-      const index = $target.closest("li").dataset.index;
-      this.todoItems.splice(index, 1, $target.value);
+      const targetItem = findTargetItem($target);
+      targetItem.title = $target.value;
       $target.closest("li").classList.remove("editing");
-      new TodoList(this.todoItems, currentFilter);
+      new TodoList(findItemsToPrint(this.todoItems, currentFilter));
     }
   }
 
@@ -80,7 +76,7 @@ function TodoApp() {
       currentFilter = FILTER_TYPE.ACTIVE;
     }
 
-    new TodoList(findItemsToPrint(this.todoItems,currentFilter));
+    new TodoList(findItemsToPrint(this.todoItems, currentFilter));
   }
 
   this.init = () => {
@@ -97,7 +93,7 @@ function TodoList(itemToPrint) {
 
   this.render = items => {
     this.$todoList.innerHTML = items.map(item => {
-      const template = findTemplate(item.completed);
+      const template = selectTemplate(item.completed);
       return template(item);
     }).join("");
     this.$todoCount.innerText = items.length;
@@ -106,17 +102,17 @@ function TodoList(itemToPrint) {
   this.render(itemToPrint);
 }
 
-function findItemsToPrint(allItem, filterType) {
-  if (filterType === FILTER_TYPE.ALL) {
+function findItemsToPrint(allItem, filterState) {
+  if (filterState === FILTER_TYPE.ALL) {
     return allItem;
   }
-  if (filterType === FILTER_TYPE.COMPLETED) {
+  if (filterState === FILTER_TYPE.COMPLETED) {
     return allItem.filter(item => item.completed);
   }
   return allItem.filter(item => !item.completed);
 }
 
-const findTemplate = isCompleted => {
+const selectTemplate = isCompleted => {
   if (isCompleted) {
     return completedItemTemplate;
   }
