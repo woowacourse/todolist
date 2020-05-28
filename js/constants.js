@@ -7,4 +7,10 @@ export const EVENT_TYPE = {
 export const KEY_TYPE = {
     ENTER: "Enter",
     ESC: "Escape"
-}
+};
+
+export const FILTER_TYPE = {
+    ALL: "all",
+    ACTIVE: "active",
+    COMPLETED: "completed"
+};
