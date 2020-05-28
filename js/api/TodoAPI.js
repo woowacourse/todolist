@@ -10,15 +10,12 @@ const METHOD = {
       })
     }
   },
-  PUT(data) {
+  PUT() {
     return {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        ...data
-      })
+      }
     }
   },
   DELETE() {
@@ -40,8 +37,8 @@ const api = (() => {
     create(data) {
       return requestWithJsonData(TODO_URI, METHOD.POST(data));
     },
-    update(id, data) {
-      return request(TODO_URI + `/${id}`, METHOD.PUT(data))
+    toggle(id) {
+      return request(TODO_URI + `/${id}/toggle`, METHOD.PUT())
     },
     delete(id) {
       return request(TODO_URI + `/${id}`, METHOD.DELETE());

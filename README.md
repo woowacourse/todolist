@@ -10,7 +10,9 @@
 # 🎯 2단계 요구사항
 
 - [ ] fetch를 이용해 데이터 CRUD 하기
-    - [ ] post
-    - [ ] get
+    - [x] post
+    - [x] get
     - [ ] put
-    - [ ] delete
+        - [x] toggle
+        - [ ] edit
+    - [x] delete

@@ -1,19 +1,19 @@
 export const TodoItem = class {
-  constructor({id, value, isCompleted, isEditing}) {
-    this.id = id;
-    this.value = value;
+  constructor({_id, content, isCompleted}) {
+    this._id = _id;
+    this.content = content;
     this.isCompleted = isCompleted;
-    this.isEditing = isEditing;
+    this.isEditing = false;
   }
 
   create() {
-    return `<li class="${this.getStatus()}" data-id="${this.id}">
+    return `<li class="${this.getStatus()}" data-id="${this._id}">
         <div class="view">
           <input class="toggle" type="checkbox" ${(this.checked())}>
-          <label class="label">${this.value}</label>
+          <label class="label">${this.content}</label>
           <button class="destroy"></button>
         </div>
-        <input class="edit" value="${this.value}">
+        <input class="edit" value="${this.content}">
       </li>`;
   }
 
@@ -38,13 +38,13 @@ export const TodoItem = class {
     return this;
   }
 
-  edit(id, value) {
+  edit(id, content) {
     this.isEditing = this.isSameId(id) ? !this.isEditing : this.isEditing;
-    this.value = this.isSameId(id) ? value : this.value;
+    this.content = this.isSameId(id) ? content : this.content;
     return this;
   }
 
   isSameId(id) {
-    return this.id === id;
+    return this._id === id;
   }
 }

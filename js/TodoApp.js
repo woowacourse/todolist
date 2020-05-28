@@ -4,6 +4,7 @@ import {TodoItem} from "./component/TodoItem.js";
 import {TodoCount} from "./component/TodoCount.js";
 import {TodoFilter} from "./component/TodoFilter.js";
 import {FILTER} from "./utils/constans.js";
+import api from "./api/TodoAPI.js";
 
 const TodoApp = class {
   constructor() {
@@ -22,6 +23,14 @@ const TodoApp = class {
     this.todoFilter = new TodoFilter({
       onChange: this.changeView.bind(this)
     });
+    this.loadItems()
+      .then(items => this.setState(items))
+      .catch(error => alert(error));
+  }
+
+  async loadItems() {
+    const items = await api.todo.getAll();
+    return items.map(item => new TodoItem(item));
   }
 
   setState(updatedItems) {
@@ -41,39 +50,35 @@ const TodoApp = class {
     return showItems;
   }
 
-  addTodo(value) {
-    const item = {
-      id: `${this.todoItems.length}`,
-      value: value,
-      isCompleted: false,
-      isEditing: false
-    }
-    this.todoItems.push(new TodoItem(item));
-    this.setState(this.todoItems);
+  async addTodo(content) {
+    await api.todo.create({content}).catch(error => alert(error))
+    this.setState(await this.loadItems())
   }
 
   completeTodo(id) {
     this.setState(
       this.todoItems.map(item => item.checkCompleted(id))
     );
+    api.todo.toggle(id).catch(error => alert(error));
   }
 
   deleteTodo(id) {
     this.setState(
       this.todoItems.filter(item => !item.isSameId(id))
-    )
+    );
+    api.todo.delete(id).catch(error => alert(error));
   }
 
   toggleEditingTodo(id) {
     this.setState(
       this.todoItems.map(item => item.checkEditing(id))
-    )
+    );
   }
 
-  editTodo(id, value) {
+  editTodo(id, content) {
     this.setState(
-      this.todoItems.map(item => item.edit(id, value))
-    )
+      this.todoItems.map(item => item.edit(id, content))
+    );
   }
 
   changeView(target) {
