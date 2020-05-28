@@ -3,18 +3,22 @@ import {EVENT_TYPE, KEY_TYPE} from "../utils/constans.js";
 export const TodoList = class {
   constructor({onComplete, onDelete, toggleEdit, onEdit}) {
     this.$todoList = document.querySelector("#todo-list");
+    this.completeTodoHandler = onComplete;
+    this.deleteTodoHandler = onDelete;
+    this.toggleEditingTodoHandler = toggleEdit;
+    this.editTodoHandler = onEdit;
+    this.initEventListeners();
+  }
+
+  initEventListeners() {
     this.$todoList.addEventListener(EVENT_TYPE.CLICK,
       this.completeTodo.bind(this));
-    this.completeTodoHandler = onComplete;
     this.$todoList.addEventListener(EVENT_TYPE.CLICK,
       this.deleteTodo.bind(this));
-    this.deleteTodoHandler = onDelete;
     this.$todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK,
       this.toggleEditingTodo.bind(this));
-    this.toggleEditingTodoHandler = toggleEdit;
     this.$todoList.addEventListener(EVENT_TYPE.KEY_DOWN,
       this.editTodo.bind(this));
-    this.editTodoHandler = onEdit;
   }
 
   render(items) {
