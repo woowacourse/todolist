@@ -1,38 +1,48 @@
+import {renderTodo} from "./templete.js"
+
 function TodoApp() {
   this.todoItems = [];
-  this.displayedItems = [];
+  this.filter = "all";
   this.todoList = new TodoList({
     onRemove: contents => {
       const index = this.todoItems.findIndex(it => JSON.stringify(it) === JSON.stringify(contents));
       this.todoItems.splice(index, 1);
-      this.setState(this.displayedItems);
+      this.setState(this.todoItems);
     },
     onUpdate: (contents, update) => {
-      const item = this.todoItems.find(it => {
-        console.log(it);
-        return JSON.stringify(it) === JSON.stringify(contents)
-      });
+      const item = this.todoItems.find(it => JSON.stringify(it) === JSON.stringify(contents));
       item.state = update.state;
       item.value = update.value;
-      this.setState(this.displayedItems);
+      this.setState(this.todoItems);
     }
   });
   this.todoCount = new TodoCount({
     onSelectFilter: filter => {
-      this.setState(this.displayedItems);
+      this.filter = filter;
+      this.setState(this.todoItems);
     }
   });
 
   this.setState = updatedItems => {
     this.todoItems = updatedItems;
-    this.todoList.setState(this.todoItems);
-    this.todoCount.setState(this.todoItems);
+    this.todoList.setState(display(this.filter));
+    this.todoCount.setState(display(this.filter));
   };
+
+  const display = filter => this.todoItems.filter(item => {
+    if (filter === "active") {
+      return item.state === "undo";
+    } else if (filter === "completed") {
+      return item.state === "completed";
+    } else {
+      return true;
+    }
+  });
 
   new TodoInput({
     onAdd: contents => {
       this.todoItems.push(new TodoItem("undo", contents));
-      this.setState(this.displayedItems);
+      this.setState(this.todoItems);
     }
   })
 }
@@ -70,7 +80,7 @@ function TodoList({onRemove, onUpdate}) {
   };
   const editItem = event => {
     const $target = event.target;
-    if ($target.classList.contains("label")) {
+    if ($target.classList.contains("label") && !document.querySelector(".editing")) {
       const $todoItem = $target.closest("li");
       $todoItem.classList.toggle("editing");
     }
@@ -100,7 +110,6 @@ function TodoList({onRemove, onUpdate}) {
     const $target = event.target;
     if (event.key === "Escape") {
       const $todoItem = $target.closest("li");
-      console.log($todoItem.querySelector("input"));
       $todoItem.querySelector(".edit").value = $todoItem.querySelector("label").innerText;
       $todoItem.classList.toggle("editing");
     }
@@ -112,7 +121,7 @@ function TodoList({onRemove, onUpdate}) {
   $todoList.addEventListener("keydown", cancelUpdate);
 }
 
-function TodoCount(onSelecteFilter) {
+function TodoCount({onSelectFilter}) {
   const $todoCount = document.querySelector(".todo-count");
   const $filterList = document.querySelector(".filters");
 
@@ -122,11 +131,11 @@ function TodoCount(onSelecteFilter) {
 
   const selectFilter = event => {
     const $target = event.target;
-    if ($target.nodeName === "li") {
+    if ($target.nodeName === "A") {
       const $preSelected = $filterList.querySelector(".selected");
       $preSelected.classList.toggle("selected");
       $target.classList.toggle("selected");
-      onSelecteFilter($target.classList[0]);
+      onSelectFilter($target.classList[0]);
     }
   };
 
@@ -136,18 +145,6 @@ function TodoCount(onSelecteFilter) {
 function TodoItem(state, value) {
   this.state = state;
   this.value = value;
-}
-
-function renderTodo(todo) {
-  const checked = todo.state === "completed" ? "checked" : "";
-  return `<li class=${todo.state}>
-  <div class="view">
-    <input class="toggle" type="checkbox" ${checked}>
-    <label class="label">${todo.value}</label>
-  <button class="destroy"></button>
-    </div>
-    <input class="edit" value=${todo.value}>
-    </li>`
 }
 
 new TodoApp();
