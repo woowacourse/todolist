@@ -5,14 +5,18 @@ import {TodoInput} from "./TodoInput.js";
 import {TodoComplete} from "./TodoComplete.js";
 import {TodoDelete} from "./TodoDelete.js";
 import {TodoEdit} from "./TodoEdit.js";
+import {TodoItem} from "./TodoItem.js";
+import {TodoCount} from "./TodoCount.js";
 
 function TodoApp() {
     this.todoItems = [];
 
     this.setState = updatedItems => {
         const todoList = new TodoList();
+        const todoCount = new TodoCount();
         this.todoItems = updatedItems;
         todoList.setState(this.todoItems);
+        todoCount.setCount(this.todoItems.length)
     };
 
     new TodoInput({
@@ -52,14 +56,6 @@ function TodoApp() {
            this.setState(this.todoItems);
        }
     });
-}
-
-
-function TodoItem(id, item, completed, state) {
-    this.id = id;
-    this.title = item;
-    this.completed = completed;
-    this.state = state;
 }
 
 const todoApp = new TodoApp();
