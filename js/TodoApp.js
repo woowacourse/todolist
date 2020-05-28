@@ -5,6 +5,8 @@ import { TodoCheckBox } from './TodoCheckBox.js'
 import { TodoDelete } from './TodoDelete.js'
 
 function TodoApp() {
+    const $todoList = document.querySelector('#todo-list')
+
     this.todoItems = [
         new TodoItem(1, "아침밥"),
         new TodoItem(2, "점심밥")
@@ -46,7 +48,27 @@ function TodoApp() {
         }
     })
 
+    const switchToEditMode = event => {
+        event.preventDefault()
+        const $item = event.target.closest('li')
+        $item.classList.toggle("editing")
+    }
+
+    const switchToViewMode = event => {
+        event.preventDefault();
+        if (event.key !== 'Escape') {
+            return;
+        }
+        document.getSelection().anchorNode.classList.remove("editing");  // ???
+    }
+
+    const initEventListener = () => {
+        $todoList.addEventListener('dblclick', switchToEditMode)
+        $todoList.addEventListener('keyup', switchToViewMode)
+    }
+
     this.init = () => {
+        initEventListener();
         todoList.setState(this.todoItems);  // 어플리케이션이 시작할 때 자식으로 상태를 넘겨준다.
     }
 }
