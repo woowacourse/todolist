@@ -1,5 +1,5 @@
 import {EVENT_TYPE, FILTERS, KEY_CODE, TODO_CLASS} from "../utils/constants.js";
-import {addFirstClass, removeClass} from "../utils/classSetting.js";
+import {addFirstClass} from "../utils/classSetting.js";
 import {todoItemFromApiTemplate, todoItemTemplate} from "../utils/Templates.js";
 import api from "../api/index.js";
 
@@ -54,7 +54,7 @@ function Todo() {
 					throw Error("토글 상태 변경에 실패했습니다.");
 				}
 				if (toggleList.className.startsWith(TODO_CLASS.COMPLETE)) {
-					removeClass(toggleList, TODO_CLASS.COMPLETE);
+					toggleList.classList.remove(TODO_CLASS.COMPLETE);
 					return;
 				}
 				addFirstClass(toggleList, TODO_CLASS.COMPLETE);
@@ -89,7 +89,7 @@ function Todo() {
 		// 준코치님 Update API가 없어요!
 		function saveData() {
 			document.querySelector(".editing").className;
-			removeClass(event.target.parentElement, TODO_CLASS.EDIT);
+			event.target.parentElement.classList.remove(TODO_CLASS.EDIT);
 
 			event.target.parentElement.querySelector(
 				".view > .label").innerText = event.target.value;
@@ -103,7 +103,7 @@ function Todo() {
 		}
 
 		function changeNotEdit() {
-			removeClass(event.target.parentElement, TODO_CLASS.EDIT);
+			event.target.parentElement.classList.remove(TODO_CLASS.EDIT);
 		}
 	};
 
@@ -125,7 +125,7 @@ function Todo() {
 					const editInput = edit.querySelector(".edit");
 					editInput.value = "";
 					editInput.value = defaultValue;
-					removeClass(edit, TODO_CLASS.EDIT)
+					edit.classList.remove(TODO_CLASS.EDIT);
 				});
 			}
 		}
