@@ -1,5 +1,5 @@
 import { todoItemTemplate } from '../../utils/templates.js';
-import { KEY_TYPE, STATE } from '../../utils/constants.js';
+import { KEY_TYPE } from '../../utils/constants.js';
 
 export class TodoList {
   constructor({ onToggle, onDelete, onUpdate }) {
@@ -39,11 +39,11 @@ export class TodoList {
       return;
     }
 
-    todoItem.classList.add(STATE.EDITING);
+    todoItem.classList.add("editing");
 
     document.addEventListener(KEY_TYPE.KEY_DOWN, event => {
       if (event.key && event.key === KEY_TYPE.ESC) {
-        todoItem.classList.remove(STATE.EDITING);
+        todoItem.classList.remove("editing");
       }
       if (event.key && event.key === KEY_TYPE.ENTER) {
         const content = todoItem.lastElementChild.value;

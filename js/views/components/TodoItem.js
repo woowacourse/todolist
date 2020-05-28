@@ -5,6 +5,6 @@ export class TodoItem {
   constructor(content) {
     this.id = getUUID();
     this.content = content;
-    this.status = STATE.NOT_COMPLETE;
+    this.status = STATE.ACTIVE;
   }
 }

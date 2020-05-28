@@ -10,6 +10,5 @@ export const KEY_TYPE = {
 };
 export const STATE = {
   COMPLETE: "completed",
-  NOT_COMPLETE: "",
-  EDITING: "editing",
+  ACTIVE: "active",
 };
