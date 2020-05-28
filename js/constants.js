@@ -1,8 +1,10 @@
 export const EVENT_TYPE = {
     CLICK: "click",
-    KEYDOWN : "keydown"
+    KEYDOWN : "keydown",
+    DOUBLE_CLICK: "dblclick"
 };
 
 export const KEY_TYPE = {
-    ENTER: "Enter"
+    ENTER: "Enter",
+    ESC: "Escape"
 }
