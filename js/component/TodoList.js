@@ -43,6 +43,7 @@ export const TodoList = class {
     const isLabel = $target.classList.contains("label");
     if (isLabel) {
       this.toggleEditingTodoHandler(this.getId($target));
+      window.onclick = this.editTodo.bind(this);
     }
   }
 
@@ -53,10 +54,18 @@ export const TodoList = class {
     const isESC = event.key === KEY_TYPE.ESC;
     if (isEdit && isEnter) {
       this.editTodoHandler(this.getId($target), $target.value);
+      window.onclick = null;
     }
     if (isEdit && isESC) {
       this.editTodoHandler(this.getId($target),
         $target.closest("li").querySelector("label").innerText);
+      window.onclick = null;
+    }
+    if (!isEdit) {
+      const $editInput = document.querySelector(".editing .edit");
+      this.editTodoHandler(this.getId($editInput),
+        $editInput.closest("li").querySelector("label").innerText);
+      window.onclick = null;
     }
   }
 
