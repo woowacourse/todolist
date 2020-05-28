@@ -27,8 +27,8 @@
 ## 투두리스트 Ajax 통신하기
 
 #### 요구사항
-- [ ] fetch를 이용해 데이터 CRUD 하기
-  - [ ] fetch를 이용해 Todo 목록 data를 불러오고, 특정 Todo를 삭제하고, 완료처리를 하는 것을 적용
+- [x] fetch를 이용해 데이터 CRUD 하기
+  - [x] fetch를 이용해 Todo 목록 data를 불러오고, 특정 Todo를 삭제하고, 완료처리를 하는 것을 적용
   - json data
     ```json
     {
@@ -39,19 +39,19 @@
     ```
     
   1. 불러오기
-    - API : `http://todo-api.roto.codes/:username`
+    - API : `http://todo-index.roto.codes/:username`
     > api에는 `username`이 들어갑니다. 본인의 `username`이 들어가게 넣어주세요
 
     ``` json
-    fetch('http://todo-api.roto.codes/jamie9504').then()...
+    fetch('http://todo-index.roto.codes/jamie9504').then()...
     ```
 
   2. 추가하기
-    - API : `http://todo-api.roto.codes/:username`
+    - API : `http://todo-index.roto.codes/:username`
     > api에는 `username`이 들어갑니다. 본인의 `username`이 들어가게 넣어주세요
     
     ``` json
-    fetch('https://todo-api.roto.codes/json', {
+    fetch('https://todo-index.roto.codes/json', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -65,11 +65,11 @@
     ```
   
   3. 삭제하기
-    - API : `http://todo-api.roto.codes/:username/:todo_id`
+    - API : `http://todo-index.roto.codes/:username/:todo_id`
     > 서버에서 불러온 todo 데이터에 있는 _id 이용
 
     ``` json
-    fetch('https://todo-api.roto.codes/roto/5d11cf671e050d3f7c583166', {
+    fetch('https://todo-index.roto.codes/roto/5d11cf671e050d3f7c583166', {
       method: 'DELETE'
     }).then(function(){
       ....
@@ -77,11 +77,11 @@
     ```
   
   4. 토글 
-    - API: `http://todo-api.roto.codes/:username/:todo_id`
+    - API: `http://todo-index.roto.codes/:username/:todo_id`
     > 서버에서 불러온 todo 데이터에 있는 _id 이용
       
     ``` json
-    fetch('https://todo-api.roto.codes/roto/5d11cf671e050d3f7c583166/toggle', {
+    fetch('https://todo-index.roto.codes/roto/5d11cf671e050d3f7c583166/toggle', {
       method: 'PUT'
     }).then(function(){
       ....
@@ -90,4 +90,4 @@
 
 #### 조건
 - Ajax요청하는 부분을 객체로 분리
-  - 실제 현장에서는 api가 변경되는 일이 잦으므로, 한 객체에서 api 요청하는 부분을 관리해서 사용
+  - 실제 현장에서는 api가 변경되는 일이 잦으므로, 한 객체에서 index 요청하는 부분을 관리해서 사용

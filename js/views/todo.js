@@ -1,8 +1,9 @@
 import {EVENT_TYPE, FILTERS, KEY_CODE, TODO_CLASS} from "../utils/constants.js";
 import {addFirstClass, removeClass} from "../utils/classSetting.js";
-import {todoItemTemplate} from "../utils/Templates.js";
+import {todoItemFromApiTemplate, todoItemTemplate} from "../utils/Templates.js";
+import api from "../api/index.js";
 
-function Index() {
+function Todo() {
 
 	const $newTodoInput = document.querySelector("#new-todo-title");
 	const $todoMain = document.querySelector(".main");
@@ -17,6 +18,20 @@ function Index() {
 	const newTodoKeydownEvent = event => {
 		if (event.keyCode === KEY_CODE.ENTER) {
 			event.preventDefault();
+			const data = {
+				content: event.target.value
+			};
+			api.todo.create(data).then(res => {
+				if (!res.ok) {
+					throw Error("TODO 등록에 실패하였습니다.");
+				}
+				// 준 코치님 얘네 ID를 안돌려줘요 :<
+				// {content: "a", isCompleted: false}
+				$todoList.innerHTML = "";
+				loadToDosFromApi();
+				setCounts()
+			}).then(res => console.log(res))
+			.catch(err => alert(err));
 			$todoList.innerHTML = $todoList.innerHTML + todoItemTemplate(
 				event.target.value);
 			event.target.value = "";
@@ -31,20 +46,30 @@ function Index() {
 		if (event.target.className === "destroy") {
 			destroyClick();
 		}
-		changeDisplayByFilter();
 
 		function toggleClick() {
 			const toggleList = event.target.parentElement.parentElement;
-			if (toggleList.className.startsWith(TODO_CLASS.COMPLETE)) {
-				removeClass(toggleList, TODO_CLASS.COMPLETE);
-				return;
-			}
-			addFirstClass(toggleList, TODO_CLASS.COMPLETE);
+			api.todo.changeToggleState(toggleList.dataset.todoId).then(res => {
+				if (!res.ok) {
+					throw Error("토글 상태 변경에 실패했습니다.");
+				}
+				if (toggleList.className.startsWith(TODO_CLASS.COMPLETE)) {
+					removeClass(toggleList, TODO_CLASS.COMPLETE);
+					return;
+				}
+				addFirstClass(toggleList, TODO_CLASS.COMPLETE);
+			}).then(() => changeDisplayByFilter()).catch(err => alert(err));
 		}
 
 		function destroyClick() {
 			const removeList = event.target.parentElement.parentElement;
-			removeList.parentElement.removeChild(removeList);
+			api.todo.remove(removeList.dataset.todoId).then(res => {
+				if (!res.ok) {
+					throw Error("삭제에 실패하였습니다.");
+				}
+				removeList.parentElement.removeChild(removeList);
+				changeDisplayByFilter();
+			}).catch(err => alert(err));
 		}
 	};
 
@@ -61,6 +86,7 @@ function Index() {
 			changeNotEdit();
 		}
 
+		// 준코치님 Update API가 없어요!
 		function saveData() {
 			document.querySelector(".editing").className;
 			removeClass(event.target.parentElement, TODO_CLASS.EDIT);
@@ -196,11 +222,25 @@ function Index() {
 			filter.addEventListener(EVENT_TYPE.CLICK, filtersClickEvent));
 	};
 
+	const loadToDosFromApi = () => {
+		api.todo.getAll().then(res => {
+			if (!res.ok) {
+				throw Error("예기치 않은 오류가 발생했습니다.");
+			}
+			return res.json();
+		}).then(todos =>
+			todos.forEach(todo => {
+				$todoList.innerHTML = $todoList.innerHTML
+					+ todoItemFromApiTemplate(todo);
+				setCounts();
+			})).catch(err => alert(err));
+	};
+
 	this.init = () => {
 		eventSetting();
-		setCounts();
+		loadToDosFromApi();
 	}
 }
 
-const index = new Index();
+const index = new Todo();
 index.init();
