@@ -3,6 +3,7 @@ import { TodoList } from './TodoList.js'
 import { TodoItem } from './TodoItem.js'
 import { TodoCheckBox } from './TodoCheckBox.js'
 import { TodoDelete } from './TodoDelete.js'
+import { TodoCount } from "./TodoCount.js"
 
 function TodoApp() {
     const $todoList = document.querySelector('#todo-list')
@@ -17,6 +18,7 @@ function TodoApp() {
 
     this.setState = updatedItems => {  // updatedItems 를 인자로 받아서 setState 함수를 정의.
         this.todoItems = updatedItems  // todoItems 상태를 업데이트
+        todoCount.updateList(this.todoItems);
         todoList.setState(this.todoItems)  // todoList 의 상태로 넘겨준다.
     }
 
@@ -48,6 +50,12 @@ function TodoApp() {
         }
     })
 
+    const todoCount = new TodoCount({
+        selectedTodoItems: selectedTodoItems => {
+            todoList.setState(selectedTodoItems);
+        }
+    });
+
     const switchToEditMode = event => {
         event.preventDefault()
         const $item = event.target.closest('li')
@@ -68,8 +76,10 @@ function TodoApp() {
     }
 
     this.init = () => {
-        initEventListener();
-        todoList.setState(this.todoItems);  // 어플리케이션이 시작할 때 자식으로 상태를 넘겨준다.
+        initEventListener()
+        todoCount.init()
+        todoCount.updateList(this.todoItems)
+        todoList.setState(this.todoItems)  // 어플리케이션이 시작할 때 자식으로 상태를 넘겨준다.
     }
 }
 
