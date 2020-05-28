@@ -15,11 +15,11 @@ function TodoApp() {
 
     const todoList = new TodoList({
         onEdit: todoItem => {
-            todoItems.splice(todoItems.findIndex(item => item.id === todoItem.id), 1, todoItem);
+            todoItems.splice(todoItems.findIndex(item => item['_id'] === todoItem['_id']), 1, todoItem);
             setState(todoItems, activeListCondition);
         },
         onDelete: deletedId => {
-            todoItems = todoItems.filter(item => item.id !== deletedId);
+            todoItems = todoItems.filter(item => item['_id'] !== deletedId);
             setState(todoItems, activeListCondition);
         },
 

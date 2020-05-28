@@ -1,6 +1,6 @@
-export default function TodoItem(content, id = "" + num++, isCompleted = false) {
+export default function TodoItem(content, id = (num++).toString(), isCompleted = false) {
     return {
-        id: id,
+        _id: id,
         content: content,
         isCompleted: isCompleted
     }

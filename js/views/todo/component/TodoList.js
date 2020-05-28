@@ -42,8 +42,8 @@ export default function TodoList({onDelete, onEdit}) {
 
     const onEditHandler = event => {
         const $target = event.target;
-        const isCancelEdit = event.key === KEY_TYPE.ESC && $target.classList.contains('edit');
-        if (isCancelEdit) {
+        const isCancel = event.key === KEY_TYPE.ESC && $target.classList.contains('edit');
+        if (isCancel) {
             $target.closest('li').classList.remove('editing')
             $target.value = $target.closest('li').innerText
             return;
