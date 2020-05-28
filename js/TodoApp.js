@@ -26,6 +26,26 @@ function TodoApp() {
         }
     })
 
+    new TodoCheckBox({
+        onCheck: checkedListId => {
+            const listId = parseInt(checkedListId)
+            const updatedTodoList = [...this.todoItems].map(todoItem => {  // 각각 새로운 인스턴스 생성
+                if (todoItem.id === listId) {
+                    return new TodoItem(listId, todoItem.content, !todoItem.completed)
+                }
+                return todoItem;
+            })
+            this.setState(updatedTodoList);  // 전체를 한번에 업데이트
+        }
+    })
+
+    new TodoDelete({
+        onDelete: deleteTargetId => {
+            const targetId = parseInt(deleteTargetId) // id 안에 있는 id는 문자다. 숫자로 바꿔줘야함.
+            this.setState([...this.todoItems].filter(todoItem => todoItem.id !== targetId))
+        }
+    })
+
     this.init = () => {
         todoList.setState(this.todoItems);  // 어플리케이션이 시작할 때 자식으로 상태를 넘겨준다.
     }
