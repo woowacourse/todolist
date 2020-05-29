@@ -1,16 +1,6 @@
 import {TODO_CLASS} from "../utils/constants.js";
 
-export const todoItemTemplate = data =>
-	`<li>
-    <div class="view">
-      <input class="toggle" type="checkbox">
-      <label class="label">${data}</label>
-      <button class="destroy"></button>
-    </div>
-    <input class="edit" value="${data}">
-  </li>`;
-
-export const todoItemFromApiTemplate = data => {
+export const todoItemTemplate = data => {
 	const id = data._id;
 	const content = data.content;
 	const todoClass = data.isCompleted ? TODO_CLASS.COMPLETE : "";

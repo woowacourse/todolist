@@ -19,15 +19,12 @@ const METHOD = {
 			}),
 		};
 	},
-	PUT(data) {
+	PUT() {
 		return {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({
-				...data,
-			}),
 		};
 	},
 	DELETE() {
@@ -46,10 +43,10 @@ const api = (() => {
 			return fetch("https://todo-api.roto.codes/jamie9504",
 				METHOD.POST(data));
 		},
-		changeToggleState(todoId, data) {
+		changeToggleState(todoId) {
 			return fetch(
 				"https://todo-api.roto.codes/jamie9504/" + todoId + "/toggle",
-				METHOD.PUT(data));
+				METHOD.PUT());
 		},
 		remove(todoId) {
 			return fetch("https://todo-api.roto.codes/jamie9504/" + todoId,

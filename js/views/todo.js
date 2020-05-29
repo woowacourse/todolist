@@ -1,6 +1,6 @@
 import {EVENT_TYPE, FILTERS, KEY_CODE, TODO_CLASS} from "../utils/constants.js";
 import {addFirstClass} from "../utils/classSetting.js";
-import {todoItemFromApiTemplate} from "../utils/Templates.js";
+import {todoItemTemplate} from "../utils/Templates.js";
 import api from "../api/index.js";
 
 function Todo() {
@@ -46,9 +46,18 @@ function Todo() {
 						const created = res.filter(todo => {
 							return !$todoIds.includes(todo._id);
 						});
-						created.forEach(res =>
+						const createdFilter = document.querySelector(
+							"." + FILTERS.SELECTED).classList.contains(
+							FILTERS.COMPLETE);
+
+						created.forEach(res => {
+							if (createdFilter) {
+								api.todo.changeToggleState(res._id);
+								res.isCompleted = true;
+							}
 							$todoList.innerHTML = $todoList.innerHTML
-								+ todoItemFromApiTemplate(res));
+								+ todoItemTemplate(res);
+						});
 						setCounts();
 					}
 				});
@@ -251,7 +260,7 @@ function Todo() {
 		}).then(todos =>
 			todos.forEach(todo => {
 				$todoList.innerHTML = $todoList.innerHTML
-					+ todoItemFromApiTemplate(todo);
+					+ todoItemTemplate(todo);
 				setCounts();
 			})).catch(err => alert(err));
 	};
