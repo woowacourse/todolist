@@ -1,6 +1,6 @@
 import {EVENT_TYPE, FILTERS, KEY_CODE, TODO_CLASS} from "../utils/constants.js";
 import {addFirstClass} from "../utils/classSetting.js";
-import {todoItemFromApiTemplate, todoItemTemplate} from "../utils/Templates.js";
+import {todoItemFromApiTemplate} from "../utils/Templates.js";
 import api from "../api/index.js";
 
 function Todo() {
@@ -17,6 +17,10 @@ function Todo() {
 
 	const newTodoKeydownEvent = event => {
 		if (event.keyCode === KEY_CODE.ENTER) {
+			createTodo();
+		}
+
+		function createTodo() {
 			event.preventDefault();
 			const data = {
 				content: event.target.value
@@ -25,15 +29,31 @@ function Todo() {
 				if (!res.ok) {
 					throw Error("TODO 등록에 실패하였습니다.");
 				}
-				// 준 코치님 얘네 ID를 안돌려줘요 :<
-				// {content: "a", isCompleted: false}
-				$todoList.innerHTML = "";
-				loadToDosFromApi();
-				setCounts()
-			}).then(res => console.log(res))
+				api.todo.getAll().then(res => {
+						if (!res.ok) {
+							throw Error("TODO 조회에 실패하였습니다.");
+						}
+						return res.json();
+					}
+				).then(res => {
+					updateCreatedTodo();
+
+					function updateCreatedTodo() {
+						const $todos = document.querySelectorAll(
+							"#todo-list li");
+						const $todoIds = Array.from($todos).map(
+							todo => todo.dataset.todoId);
+						const created = res.filter(todo => {
+							return !$todoIds.includes(todo._id);
+						});
+						created.forEach(res =>
+							$todoList.innerHTML = $todoList.innerHTML
+								+ todoItemFromApiTemplate(res));
+						setCounts();
+					}
+				});
+			})
 			.catch(err => alert(err));
-			$todoList.innerHTML = $todoList.innerHTML + todoItemTemplate(
-				event.target.value);
 			event.target.value = "";
 		}
 	};
