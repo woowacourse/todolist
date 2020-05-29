@@ -8,7 +8,7 @@ export default function TodoInput({onPost}) {
     const addTodoItemHandler = event => {
         const $newTodoTarget = event.target;
         if (isValid(event, $newTodoTarget.value)) {
-            onPost(new TodoItem($newTodoTarget.value));
+            onPost($newTodoTarget.value);
             $newTodoTarget.value = "";
         }
     };

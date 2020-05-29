@@ -3,7 +3,7 @@ import TodoItem from "../entity/TodoItem.js";
 import {EVENT_TYPE, KEY_TYPE} from "../../../utils/constants.js"
 import {todoItemTemplate} from "../../../utils/templates.js";
 
-export default function TodoList({onDelete, onEdit}) {
+export default function TodoList({onDelete, onEdit, onToggle}) {
     const $todoList = document.querySelector('#todo-list');
 
     let todoItems = [];
@@ -35,9 +35,8 @@ export default function TodoList({onDelete, onEdit}) {
         if (isNotToggle) {
             return;
         }
-        const content = $target.closest('li').innerText;
         const editedId = $target.closest('li').dataset.todoId;
-        onEdit(new TodoItem(content, editedId, $target.checked));
+        onToggle(editedId);
     }
 
     const onEditHandler = event => {

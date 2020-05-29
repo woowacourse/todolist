@@ -1,10 +1,11 @@
 import TodoList from "./views/todo/component/TodoList.js";
 import TodoCount from "./views/todo/component/TodoCount.js";
 import TodoInput from "./views/todo/component/TodoInput.js";
+import api from "./api/index.js";
 
 function TodoApp() {
     let todoItems = [];
-    let activeListCondition = val => val;
+    let activeListCondition;
 
     const setState = (updatedItems, updatedListCondition) => {
         todoItems = updatedItems;
@@ -14,13 +15,17 @@ function TodoApp() {
     };
 
     const todoList = new TodoList({
+        onToggle: toggledId => {
+            api.todoList.toggle(toggledId);
+            initData(activeListCondition);
+        },
         onEdit: todoItem => {
-            todoItems.splice(todoItems.findIndex(item => item['_id'] === todoItem['_id']), 1, todoItem);
-            setState(todoItems, activeListCondition);
+            api.todoList.edit(todoItem);
+            initData(activeListCondition);
         },
         onDelete: deletedId => {
-            todoItems = todoItems.filter(item => item['_id'] !== deletedId);
-            setState(todoItems, activeListCondition);
+            api.todoList.delete(deletedId);
+            initData(activeListCondition);
         },
 
     });
@@ -34,15 +39,21 @@ function TodoApp() {
 
     const todoInput = new TodoInput({
         onPost: newTodoItem => {
-            todoItems.push(newTodoItem);
-            setState(todoItems, activeListCondition);
+            api.todoList.create(newTodoItem);
+            initData(activeListCondition);
         }
     });
+
+    const initData = (activeListCondition) => {
+        const allTodoItems = api.todoList.get();
+        setState(allTodoItems, activeListCondition);
+    }
 
     const init = () => {
         todoList.init();
         todoCount.init();
         todoInput.init();
+        initData(val => val);
     }
 
     return {
