@@ -8,6 +8,7 @@ import {TodoEdit} from "./TodoEdit.js";
 import {TodoItem} from "./TodoItem.js";
 import {TodoCount} from "./TodoCount.js";
 import {TodoFilter} from "./TodoFilter.js";
+import api from "./index.js"
 
 function TodoApp() {
     this.todoItems = [];
@@ -24,27 +25,26 @@ function TodoApp() {
 
     new TodoInput({
         onAdd: item => {
-            const newTodoItem = new TodoItem(this.todoItems.length, item,false, "");
-            this.todoItems.push(newTodoItem);
-            this.setState(this.todoItems, FILTER_TYPE.ALL);
+            const newTodoItem = {
+                content: `${item}`,
+                isCompleted: false
+            };
+            api.todo.create(newTodoItem).then(this.render);
+
         }
     });
 
     new TodoComplete({
         onComplete: itemId => {
-            this.todoItems[itemId].completed = !this.todoItems[itemId].completed;
-            this.todoItems[itemId].state = this.todoItems[itemId].completed ? "completed" : "";
-            this.setState(this.todoItems, FILTER_TYPE.ALL);
+            api.todo.complete(itemId).then(this.render);
         }
     });
 
     new TodoDelete({
        onDelete: itemId => {
-            this.todoItems.splice(itemId,1);
-            for(let i = itemId; i < this.todoItems.length; i++) {
-                this.todoItems[i].id = i;
-            }
-           this.setState(this.todoItems, FILTER_TYPE.ALL);
+           api.todo
+               .delete(itemId)
+               .then(this.render);
        }
     });
 
@@ -65,18 +65,28 @@ function TodoApp() {
             let filteredItems;
             const todoItems = this.todoItems;
             if(filter === FILTER_TYPE.ACTIVE) {
-                filteredItems = this.todoItems.filter(item => !item.completed);
+                filteredItems = this.todoItems.filter(item => !item.isCompleted);
                 this.setState(filteredItems, FILTER_TYPE.ACTIVE);
                 return;
             }
             if(filter === FILTER_TYPE.COMPLETED) {
-                filteredItems = this.todoItems.filter(item => item.completed);
+                filteredItems = this.todoItems.filter(item => item.isCompleted);
                 this.setState(filteredItems, FILTER_TYPE.COMPLETED);
                 return;
             }
             this.setState(todoItems, FILTER_TYPE.ALL);
         }
     });
+
+    this.render = () => {
+        this.todoItems = api.todo.get().then(responses => {
+            this.todoItems = responses.map(response =>
+                new TodoItem(response._id, response.content,
+                    response.isCompleted, response.isCompleted ? "completed" : "active"));
+            this.setState(this.todoItems, FILTER_TYPE.ALL);
+        });
+    }
 }
 
 const todoApp = new TodoApp();
+todoApp.render();

@@ -1,6 +1,6 @@
 export function TodoItem(id, item, completed, state) {
-    this.id = id;
-    this.title = item;
-    this.completed = completed;
+    this._id = id;
+    this.content = item;
+    this.isCompleted = completed;
     this.state = state;
 }
