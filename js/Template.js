@@ -1,8 +1,5 @@
-import {STATUS_TYPE} from "./constants.js"
-
 export const TodoItemTemplate = todoItem => {
-    console.log(todoItem)
-    if (todoItem.status === STATUS_TYPE.COMPLETED) {
+    if (todoItem.isCompleted()) {
         return `<li id="${todoItem.id}" class="${todoItem.status}">
         <div class="view">
           <input class="toggle" type="checkbox" checked>

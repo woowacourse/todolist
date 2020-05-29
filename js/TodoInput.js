@@ -7,15 +7,15 @@ export function TodoInput({ onAdd }) {
     $todoInput.addEventListener(EVENT_TYPE.KEYUP, event => this.addTodoItem(event))
 
     this.addTodoItem = event => {
-        const $newTodoTarget = event.target  // 이벤트(keydown)가 일어나는 엘리먼트 (input)
-        if (this.isValid(event, $newTodoTarget.value)) {
+        const $todoItem = event.target  // 이벤트(keydown)가 일어나는 엘리먼트 (input)
+        if (this.isValid(event, $todoItem.value)) {
             event.preventDefault()  // 이벤트의 기본 등작을 멈춘다.
-            onAdd($newTodoTarget.value)
-            $newTodoTarget.value = ""
+            onAdd($todoItem.value)
+            $todoItem.value = ''
         }
     }
 
     this.isValid = (event, value) => {
-        return event.key === KEY_TYPE.ENTER && value !== null && value !== ""
+        return event.key === KEY_TYPE.ENTER && value.trim() !== '';
     }
 }

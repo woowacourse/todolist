@@ -9,12 +9,6 @@ export const KEY_TYPE = {
     ENTER: 'Enter'
 }
 
-export const ACTION_TYPE = {
-    DESTROY: 'destroy',
-    SELECT: 'selected',
-    CHECK: 'checkbox'
-}
-
 export const STATUS_TYPE = {
     ACTIVE: 'active',
     COMPLETED: 'completed',

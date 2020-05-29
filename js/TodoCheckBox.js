@@ -1,4 +1,4 @@
-import { EVENT_TYPE, ACTION_TYPE } from "./constants.js";
+import { EVENT_TYPE } from "./constants.js";
 
 export function TodoCheckBox({onCheck}) {
     const $todoList = document.querySelector('#todo-list')
@@ -7,7 +7,7 @@ export function TodoCheckBox({onCheck}) {
 
     this.clickCheckbox = event => {
         const $target = event.target
-        if ($target.type !== ACTION_TYPE.CHECK) {
+        if ($target.type !== "checkbox") {
             return;
         }
         onCheck($target.closest('li').id)

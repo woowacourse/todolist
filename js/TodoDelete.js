@@ -1,4 +1,4 @@
-import { EVENT_TYPE, ACTION_TYPE } from "./constants.js"
+import { EVENT_TYPE } from "./constants.js"
 
 export function TodoDelete({onDelete}) {
     const $todoList = document.querySelector('#todo-list')  // 이벤트 위임
@@ -7,7 +7,7 @@ export function TodoDelete({onDelete}) {
 
     this.clickDestroyBtn = event => {  // 내부 콜백 함수
         const $target = event.target;
-        if (!$target.classList.contains(ACTION_TYPE.DESTROY)) {
+        if (!$target.classList.contains('destroy')) {
             return;
         }
         event.preventDefault();
