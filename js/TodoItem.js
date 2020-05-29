@@ -1,7 +1,7 @@
 export class TodoItem {
-    constructor(id, content, completed) {
+    constructor(id, content, status) {
         this.id = id
         this.content = content
-        this.completed = completed
+        this.status = status
     }
 }
