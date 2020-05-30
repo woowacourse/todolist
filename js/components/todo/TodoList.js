@@ -33,7 +33,6 @@ export default ({ onToggle, onRemove, onUpdate, onEditing }) => {
     const todoId = $todoItem.dataset.id
 
     if (!target.classList.contains("edit")) {
-      console.log("as")
       return
     }
 

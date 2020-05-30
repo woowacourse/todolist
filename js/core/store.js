@@ -80,8 +80,9 @@ const Store = ({ state = {}, mutations = {}, actions = {} }) => {
     const action = self.actions[type]
     if (action) {
       self.status = "action"
-      action({ commit, state: self.state }, payload)
+      return action({ commit, dispatch, state: self.state }, payload)
     }
+    return Promise.reject()
   }
 
   return {
