@@ -7,6 +7,6 @@ export default ({ _id, content, isCompleted, isEditing }) => `
       <label class="label">${content}</label>
       <button class="destroy"></button>
     </div>
-    <input class="edit" value="${content}"
+    <input class="edit" value="${content}">
   </li>
 `
