@@ -1,6 +1,6 @@
 import {EVENT_TYPE} from "../../../../utils/constants.js";
 
-export default function TodoToggle(onToggle) {
+const TodoToggle = onToggle => {
     const $todoList = document.querySelector('#todo-list');
 
     const onToggleHandler = event => {
@@ -11,7 +11,9 @@ export default function TodoToggle(onToggle) {
         }
         const editedId = $target.closest('li').dataset.todoId;
         onToggle(editedId);
-    }
+    };
 
     const init = (() => $todoList.addEventListener(EVENT_TYPE.CLICK, onToggleHandler))();
-}
+};
+
+export default TodoToggle;

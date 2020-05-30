@@ -13,8 +13,8 @@ export const TODO_FILTER_CLASS_NAME = {
     ALL: 'all',
     ACTIVE: 'active',
     COMPLETED: 'completed'
-}
+};
 
 export const USER_NAME = {
-    DONGLE : 'dongle'
-}
+    DONGLE: 'dongle'
+};

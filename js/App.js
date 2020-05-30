@@ -5,7 +5,7 @@ import api from "./api/index.js";
 
 import {USER_NAME} from "./utils/constants.js";
 
-function TodoApp() {
+const TodoApp = (() => {
     let todoItems = [];
     let todoFilterCondition;
 
@@ -19,9 +19,9 @@ function TodoApp() {
     const initData = async (todoFilterCondition) => {
         const allTodoItems = await api.todoList.get(USER_NAME.DONGLE);
         setState(allTodoItems, todoFilterCondition);
-    }
+    };
 
-    const todoList = new TodoList({
+    const todoList = TodoList({
         onDelete: async targetId => {
             await api.todoList.delete(USER_NAME.DONGLE, targetId);
             const remainedItems = todoItems.filter(todoItem => todoItem._id !== targetId);
@@ -37,14 +37,14 @@ function TodoApp() {
         }
     });
 
-    const todoCount = new TodoCount({
+    const todoCount = TodoCount({
         onFilter: filterCondition => {
             todoFilterCondition = filterCondition;
             setState(todoItems, todoFilterCondition);
         }
     });
 
-    new TodoInput({
+    TodoInput({
         onPost: async newTodoItem => {
             await api.todoList.create(USER_NAME.DONGLE, newTodoItem);
             await initData(todoFilterCondition);
@@ -53,7 +53,5 @@ function TodoApp() {
 
     const init = (async () => {
         await initData(todoCount.getFilterCondition())
-    })()
-}
-
-new TodoApp();
+    })();
+})();

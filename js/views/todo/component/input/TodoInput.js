@@ -1,6 +1,6 @@
 import {EVENT_TYPE, KEY_TYPE} from "../../../../utils/constants.js"
 
-export default function TodoInput({onPost}) {
+const TodoInput = ({onPost}) => {
     const $todoInput = document.querySelector("#new-todo-title");
 
     const addTodoItemHandler = event => {
@@ -15,5 +15,7 @@ export default function TodoInput({onPost}) {
 
     const init = (() => {
         $todoInput.addEventListener(EVENT_TYPE.KEY_DOWN, addTodoItemHandler);
-    })()
-}
+    })();
+};
+
+export default TodoInput;

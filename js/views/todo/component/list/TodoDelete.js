@@ -1,6 +1,6 @@
 import {EVENT_TYPE} from "../../../../utils/constants.js";
 
-export default function TodoDelete(onDelete) {
+const TodoDelete = (onDelete) => {
     const $todoList = document.querySelector('#todo-list');
 
     const onDeleteHandler = event => {
@@ -11,7 +11,9 @@ export default function TodoDelete(onDelete) {
         }
         const deletedId = $target.closest('li').dataset.todoId;
         onDelete(deletedId);
-    }
+    };
 
     const init = (() => $todoList.addEventListener(EVENT_TYPE.CLICK, onDeleteHandler))();
-}
+};
+
+export default TodoDelete;

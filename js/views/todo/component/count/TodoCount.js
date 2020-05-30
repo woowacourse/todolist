@@ -1,6 +1,6 @@
 import {EVENT_TYPE, TODO_FILTER_CLASS_NAME} from "../../../../utils/constants.js";
 
-export default function TodoCount({onFilter}) {
+const TodoCount = ({onFilter}) => {
     const $totalCount = document.querySelector('.todo-count strong');
     const $countContainer = document.querySelector('.count-container');
     const $todoFilterButtons = document.querySelectorAll('.count-container .filters a');
@@ -20,11 +20,9 @@ export default function TodoCount({onFilter}) {
         todoItems = updatedItems;
         todoFilterCondition = updatedListCondition;
         render(todoItems, todoFilterCondition);
-    }
+    };
 
-    const render = (items, updatedListCondition) => {
-        $totalCount.innerText = items.filter(updatedListCondition).length;
-    }
+    const render = (items, updatedListCondition) => $totalCount.innerText = items.filter(updatedListCondition).length;
 
     const onFilterHandler = event => {
         const $target = event.target;
@@ -34,20 +32,22 @@ export default function TodoCount({onFilter}) {
         }
         const selectedFilterType = filterTypes.find(filterType => $target.classList.contains(filterType.filterType));
         onFilter(selectedFilterType.filterPredicate);
-        drawSelectedFilter($target)
-    }
+        drawSelectedFilter($target);
+    };
 
     const drawSelectedFilter = target => {
         $todoFilterButtons.forEach(filterButton => filterButton.classList.remove("selected"));
         target.classList.add("selected");
-    }
+    };
 
     const init = (() => {
         $countContainer.addEventListener(EVENT_TYPE.CLICK, onFilterHandler);
-    })()
+    })();
 
     return {
         setState,
         getFilterCondition
-    }
-}
+    };
+};
+
+export default TodoCount;
