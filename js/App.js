@@ -1,65 +1,54 @@
-import TodoList from "./views/todo/component/TodoList.js";
-import TodoCount from "./views/todo/component/TodoCount.js";
-import TodoInput from "./views/todo/component/TodoInput.js";
+import TodoList from "./views/todo/component/list/TodoList.js";
+import TodoCount from "./views/todo/component/count/TodoCount.js";
+import TodoInput from "./views/todo/component/input/TodoInput.js";
 import api from "./api/index.js";
 
 function TodoApp() {
     let todoItems = [];
-    let activeListCondition;
+    let todoFilterCondition;
 
     const setState = (updatedItems, updatedListCondition) => {
         todoItems = updatedItems;
-        activeListCondition = updatedListCondition;
-        todoList.setState(todoItems, activeListCondition);
-        todoCount.setState(todoItems, activeListCondition);
+        todoFilterCondition = updatedListCondition;
+        todoList.setState(todoItems, todoFilterCondition);
+        todoCount.setState(todoItems, todoFilterCondition);
     };
 
     const todoList = new TodoList({
-        onToggle: toggledId => {
-            api.todoList.toggle(toggledId);
-            initData(activeListCondition);
+        onDelete: deletedId => {
+            api.todoList.delete(deletedId);
+            initData(todoFilterCondition);
         },
         onEdit: todoItem => {
             api.todoList.edit(todoItem);
-            initData(activeListCondition);
+            initData(todoFilterCondition);
         },
-        onDelete: deletedId => {
-            api.todoList.delete(deletedId);
-            initData(activeListCondition);
-        },
-
+        onToggle: toggledId => {
+            api.todoList.toggle(toggledId);
+            initData(todoFilterCondition);
+        }
     });
 
     const todoCount = new TodoCount({
-        onActive: contents => {
-            activeListCondition = contents;
-            setState(todoItems, activeListCondition);
+        onFilter: filterCondition => {
+            todoFilterCondition = filterCondition;
+            setState(todoItems, todoFilterCondition);
         }
     });
 
-    const todoInput = new TodoInput({
+    new TodoInput({
         onPost: newTodoItem => {
             api.todoList.create(newTodoItem);
-            initData(activeListCondition);
+            initData(todoFilterCondition);
         }
     });
 
-    const initData = (activeListCondition) => {
+    const initData = (todoFilterCondition) => {
         const allTodoItems = api.todoList.get();
-        setState(allTodoItems, activeListCondition);
+        setState(allTodoItems, todoFilterCondition);
     }
 
-    const init = () => {
-        todoList.init();
-        todoCount.init();
-        todoInput.init();
-        initData(val => val);
-    }
-
-    return {
-        init
-    }
+    const init = (() => initData(todoCount.getFilterCondition()))()
 }
 
-const todoApp = new TodoApp();
-todoApp.init();
+new TodoApp();
