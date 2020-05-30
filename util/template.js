@@ -1,7 +1,7 @@
 export const todoItemTemplate = item => {
-  return `<li>
+  return `<li class="${item.status}">
         <div class="view">
-          <input class="toggle" type="checkbox">
+          <input data-id="${item.id}" class="toggle" type="checkbox">
           <label class="label">${item.contents}</label>
           <button class="destroy"></button>
         </div>

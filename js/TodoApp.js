@@ -1,62 +1,31 @@
-import { todoItemTemplate } from '../util/template.js';
+import { TodoInput } from './TodoInput.js';
+import { TodoList } from './TodoList.js';
+import { TodoItem } from './TodoItem.js';
 
 function TodoApp() {
   this.todoItems = [];
 
   this.setState = updatedItems => {
-    this.todoItems = updatedItems;
+    this.todoItems = updatedItems; // todo: 이 코드 필요한가?
     todoList.setState(this.todoItems);
   };
 
-  const todoList = new TodoList();
+  const todoList = new TodoList({
+    onToggle: id => {
+      const targetItem = this.todoItems.find(item => item.id === Number.parseInt(id));
+      targetItem.toggleStatus();
+      this.setState(this.todoItems);
+    }
+  });
 
   new TodoInput({
     onAdd: contents => {
-      const newTodoItem = new TodoItem(contents);
+      const todoCount = this.todoItems.length;
+      const newTodoItem = new TodoItem(todoCount + 1, contents);
       this.todoItems.push(newTodoItem);
       this.setState(this.todoItems);
     }
   });
-}
-
-// 입력 받는 컴포넌트
-function TodoInput({ onAdd }) {
-  const $todoInput = document.querySelector("#new-todo-title");
-
-  $todoInput.addEventListener("keydown", event => this.addTodoItem(event));
-
-  this.addTodoItem = event => {
-    const $newTodoTarget = event.target;
-    if (this.isValid(event, $newTodoTarget.value)) {
-      onAdd($newTodoTarget.value);
-      $newTodoTarget.value = "";
-    }
-  };
-
-  this.isValid = (event, title) => {
-    return event.key === "Enter" && title.trim() !== "";
-  }
-}
-
-// todoList 보여주는 컴포넌트
-function TodoList() {
-  this.$todoList = document.querySelector("#todo-list");
-
-  this.setState = updatedTodoItems => {
-    this.todoItems = updatedTodoItems;
-    this.render(this.todoItems);
-  };
-
-  this.render = items => {
-    const template = items.map(todoItemTemplate);
-    this.$todoList.innerHTML = template.join("");
-  };
-}
-
-// todoItem
-function TodoItem(contents) {
-  this.contents = contents;
-  this.status = "";
 }
 
 const todoApp = new TodoApp();
