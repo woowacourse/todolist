@@ -14,3 +14,7 @@ export const TODO_FILTER_CLASS_NAME = {
     ACTIVE: 'active',
     COMPLETED: 'completed'
 }
+
+export const USER_NAME = {
+    DONGLE : 'dongle'
+}

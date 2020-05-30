@@ -23,7 +23,7 @@ export default function TodoEdit(onEdit) {
         const content = $target.value;
         const editedId = $target.closest('li').dataset.todoId;
         const isCompleted = $target.closest('li').querySelector('.toggle').checked
-        onEdit(new TodoItem(content, editedId, isCompleted));
+        onEdit(new TodoItem(content, editedId, isCompleted));   //API 적용 안함
     }
 
     const onEditModeHandler = event => {
@@ -36,8 +36,8 @@ export default function TodoEdit(onEdit) {
     }
 
     const init = (() => {
+        $todoList.addEventListener(EVENT_TYPE.KEY_DOWN, onCancelEdieHandler);
         $todoList.addEventListener(EVENT_TYPE.KEY_DOWN, onEditHandler);
         $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, onEditModeHandler);
-        $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, onCancelEdieHandler);
     })()
 }

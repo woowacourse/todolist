@@ -3,6 +3,8 @@ import TodoCount from "./views/todo/component/count/TodoCount.js";
 import TodoInput from "./views/todo/component/input/TodoInput.js";
 import api from "./api/index.js";
 
+import {USER_NAME} from "./utils/constants.js";
+
 function TodoApp() {
     let todoItems = [];
     let todoFilterCondition;
@@ -14,18 +16,24 @@ function TodoApp() {
         todoCount.setState(todoItems, todoFilterCondition);
     };
 
+    const initData = async (todoFilterCondition) => {
+        const allTodoItems = await api.todoList.get(USER_NAME.DONGLE);
+        setState(allTodoItems, todoFilterCondition);
+    }
+
     const todoList = new TodoList({
-        onDelete: deletedId => {
-            api.todoList.delete(deletedId);
-            initData(todoFilterCondition);
+        onDelete: async targetId => {
+            await api.todoList.delete(USER_NAME.DONGLE, targetId);
+            const remainedItems = todoItems.filter(todoItem => todoItem._id !== targetId);
+            setState(remainedItems, todoFilterCondition);
         },
-        onEdit: todoItem => {
-            api.todoList.edit(todoItem);
-            initData(todoFilterCondition);
+        onEdit: async todoItem => {
+            api.todoList.edit(USER_NAME.DONGLE, todoItem);
+            await initData(todoFilterCondition);
         },
-        onToggle: toggledId => {
-            api.todoList.toggle(toggledId);
-            initData(todoFilterCondition);
+        onToggle: async toggledId => {
+            await api.todoList.toggle(USER_NAME.DONGLE, toggledId);
+            await initData(todoFilterCondition);
         }
     });
 
@@ -37,18 +45,15 @@ function TodoApp() {
     });
 
     new TodoInput({
-        onPost: newTodoItem => {
-            api.todoList.create(newTodoItem);
-            initData(todoFilterCondition);
+        onPost: async newTodoItem => {
+            await api.todoList.create(USER_NAME.DONGLE, newTodoItem);
+            await initData(todoFilterCondition);
         }
     });
 
-    const initData = (todoFilterCondition) => {
-        const allTodoItems = api.todoList.get();
-        setState(allTodoItems, todoFilterCondition);
-    }
-
-    const init = (() => initData(todoCount.getFilterCondition()))()
+    const init = (async () => {
+        await initData(todoCount.getFilterCondition())
+    })()
 }
 
 new TodoApp();
