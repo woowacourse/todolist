@@ -1,14 +1,12 @@
-export default (todo) => `
-  <li data-id="${todo._id}" class="todo-item ${
-  todo.isCompleted ? "completed" : todo.isEditing ? "editing" : ""
+export default ({ _id, content, isCompleted, isEditing }) => `
+  <li data-id="${_id}" class="todo-item ${
+  isCompleted ? "completed" : isEditing ? "editing" : ""
 }">
     <div class="view">
-      <input class="toggle" type="checkbox" ${
-        todo.isCompleted ? "checked" : ""
-      }>
-      <label class="label">${todo.content}</label>
+      <input class="toggle" type="checkbox" ${isCompleted ? "checked" : ""}>
+      <label class="label">${content}</label>
       <button class="destroy"></button>
     </div>
-    <input class="edit" value="${todo.content}"
+    <input class="edit" value="${content}"
   </li>
 `

@@ -87,7 +87,7 @@ const Store = ({ state = {}, mutations = {}, actions = {} }) => {
 
   return {
     ...emitter,
-    state,
+    state: self.state,
     commit,
     dispatch,
   }

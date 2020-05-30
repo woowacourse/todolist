@@ -4,6 +4,7 @@ import {
   TodoCount,
   TodoFilter,
 } from "../components/todo/index.js"
+import { FILTER_TYPE } from "../utils/constants.js"
 
 export default ({ state, commit, dispatch }) => {
   const todoInput = TodoInput({
@@ -27,9 +28,9 @@ export default ({ state, commit, dispatch }) => {
   const render = ({ input, todos, filter }) => {
     const filteredTodos = todos.filter(
       (todo) =>
-        filter === "all" ||
-        (filter === "completed" && todo.isCompleted) ||
-        (filter === "active" && !todo.isCompleted)
+        filter === FILTER_TYPE.ALL ||
+        (filter === FILTER_TYPE.COMPLETED && todo.isCompleted) ||
+        (filter === FILTER_TYPE.ACTIVE && !todo.isCompleted)
     )
 
     todoInput({ input })

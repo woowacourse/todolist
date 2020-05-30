@@ -39,8 +39,6 @@ export default ({ onToggle, onRemove, onUpdate, onEditing }) => {
     switch (key) {
       case KEY_TYPE.ENTER:
         onUpdate(todoId, target.value)
-        onEditing(todoId, false)
-        break
       case KEY_TYPE.ESCAPE:
         onEditing(todoId, false)
     }

@@ -53,7 +53,7 @@ export const actions = {
     todoApi.removeTodo(id)
     commit("removeTodo", id)
   },
-  updateTodo: async ({ commit, dispatch }, { id, content }) => {
+  updateTodo: async ({ dispatch }, { id, content }) => {
     dispatch("removeTodo", id)
     dispatch("insertTodo", content)
   },
