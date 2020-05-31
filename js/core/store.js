@@ -3,7 +3,7 @@ const EventEmitter = () => {
 
   const on = (eventName, listener) => {
     if (events.has(eventName)) {
-      events.get(events).push(listener)
+      events.get(eventName).push(listener)
       return
     }
     events.set(eventName, [listener])
