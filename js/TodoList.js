@@ -1,7 +1,7 @@
 import { todoItemTemplate } from '../util/template.js';
 
 // todoList 보여주는 컴포넌트
-export function TodoList({ onToggle, onDelete }) {
+export function TodoList({ onToggle, onDelete, onToggleEdit, onEdit }) {
   this.$todoList = document.querySelector("#todo-list"); // todo: const로 선언해야하려나?
 
   this.$todoList.addEventListener("click", event => {
@@ -17,6 +17,25 @@ export function TodoList({ onToggle, onDelete }) {
     if ($target.classList.contains("destroy")) {
       const $todoItem = $target.closest("li");
       onDelete($todoItem.dataset.id);
+    }
+  });
+
+  this.$todoList.addEventListener("dblclick", event => {
+    const $target = event.target;
+    if ($target.classList.contains("label")) {
+      const $todoItem = $target.closest("li");
+      onToggleEdit($todoItem.dataset.id);
+    }
+  });
+
+  this.$todoList.addEventListener("keydown", event => {
+    const $target = event.target;
+    if ($target.classList.contains("edit") && event.key === "Enter") {
+      const $todoItem = $target.closest("li");
+      onEdit($todoItem.dataset.id, $target.value);
+    } else if ($target.classList.contains("edit") && event.key === "Escape") {
+      const $todoItem = $target.closest("li");
+      onToggleEdit($todoItem.dataset.id);
     }
   });
 
