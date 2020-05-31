@@ -2,14 +2,23 @@ import { TodoInput } from './TodoInput.js';
 import { TodoList } from './TodoList.js';
 import { TodoItem } from './TodoItem.js';
 import { TodoCount } from './TodoCount.js';
+import { TodoFilter } from './TodoFilter.js';
 
 function TodoApp() {
   this.todoItems = [];
+  this.filter = "all";
 
   this.setState = updatedItems => {
     this.todoItems = updatedItems; // todo: 이 코드 필요한가?
-    todoList.setState(this.todoItems);
-    todoCount.render(this.todoItems.length);
+    let filteredItems = this.todoItems;
+    if (this.filter === "active") {
+      filteredItems = this.todoItems.filter(item => item.status === "");
+    } else if (this.filter === "completed") {
+      filteredItems = this.todoItems.filter(item => item.status === "completed");
+    }
+    todoList.setState(filteredItems);
+    todoCount.render(filteredItems.length);
+    todoFilter.render(this.filter);
   };
 
   new TodoInput({
@@ -46,6 +55,13 @@ function TodoApp() {
   });
 
   const todoCount = new TodoCount();
+
+  const todoFilter = new TodoFilter(this.filter, {
+    onChangeFilter: (filter) => {
+      this.filter = filter;
+      this.setState(this.todoItems);
+    }
+  });
 }
 
 const todoApp = new TodoApp();
