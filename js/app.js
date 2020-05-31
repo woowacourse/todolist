@@ -66,6 +66,7 @@ function TodoList() {
             $listToEdit.querySelector('.label').innerText = savedTodoContent;
             savedTodoContent = '';
             $listToEdit.classList.remove('editing');
+            return;
         }
     }
 
@@ -80,7 +81,7 @@ function TodoList() {
         const $todoContents = $todoList.querySelectorAll('li');
         for (let i = 0; i < $todoContents.length; i++) {
             $todoContents[i].classList.remove('hidden');
-            if(!$todoContents[i].classList.contains('active')){
+            if (!$todoContents[i].classList.contains('active')) {
                 $todoContents[i].classList.add('hidden');
             }
         }
@@ -90,7 +91,7 @@ function TodoList() {
         const $todoContents = $todoList.querySelectorAll('li');
         for (let i = 0; i < $todoContents.length; i++) {
             $todoContents[i].classList.remove('hidden');
-            if(!$todoContents[i].classList.contains('completed')){
+            if (!$todoContents[i].classList.contains('completed')) {
                 $todoContents[i].classList.add('hidden');
             }
         }
