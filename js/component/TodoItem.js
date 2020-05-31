@@ -1,4 +1,3 @@
-// todoItem
 export function TodoItem(item) {
   this._id = item._id;
   this.content = item.content;

@@ -1,17 +1,18 @@
 import { todoFiltersTemplate } from '../../util/template.js';
+import { EVENT_TYPE, FILTER, TAG } from '../../util/constants.js';
 
 export function TodoFilter(filter, { onChangeFilter }) {
   this.$todoFilter = document.querySelector(".filters");
 
-  this.$todoFilter.addEventListener("click", event => {
+  this.$todoFilter.addEventListener(EVENT_TYPE.CLICK, event => {
     const $target = event.target;
-    if ($target.tagName === "A") {
-      if ($target.classList.contains("all")) {
-        onChangeFilter("all");
-      } else if ($target.classList.contains("active")) {
-        onChangeFilter("active");
-      } else if ($target.classList.contains("completed")) {
-        onChangeFilter("completed");
+    if ($target.tagName === TAG.A) {
+      if ($target.classList.contains(FILTER.ALL)) {
+        onChangeFilter(FILTER.ALL);
+      } else if ($target.classList.contains(FILTER.ACTIVE)) {
+        onChangeFilter(FILTER.ACTIVE);
+      } else if ($target.classList.contains(FILTER.COMPLETED)) {
+        onChangeFilter(FILTER.COMPLETED);
       }
     }
   });

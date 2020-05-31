@@ -1,8 +1,9 @@
-// 입력 받는 컴포넌트
+import { EVENT_TYPE, KEY } from '../../util/constants.js';
+
 export function TodoInput({ onAdd }) {
   const $todoInput = document.querySelector("#new-todo-title");
 
-  $todoInput.addEventListener("keydown", event => this.addTodoItem(event));
+  $todoInput.addEventListener(EVENT_TYPE.KEYDOWN, event => this.addTodoItem(event));
 
   this.addTodoItem = event => {
     const $newTodoTarget = event.target;
@@ -13,6 +14,6 @@ export function TodoInput({ onAdd }) {
   };
 
   this.isValid = (event, title) => {
-    return event.key === "Enter" && title.trim() !== "";
+    return event.key === KEY.ENTER && title.trim() !== "";
   }
 }
