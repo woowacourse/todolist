@@ -1,9 +1,11 @@
 // todoItem
-export function TodoItem(id, contents) {
+export function TodoItem(id, contents, isCompleted = false) {
   this.id = id;
   this.contents = contents;
+  this.isCompleted = isCompleted;
   this.status = "";
   this.toggleCompleteStatus = () => {
+    this.isCompleted = !this.isCompleted;
     this.status === "" ? this.status = "completed" : this.status = "";
   };
   this.toggleEditStatus = () => {

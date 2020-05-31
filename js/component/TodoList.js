@@ -1,4 +1,4 @@
-import { todoItemTemplate } from '../util/template.js';
+import { todoItemTemplate } from '../../util/template.js';
 
 // todoList 보여주는 컴포넌트
 export function TodoList({ onToggleComplete, onDelete, onToggleEdit, onEdit }) {

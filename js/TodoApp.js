@@ -1,10 +1,11 @@
-import { TodoInput } from './TodoInput.js';
-import { TodoList } from './TodoList.js';
-import { TodoItem } from './TodoItem.js';
-import { TodoCount } from './TodoCount.js';
-import { TodoFilter } from './TodoFilter.js';
+import { TodoInput } from './component/TodoInput.js';
+import { TodoList } from './component/TodoList.js';
+import { TodoItem } from './component/TodoItem.js';
+import { TodoCount } from './component/TodoCount.js';
+import { TodoFilter } from './component/TodoFilter.js';
+import { getAll } from '../api/api.js';
 
-function TodoApp() {
+function TodoApp(username) {
   this.todoItems = [];
   this.filter = "all";
 
@@ -62,6 +63,18 @@ function TodoApp() {
       this.setState(this.todoItems);
     }
   });
+
+  this.init = () => {
+    getAll(username)
+    .then(data => {
+      this.todoItems = data.map(item => new TodoItem(item.id, item.content));
+      this.setState(this.todoItems);
+    })
+    .catch(error => {
+      console.log(error)
+    });
+  }
 }
 
-const todoApp = new TodoApp();
+const todoApp = new TodoApp("chomily");
+todoApp.init();

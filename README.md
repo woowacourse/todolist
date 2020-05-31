@@ -10,7 +10,7 @@
 
 ## 2단계 - 요구사항
  : fetch를 이용해 데이터 CRUD 하기: fetch를 이용해 Todo 목록 data를 불러오고, 특정 Todo를 삭제하고, 완료처리를 하는 것을 적용
- - [ ] 불러오기
+ - [x] 불러오기
      - API: http://todo-api.roto.codes/:username
      - METHOD: GET
  - [ ] 추가하기

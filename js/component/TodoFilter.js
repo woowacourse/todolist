@@ -1,4 +1,4 @@
-import { todoFiltersTemplate } from '../util/template.js';
+import { todoFiltersTemplate } from '../../util/template.js';
 
 export function TodoFilter(filter, { onChangeFilter }) {
   this.$todoFilter = document.querySelector(".filters");
