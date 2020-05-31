@@ -13,7 +13,7 @@
  - [x] 불러오기
      - API: http://todo-api.roto.codes/:username
      - METHOD: GET
- - [ ] 추가하기
+ - [x] 추가하기
      - API: http://todo-api.roto.codes/:username
      - METHOD: POST
  - [ ] 삭제하기

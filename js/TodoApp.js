@@ -3,9 +3,10 @@ import { TodoList } from './component/TodoList.js';
 import { TodoItem } from './component/TodoItem.js';
 import { TodoCount } from './component/TodoCount.js';
 import { TodoFilter } from './component/TodoFilter.js';
-import { getAll } from '../api/api.js';
+import { create, getAll } from '../api/api.js';
 
 function TodoApp(username) {
+  this.username = username;
   this.todoItems = [];
   this.filter = "all";
 
@@ -24,10 +25,14 @@ function TodoApp(username) {
 
   new TodoInput({
     onAdd: contents => {
-      const todoCount = this.todoItems.length;
-      const newTodoItem = new TodoItem(todoCount + 1, contents);
-      this.todoItems.push(newTodoItem);
-      this.setState(this.todoItems);
+      create(this.username, {
+        "content": contents,
+        "isCompleted": false
+      })
+      .then(() => {
+        this.loadData();
+      })
+      .catch(error => console.log(error));
     }
   });
 
@@ -64,10 +69,10 @@ function TodoApp(username) {
     }
   });
 
-  this.init = () => {
-    getAll(username)
-    .then(data => {
-      this.todoItems = data.map(item => new TodoItem(item.id, item.content));
+  this.loadData = () => {
+    getAll(this.username)
+    .then(response => {
+      this.todoItems = response.map(item => new TodoItem(item.id, item.content, item.isCompleted));
       this.setState(this.todoItems);
     })
     .catch(error => {
@@ -77,4 +82,4 @@ function TodoApp(username) {
 }
 
 const todoApp = new TodoApp("chomily");
-todoApp.init();
+todoApp.loadData();
