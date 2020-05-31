@@ -3,7 +3,13 @@ import {newTodoTemplate} from "./templates.js";
 function TodoList() {
     const $todoList = document.querySelector('#todo-list');
     const $newTodoTitle = document.querySelector('#new-todo-title');
+    const $todoCount = document.querySelector('.todo-count');
     let savedTodoContent = '';
+
+    const updateTotal = () => {
+        console.log($todoCount);
+        $todoCount.querySelector('strong').innerText = $todoList.childElementCount;
+    }
 
     const addNewTodo = event => {
         if (event.key === 'Enter') {
@@ -11,6 +17,7 @@ function TodoList() {
             const newItem = newTodoTemplate(newTodo);
             $todoList.insertAdjacentHTML('beforeend', newItem);
             $newTodoTitle.value = '';
+            updateTotal();
         }
     }
 
@@ -31,6 +38,7 @@ function TodoList() {
         if ($target.classList.contains('destroy')) {
             const $listToRemove = $target.closest('li');
             $listToRemove.remove();
+            updateTotal();
         }
     }
 
@@ -59,6 +67,7 @@ function TodoList() {
     }
 
     this.init = () => {
+        updateTotal();
         $newTodoTitle.addEventListener('keypress', addNewTodo);
         $todoList.addEventListener('click', toggleComplete);
         $todoList.addEventListener('click', removeTodo);
