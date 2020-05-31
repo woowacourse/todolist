@@ -5,6 +5,6 @@ export const newTodoTemplate = (value) => {
           <label class="label">${value}</label>
           <button class="destroy"></button>
         </div>
-        <input class="edit" value=${value}>
+        <input class="edit" value="${value}">
       </li>`
 }
