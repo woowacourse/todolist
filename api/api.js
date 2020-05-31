@@ -14,6 +14,11 @@ const METHOD = {
     return {
       method: 'DELETE'
     }
+  },
+  PUT() {
+    return {
+      method: 'PUT'
+    }
   }
 }
 
@@ -29,5 +34,8 @@ export const todoAPI = {
   },
   delete(username, id) {
     return request(`http://todo-api.roto.codes/${username}/${id}`, METHOD.DELETE());
+  },
+  complete(username, id) {
+    return request(`http://todo-api.roto.codes/${username}/${id}/toggle`, METHOD.PUT());
   }
 }

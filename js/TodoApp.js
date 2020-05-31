@@ -38,26 +38,30 @@ function TodoApp(username) {
 
   const todoList = new TodoList({
     onToggleComplete: id => {
-      const targetItem = this.todoItems.find(item => item.id === Number.parseInt(id));
-      targetItem.toggleCompleteStatus();
-      this.setState(this.todoItems);
+      todoAPI.complete(username, id)
+      .then(() => {
+        const targetItem = this.todoItems.find(item => item._id === id);
+        targetItem.toggleCompleteStatus();
+        this.setState(this.todoItems);
+      })
+      .catch(error => console.log(error));
     },
     onDelete: id => {
       todoAPI.delete(username, id)
       .then(() => {
-        const targetItem = this.todoItems.find(item => item.id === Number.parseInt(id));
+        const targetItem = this.todoItems.find(item => item._id === id);
         this.todoItems.splice(this.todoItems.indexOf(targetItem), 1);
         this.setState(this.todoItems);
       })
       .catch(error => console.log(error));
     },
     onToggleEdit: id => {
-      const targetItem = this.todoItems.find(item => item.id === Number.parseInt(id));
+      const targetItem = this.todoItems.find(item => item._id === id);
       targetItem.toggleEditStatus();
       this.setState(this.todoItems);
     },
     onEdit: (id, contents) => {
-      const targetItem = this.todoItems.find(item => item.id === Number.parseInt(id));
+      const targetItem = this.todoItems.find(item => item._id === id);
       targetItem.contents = contents;
       targetItem.toggleEditStatus();
       this.setState(this.todoItems);

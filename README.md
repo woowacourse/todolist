@@ -20,7 +20,7 @@
      - API: http://todo-api.roto.codes/:username/:todo_id
      - METHOD: DELETE
      - 서버에서 불러온 todo 데이터에 있는 _id를 이용해주세요
- - [ ] 토글
+ - [x] 토글
      - API: http://todo-api.roto.codes/:username/:todo_id
      - METHOD: PUT
      - 서버에서 불러온 todo 데이터에 있는 _id를 이용해주세요
