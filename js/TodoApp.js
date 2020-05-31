@@ -3,7 +3,7 @@ import { TodoList } from './component/TodoList.js';
 import { TodoItem } from './component/TodoItem.js';
 import { TodoCount } from './component/TodoCount.js';
 import { TodoFilter } from './component/TodoFilter.js';
-import { create, getAll } from '../api/api.js';
+import { todoAPI } from '../api/api.js';
 
 function TodoApp(username) {
   this.username = username;
@@ -25,7 +25,7 @@ function TodoApp(username) {
 
   new TodoInput({
     onAdd: contents => {
-      create(this.username, {
+      todoAPI.create(this.username, {
         "content": contents,
         "isCompleted": false
       })
@@ -43,9 +43,13 @@ function TodoApp(username) {
       this.setState(this.todoItems);
     },
     onDelete: id => {
-      const targetItem = this.todoItems.find(item => item.id === Number.parseInt(id));
-      this.todoItems.splice(this.todoItems.indexOf(targetItem), 1);
-      this.setState(this.todoItems);
+      todoAPI.delete(username, id)
+      .then(() => {
+        const targetItem = this.todoItems.find(item => item.id === Number.parseInt(id));
+        this.todoItems.splice(this.todoItems.indexOf(targetItem), 1);
+        this.setState(this.todoItems);
+      })
+      .catch(error => console.log(error));
     },
     onToggleEdit: id => {
       const targetItem = this.todoItems.find(item => item.id === Number.parseInt(id));
@@ -70,9 +74,9 @@ function TodoApp(username) {
   });
 
   this.loadData = () => {
-    getAll(this.username)
+    todoAPI.getAll(this.username)
     .then(response => {
-      this.todoItems = response.map(item => new TodoItem(item.id, item.content, item.isCompleted));
+      this.todoItems = response.map(item => new TodoItem(item._id, item.content, item.isCompleted));
       this.setState(this.todoItems);
     })
     .catch(error => {

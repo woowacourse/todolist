@@ -16,7 +16,7 @@
  - [x] 추가하기
      - API: http://todo-api.roto.codes/:username
      - METHOD: POST
- - [ ] 삭제하기
+ - [x] 삭제하기
      - API: http://todo-api.roto.codes/:username/:todo_id
      - METHOD: DELETE
      - 서버에서 불러온 todo 데이터에 있는 _id를 이용해주세요
