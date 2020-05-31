@@ -13,8 +13,9 @@ function TodoList() {
     }
 
     const toggleComplete = event => {
-        if (event.target.classList.contains('toggle')) {
-            const $listToToggle = event.target.closest('li');
+        const $target = event.target;
+        if ($target.classList.contains('toggle')) {
+            const $listToToggle = $target.closest('li');
             if ($listToToggle.classList.contains('completed')) {
                 $listToToggle.classList.remove('completed');
                 return;
@@ -23,9 +24,18 @@ function TodoList() {
         }
     }
 
+    const removeTodo = event => {
+        const $target = event.target;
+        if ($target.classList.contains('destroy')) {
+            const $listToRemove = $target.closest('li');
+            $listToRemove.remove();
+        }
+    }
+
     this.init = () => {
         $newTodoTitle.addEventListener('keypress', addNewTodo);
         $todoList.addEventListener('click', toggleComplete);
+        $todoList.addEventListener('click', removeTodo);
     }
 }
 
