@@ -8,7 +8,7 @@ export function TodoList({ onToggleComplete, onDelete, onToggleEdit, onEdit }) {
     const $target = event.target;
     if ($target.classList.contains("toggle")) {
       const $todoItem = $target.closest("li");
-      onToggleComplete($todoItem.dataset.id);
+      onToggleComplete($todoItem.dataset._id);
     }
   });
 
@@ -16,7 +16,7 @@ export function TodoList({ onToggleComplete, onDelete, onToggleEdit, onEdit }) {
     const $target = event.target;
     if ($target.classList.contains("destroy")) {
       const $todoItem = $target.closest("li");
-      onDelete($todoItem.dataset.id);
+      onDelete($todoItem.dataset._id);
     }
   });
 
@@ -24,7 +24,7 @@ export function TodoList({ onToggleComplete, onDelete, onToggleEdit, onEdit }) {
     const $target = event.target;
     if ($target.classList.contains("label")) {
       const $todoItem = $target.closest("li");
-      onToggleEdit($todoItem.dataset.id);
+      onToggleEdit($todoItem.dataset._id);
     }
   });
 
@@ -32,10 +32,10 @@ export function TodoList({ onToggleComplete, onDelete, onToggleEdit, onEdit }) {
     const $target = event.target;
     if ($target.classList.contains("edit") && event.key === "Enter") {
       const $todoItem = $target.closest("li");
-      onEdit($todoItem.dataset.id, $target.value);
+      onEdit($todoItem.dataset._id, $target.value);
     } else if ($target.classList.contains("edit") && event.key === "Escape") {
       const $todoItem = $target.closest("li");
-      onToggleEdit($todoItem.dataset.id);
+      onToggleEdit($todoItem.dataset._id);
     }
   });
 

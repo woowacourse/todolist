@@ -14,9 +14,9 @@ function TodoApp(username) {
     this.todoItems = updatedItems; // todo: 이 코드 필요한가?
     let filteredItems = this.todoItems;
     if (this.filter === "active") {
-      filteredItems = this.todoItems.filter(item => item.status === "");
+      filteredItems = this.todoItems.filter(item => item.isCompleted === false);
     } else if (this.filter === "completed") {
-      filteredItems = this.todoItems.filter(item => item.status === "completed");
+      filteredItems = this.todoItems.filter(item => item.isCompleted === true);
     }
     todoList.setState(filteredItems);
     todoCount.render(filteredItems.length);
@@ -24,9 +24,9 @@ function TodoApp(username) {
   };
 
   new TodoInput({
-    onAdd: contents => {
+    onAdd: content => {
       todoAPI.create(this.username, {
-        "content": contents,
+        "content": content,
         "isCompleted": false
       })
       .then(() => {
@@ -37,33 +37,33 @@ function TodoApp(username) {
   });
 
   const todoList = new TodoList({
-    onToggleComplete: id => {
-      todoAPI.complete(username, id)
+    onToggleComplete: _id => {
+      todoAPI.complete(username, _id)
       .then(() => {
-        const targetItem = this.todoItems.find(item => item._id === id);
-        targetItem.toggleCompleteStatus();
+        const targetItem = this.todoItems.find(item => item._id === _id);
+        targetItem.toggleComplete();
         this.setState(this.todoItems);
       })
       .catch(error => console.log(error));
     },
-    onDelete: id => {
-      todoAPI.delete(username, id)
+    onDelete: _id => {
+      todoAPI.delete(username, _id)
       .then(() => {
-        const targetItem = this.todoItems.find(item => item._id === id);
+        const targetItem = this.todoItems.find(item => item._id === _id);
         this.todoItems.splice(this.todoItems.indexOf(targetItem), 1);
         this.setState(this.todoItems);
       })
       .catch(error => console.log(error));
     },
-    onToggleEdit: id => {
-      const targetItem = this.todoItems.find(item => item._id === id);
-      targetItem.toggleEditStatus();
+    onToggleEdit: _id => {
+      const targetItem = this.todoItems.find(item => item._id === _id);
+      targetItem.toggleEdit();
       this.setState(this.todoItems);
     },
-    onEdit: (id, contents) => {
-      const targetItem = this.todoItems.find(item => item._id === id);
-      targetItem.contents = contents;
-      targetItem.toggleEditStatus();
+    onEdit: (_id, content) => {
+      const targetItem = this.todoItems.find(item => item._id === _id);
+      targetItem.content = content;
+      targetItem.toggleEdit();
       this.setState(this.todoItems);
     }
   });
@@ -80,7 +80,7 @@ function TodoApp(username) {
   this.loadData = () => {
     todoAPI.getAll(this.username)
     .then(response => {
-      this.todoItems = response.map(item => new TodoItem(item._id, item.content, item.isCompleted));
+      this.todoItems = response.map(item => new TodoItem(item));
       this.setState(this.todoItems);
     })
     .catch(error => {

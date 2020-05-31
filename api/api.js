@@ -32,10 +32,10 @@ export const todoAPI = {
   create(username, data) {
     return request(`https://todo-api.roto.codes/${username}`, METHOD.POST(data));
   },
-  delete(username, id) {
-    return request(`http://todo-api.roto.codes/${username}/${id}`, METHOD.DELETE());
+  delete(username, _id) {
+    return request(`http://todo-api.roto.codes/${username}/${_id}`, METHOD.DELETE());
   },
-  complete(username, id) {
-    return request(`http://todo-api.roto.codes/${username}/${id}/toggle`, METHOD.PUT());
+  complete(username, _id) {
+    return request(`http://todo-api.roto.codes/${username}/${_id}/toggle`, METHOD.PUT());
   }
 }

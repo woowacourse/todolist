@@ -1,14 +1,14 @@
 // todoItem
-export function TodoItem(id, contents, isCompleted = false) {
-  this._id = id;
-  this.contents = contents;
-  this.isCompleted = isCompleted;
-  this.status = "";
-  this.toggleCompleteStatus = () => {
+export function TodoItem(item) {
+  this._id = item._id;
+  this.content = item.content;
+  this.isCompleted = item.isCompleted;
+  this.isEditing = "";
+  this.toggleComplete = () => {
     this.isCompleted = !this.isCompleted;
   };
-  this.toggleEditStatus = () => {
+  this.toggleEdit = () => {
     if (this.isCompleted === true) return;
-    this.status === "" ? this.status = "editing" : this.status = "";
+    this.isEditing === "" ? this.isEditing = "editing" : this.isEditing = "";
   };
 }
