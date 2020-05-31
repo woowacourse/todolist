@@ -4,10 +4,12 @@ function TodoList() {
     const $todoList = document.querySelector('#todo-list');
     const $newTodoTitle = document.querySelector('#new-todo-title');
     const $todoCount = document.querySelector('.todo-count');
+    const $all = document.querySelector('a.all');
+    const $active = document.querySelector('a.active');
+    const $completed = document.querySelector('a.completed');
     let savedTodoContent = '';
 
     const updateTotal = () => {
-        console.log($todoCount);
         $todoCount.querySelector('strong').innerText = $todoList.childElementCount;
     }
 
@@ -58,11 +60,39 @@ function TodoList() {
             const newTodo = event.target.value;
             $listToEdit.querySelector('.label').innerText = newTodo;
             $listToEdit.classList.remove('editing');
+            return;
         }
         if (event.key === 'Escape') {
             $listToEdit.querySelector('.label').innerText = savedTodoContent;
             savedTodoContent = '';
             $listToEdit.classList.remove('editing');
+        }
+    }
+
+    const showAll = () => {
+        const $todoContents = $todoList.querySelectorAll('li');
+        for (let i = 0; i < $todoContents.length; i++) {
+            $todoContents[i].classList.remove('hidden');
+        }
+    }
+
+    const showActive = () => {
+        const $todoContents = $todoList.querySelectorAll('li');
+        for (let i = 0; i < $todoContents.length; i++) {
+            $todoContents[i].classList.remove('hidden');
+            if(!$todoContents[i].classList.contains('active')){
+                $todoContents[i].classList.add('hidden');
+            }
+        }
+    }
+
+    const showCompleted = () => {
+        const $todoContents = $todoList.querySelectorAll('li');
+        for (let i = 0; i < $todoContents.length; i++) {
+            $todoContents[i].classList.remove('hidden');
+            if(!$todoContents[i].classList.contains('completed')){
+                $todoContents[i].classList.add('hidden');
+            }
         }
     }
 
@@ -73,6 +103,9 @@ function TodoList() {
         $todoList.addEventListener('click', removeTodo);
         $todoList.addEventListener('dblclick', editTodoStart);
         $todoList.addEventListener('keyup', editTodoEnd);
+        $all.addEventListener('click', showAll);
+        $active.addEventListener('click', showActive);
+        $completed.addEventListener('click', showCompleted);
     }
 }
 

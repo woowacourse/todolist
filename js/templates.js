@@ -1,5 +1,5 @@
 export const newTodoTemplate = (value) => {
-    return `<li>
+    return `<li class="active">
         <div class="view">
           <input class="toggle" type="checkbox">
           <label class="label">${value}</label>
