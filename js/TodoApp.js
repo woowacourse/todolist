@@ -15,6 +15,11 @@ function TodoApp() {
       const targetItem = this.todoItems.find(item => item.id === Number.parseInt(id));
       targetItem.toggleStatus();
       this.setState(this.todoItems);
+    },
+    onDelete: id => {
+      const targetItem = this.todoItems.find(item => item.id === Number.parseInt(id));
+      this.todoItems.splice(this.todoItems.indexOf(targetItem), 1);
+      this.setState(this.todoItems);
     }
   });
 
