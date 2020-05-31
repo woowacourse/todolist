@@ -1,14 +1,14 @@
 import { todoItemTemplate } from '../util/template.js';
 
 // todoList 보여주는 컴포넌트
-export function TodoList({ onToggle, onDelete, onToggleEdit, onEdit }) {
+export function TodoList({ onToggleComplete, onDelete, onToggleEdit, onEdit }) {
   this.$todoList = document.querySelector("#todo-list"); // todo: const로 선언해야하려나?
 
   this.$todoList.addEventListener("click", event => {
     const $target = event.target;
     if ($target.classList.contains("toggle")) {
       const $todoItem = $target.closest("li");
-      onToggle($todoItem.dataset.id);
+      onToggleComplete($todoItem.dataset.id);
     }
   });
 

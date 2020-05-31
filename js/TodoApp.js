@@ -10,10 +10,19 @@ function TodoApp() {
     todoList.setState(this.todoItems);
   };
 
+  new TodoInput({
+    onAdd: contents => {
+      const todoCount = this.todoItems.length;
+      const newTodoItem = new TodoItem(todoCount + 1, contents);
+      this.todoItems.push(newTodoItem);
+      this.setState(this.todoItems);
+    }
+  });
+
   const todoList = new TodoList({
-    onToggle: id => {
+    onToggleComplete: id => {
       const targetItem = this.todoItems.find(item => item.id === Number.parseInt(id));
-      targetItem.toggleStatus();
+      targetItem.toggleCompleteStatus();
       this.setState(this.todoItems);
     },
     onDelete: id => {
@@ -23,22 +32,13 @@ function TodoApp() {
     },
     onToggleEdit: id => {
       const targetItem = this.todoItems.find(item => item.id === Number.parseInt(id));
-      targetItem.toggleEditMode();
+      targetItem.toggleEditStatus();
       this.setState(this.todoItems);
     },
     onEdit: (id, contents) => {
       const targetItem = this.todoItems.find(item => item.id === Number.parseInt(id));
       targetItem.contents = contents;
-      targetItem.toggleEditMode();
-      this.setState(this.todoItems);
-    }
-  });
-
-  new TodoInput({
-    onAdd: contents => {
-      const todoCount = this.todoItems.length;
-      const newTodoItem = new TodoItem(todoCount + 1, contents);
-      this.todoItems.push(newTodoItem);
+      targetItem.toggleEditStatus();
       this.setState(this.todoItems);
     }
   });
