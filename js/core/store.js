@@ -42,7 +42,7 @@ const Store = ({ state = {}, mutations = {}, actions = {} }) => {
   self.state = new Proxy(
     { ...state },
     {
-      set: function (state, key, value) {
+      set(state, key, value) {
         state[key] = value
 
         emitter.emit("stateChange", self.state)
