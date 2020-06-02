@@ -3,108 +3,120 @@ import { TodoList } from './components/TodoList.js';
 import { TodoItem } from './components/TodoItem.js';
 import { TodoCount } from './components/TodoCount.js';
 import { TodoStatus } from './components/TodoStatus.js';
-import { STATE } from '../utils/constants.js';
+import api from '../api/ajax.js';
 
 class TodoApp {
   constructor() {
-    this.todoItems = [];
+    this.items = [];
+    this.status = "all";
 
     this.todoList = new TodoList({
       onDelete: id => {
         this.deleteItem(id);
-        this.setTodoItems(this.todoItems);
-        this.setTodoCount(this.todoItems.length);
-        const tempItemList = this.showTodoItemsByStatus(this.todoStatusValue);
-        this.todoCount.render(tempItemList.length);
-
+        this.setItems(this.items);
+        this.todoCount.render(this.items.length);
       },
       onToggle: id => {
-        this.toggleStatus(id);
-        const tempItemList = this.showTodoItemsByStatus(this.todoStatusValue);
-        this.todoCount.render(tempItemList.length);
+        this.toggleIsComplete(id);
+        this.renderByStatus(this.status);
       },
-      onUpdate: (id, content) => {
-        this.updateItem(id, content);
-        this.setTodoItems(this.todoItems);
-      }
+      onUpdate: (id, content, status) => {
+        this.updateItem({ id, content, status });
+        this.setItems(this.items);
+      },
     });
-
-    this.todoStatusValue = "all";
 
     this.todoStatus = new TodoStatus({
       onSelectStatus: todoStatus => {
-        this.setTodoStatus(todoStatus);
-        const tempItemList = this.showTodoItemsByStatus(this.todoStatusValue);
-        this.todoCount.render(tempItemList.length);
+        this.setStatus(todoStatus);
+        this.renderByStatus(todoStatus);
       }
     });
 
     this.todoCount = new TodoCount();
 
     new TodoInput({
-      onAdd: contents => {
-        const newTodoItem = new TodoItem(contents);
-        this.todoItems.push(newTodoItem);
-        this.setTodoItems(this.todoItems);
-        this.setTodoCount(this.todoItems.length);
-        this.setTodoStatus("all");
+      onAdd: async content => {
+        await api.todo.create({ content }).catch(error => alert(error));
+        this.items = await api.todo.readAll()
+        .then(data => data.map(todoItem => new TodoItem(todoItem)))
+        .catch(error => alert(error));
+        await this.setItems(this.items);
+        await this.todoCount.render(this.items.length);
+        await this.setStatus("all");
       }
     });
+
+    this.getAllData().catch(error => alert(error));
   }
 
-  toggleStatus(id) {
-    this.todoItems.filter(todoItem => todoItem.id === id)
-    .map(todoItem => {
-      todoItem.status = (todoItem.status === STATE.COMPLETE ? STATE.ACTIVE : STATE.COMPLETE)
-    });
+  async getAllData() {
+    const items = await api.todo.readAll()
+    .then(data => data.map(todoItem => new TodoItem(todoItem)))
+    .catch(error => alert(error));
+
+    await this.setItems(items);
+    await this.todoCount.render(items.length);
+    await this.setStatus("all");
+  }
+
+  toggleIsComplete(id) {
+    api.todo.toggle(id).catch(error => alert(error));
+    this.items.map(todoItem => todoItem.toggle(id));
   }
 
   deleteItem(id) {
-    this.todoItems = this.todoItems.filter(todoItem => todoItem.id !== id)
+    api.todo.delete(id).catch(error => alert(error));
+    this.setItems(this.items.filter(todoItem => todoItem.isNotSame(id)))
   }
 
-  updateItem(id, content) {
-    this.todoItems.filter(todoItem => todoItem.id === id)
-    .map(todoItem => {
-      todoItem.content = content;
-    });
+  updateItem(data) {
+    api.todo.update(data).catch(error => alert(error));
+    this.items.map(todoItem => todoItem.update(data));
   };
 
-  showTodoItemsByStatus(todoStatus) {
+  renderByStatus(todoStatus) {
     const tempItemList = this.getTodoItemsByStatus(todoStatus);
     this.todoList.render(tempItemList);
-    return tempItemList;
+    this.todoStatus.render(todoStatus);
+    this.todoCount.render(tempItemList.length);
   }
 
-  getTodoItemsByStatus(status) {
+  getTodoItemsByStatus(todoStatus) {
     let todoItems = [];
 
-    if (status === "all") {
-      return this.todoItems;
+    if (todoStatus === "all") {
+      return this.items;
     }
 
-    this.todoItems.forEach(todoItem => {
-      if (todoItem.status === status) {
-        todoItems.push(todoItem);
-      }
-    });
+    if (todoStatus === "completed") {
+      this.items.forEach(todoItem => {
+        if (todoItem.isCompleted) {
+          todoItems.push(todoItem);
+        }
+      });
+      return todoItems;
+    }
 
-    return todoItems;
+    if (todoStatus === "active") {
+      this.items.forEach(todoItem => {
+        if (!todoItem.isCompleted) {
+          todoItems.push(todoItem);
+        }
+      });
+      return todoItems;
+    }
   }
 
-  setTodoCount(todoCount) {
-    this.todoCount.setCount(todoCount);
+  setItems(items) {
+    this.items = items;
+    this.todoList.render(items);
   }
 
-  setTodoStatus(todoStatus) {
-    this.todoStatusValue = todoStatus;
-    this.todoStatus.setStatus(todoStatus);
+  setStatus(status) {
+    this.status = status;
+    this.todoStatus.render(status);
   }
-
-  setTodoItems(updatedItems) {
-    this.todoItems = updatedItems;
-    this.todoList.setState(this.todoItems);
-  };
 }
 
 new TodoApp();

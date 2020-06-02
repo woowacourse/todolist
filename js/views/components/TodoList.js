@@ -42,20 +42,16 @@ export class TodoList {
     todoItem.classList.add("editing");
 
     document.addEventListener(KEY_TYPE.KEY_DOWN, event => {
+
       if (event.key && event.key === KEY_TYPE.ESC) {
         todoItem.classList.remove("editing");
       }
       if (event.key && event.key === KEY_TYPE.ENTER) {
         const content = todoItem.lastElementChild.value;
-        this.onUpdate(todoItem.dataset.id, content);
+        this.onUpdate(todoItem.dataset.id, content, todoItem.dataset.status);
       }
     });
   }
-
-  setState(updatedTodoItems) {
-    this.todoItems = updatedTodoItems;
-    this.render(this.todoItems);
-  };
 
   render(items) {
     const template = items.map(todoItemTemplate);
