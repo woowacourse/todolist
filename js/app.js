@@ -1,4 +1,4 @@
-import {todoItemTemplate} from "./templates/template.js";
+import {viewItemTemplate} from "./templates/template.js";
 
 function TodoApp() {
     this.addItem = item => {
@@ -21,7 +21,7 @@ function TodoApp() {
 
 function TodoList($todoList) {
     this.render = items => {
-        const template = items.map(todoItemTemplate);
+        const template = items.map(viewItemTemplate);
         $todoList.innerHTML = template.join("");
     };
 }
