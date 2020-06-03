@@ -31,10 +31,15 @@ function TodoApp() {
         this.todoList.render(this.todoItems);
     };
 
-    this.endEdit = (id, title) => {
+    this.saveEdit = (id, title) => {
         const endedItem = this.todoItems.filter(item => item.id === id)[0];
         endedItem.edit = false;
         endedItem.title = title;
+        this.todoList.render(this.todoItems);
+    };
+
+    this.abortEdit = () => {
+        this.todoItems.forEach(item => item.edit = false);
         this.todoList.render(this.todoItems);
     };
 
@@ -59,8 +64,8 @@ function TodoApp() {
         this.$todoList.addEventListener("dblclick", this.todoInput.onEdit);
         this.$todoList.addEventListener("click", this.todoInput.onDelete);
         this.$filters.addEventListener("click", this.todoInput.onFilter);
-        this.$todoList.addEventListener("focusout", this.todoInput.onEditEnd);
-        this.$todoList.addEventListener("keydown", this.todoInput.onEditEnd);
+        this.$todoList.addEventListener("focusout", this.todoInput.onEndEdit);
+        this.$todoList.addEventListener("keydown", this.todoInput.onEndEdit);
     };
 }
 
