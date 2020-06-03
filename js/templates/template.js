@@ -1,5 +1,5 @@
 export const todoItemTemplate = item => {
-    return `<li data-id="${item.id}">
+    return `<li id="${item.id}" data-id="${item.id}">
         <div class="view">
         <input class="toggle" type="checkbox">
         <label class="label">${item.title}</label>
@@ -23,7 +23,7 @@ export const editingItemTemplate = item => {
 export const completedItemTemplate = item => {
     return `<li class="completed" data-id="${item.id}">
         <div class="view">
-        <input class="toggle" type="checkbox">
+        <input class="toggle" type="checkbox" checked>
         <label class="label">${item.title}</label>
         <button class="destroy"></button>
         </div>
