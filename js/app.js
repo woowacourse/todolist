@@ -1,13 +1,13 @@
-import {completedItemTemplate, todoItemTemplate} from "./templates/template.js";
-import {editingItemTemplate} from "./templates/template.js";
-import {todoCountTemplate} from "./templates/template.js";
+import {TodoList} from "./view/outputView.js";
 
 function TodoApp() {
     this.todoItems = [];
+    this.filter = "all";
 
     this.$todoList = document.querySelector("#todo-list");
     this.$todoInput = document.querySelector("#new-todo-title");
     this.$todoCount = document.querySelector("#todo-count");
+    this.$filters = document.querySelector("#filters");
 
     this.addItem = item => {
         this.todoItems.push(item);
@@ -39,6 +39,13 @@ function TodoApp() {
         this.todoList.render(this.todoItems);
     };
 
+    this.setFilter = filter => {
+        this.filter = filter;
+        this.todoList.render(this.todoItems);
+    };
+
+    this.getFilter = () => this.filter;
+
     this.init = () => {
         this.todoList = new TodoList(this);
         this.todoInput = new TodoInput(this);
@@ -47,26 +54,12 @@ function TodoApp() {
         this.$todoList.addEventListener("click", this.todoInput.onComplete);
         this.$todoList.addEventListener("dblclick", this.todoInput.onEdit);
         this.$todoList.addEventListener("click", this.todoInput.onDelete);
+        this.$filters.addEventListener("click", this.todoInput.onFilter);
     };
 }
 
-function TodoList({$todoList, $todoCount}) {
-    this.render = items => {
-        const todoTemplate = items.filter(item => !item.complete).map(item => {
-            if (item.edit) {
-                return editingItemTemplate(item);
-            }
-            return todoItemTemplate(item);
-        });
-        const completedTemplate = items.filter(item => item.complete).map(completedItemTemplate);
 
-        const templates = todoTemplate.concat(completedTemplate);
-        $todoList.innerHTML = templates.join("");
-        $todoCount.innerHTML = todoCountTemplate(templates.length);
-    };
-}
-
-function TodoInput({addItem, switchComplete, openEdit, deleteItem}) {
+function TodoInput({addItem, switchComplete, openEdit, deleteItem, setFilter}) {
     this.onAdd = event => {
         const $newTodoItem = event.target;
 
@@ -107,6 +100,17 @@ function TodoInput({addItem, switchComplete, openEdit, deleteItem}) {
             const id = $target.closest("li").dataset.id;
             deleteItem(id);
         }
+    };
+
+    this.onFilter = event => {
+        const $target = event.target;
+        const $ul = event.target.closest("ul");
+        const $filters = Array.from($ul.getElementsByTagName("li"))
+            .map(li => li.querySelector("a"));
+
+        $filters.map(filter => filter.classList.remove("selected"));
+        $target.classList.add("selected");
+        setFilter($target.dataset.filter);
     };
 }
 
