@@ -4,7 +4,7 @@ import {
     todoItemTemplate
 } from "../templates/template.js";
 
-export function TodoList({getFilter, $todoList, $todoCount}) {
+export function TodoView({getFilter, $todoList, $todoCount}) {
     this.render = items => {
         if (getFilter() === "all") {
             this.renderAll(items);
