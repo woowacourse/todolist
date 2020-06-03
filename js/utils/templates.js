@@ -6,7 +6,7 @@ const makeTodoItemTemplate = todoItem => {
     return makeTodoItemTemplateBeingEdited(todoItem.title);
   }
   else if (todoItem.completed()) {
-    return makeCompletedTodoItemTemplate(todoItem.title);
+    return makeTodoItemTemplateCompleted(todoItem.title);
   }
 };
 
@@ -30,7 +30,7 @@ const makeTodoItemTemplateBeingEdited = todoTitle => `
     <input class="edit" value="새로운 타이틀">
   </li>`;
 
-const makeCompletedTodoItemTemplate = todoTitle => `
+const makeTodoItemTemplateCompleted = todoTitle => `
   <li class="completed">
     <div class="view">
       <input class="toggle" type="checkbox">
