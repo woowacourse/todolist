@@ -2,6 +2,11 @@ import {completedItemTemplate, todoItemTemplate} from "./templates/template.js";
 import {editingItemTemplate} from "./templates/template.js";
 
 function TodoApp() {
+    this.todoItems = [];
+
+    this.$todoList = document.querySelector("#todo-list");
+    this.$todoInput = document.querySelector("#new-todo-title");
+
     this.addItem = item => {
         this.todoItems.push(item);
         this.todoList.render(this.todoItems);
@@ -27,19 +32,20 @@ function TodoApp() {
         this.todoList.render(this.todoItems);
     };
 
+    this.deleteItem = id => {
+        this.todoItems = this.todoItems.filter(item => !(item.id === id));
+        this.todoList.render(this.todoItems);
+    };
+
     this.init = () => {
+        this.todoList = new TodoList(this);
+        this.todoInput = new TodoInput(this);
+
         this.$todoInput.addEventListener("keydown", this.todoInput.onAdd);
         this.$todoList.addEventListener("click", this.todoInput.onComplete);
         this.$todoList.addEventListener("dblclick", this.todoInput.onEdit);
+        this.$todoList.addEventListener("click", this.todoInput.onDelete);
     };
-
-    this.todoItems = [];
-
-    this.$todoList = document.querySelector("#todo-list");
-    this.$todoInput = document.querySelector("#new-todo-title");
-
-    this.todoList = new TodoList(this);
-    this.todoInput = new TodoInput(this);
 }
 
 function TodoList({$todoList}) {
@@ -55,7 +61,7 @@ function TodoList({$todoList}) {
     };
 }
 
-function TodoInput({addItem, switchComplete, openEdit}) {
+function TodoInput({addItem, switchComplete, openEdit, deleteItem}) {
     this.onAdd = event => {
         const $newTodoItem = event.target;
 
@@ -87,7 +93,16 @@ function TodoInput({addItem, switchComplete, openEdit}) {
             const id = $target.closest("li").dataset.id;
             openEdit(id);
         }
-    }
+    };
+
+    this.onDelete = event => {
+        const $target = event.target;
+
+        if ($target.classList.contains("destroy")) {
+            const id = $target.closest("li").dataset.id;
+            deleteItem(id);
+        }
+    };
 }
 
 const todoApp = new TodoApp();
