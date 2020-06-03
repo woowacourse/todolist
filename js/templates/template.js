@@ -30,3 +30,7 @@ export const completedItemTemplate = item => {
         <input class="edit" value="${item.title}">
         </li>`;
 };
+
+export const todoCountTemplate = count => {
+    return `총 <strong>${count}</strong> 개`;
+};

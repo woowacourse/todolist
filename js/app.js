@@ -1,11 +1,13 @@
 import {completedItemTemplate, todoItemTemplate} from "./templates/template.js";
 import {editingItemTemplate} from "./templates/template.js";
+import {todoCountTemplate} from "./templates/template.js";
 
 function TodoApp() {
     this.todoItems = [];
 
     this.$todoList = document.querySelector("#todo-list");
     this.$todoInput = document.querySelector("#new-todo-title");
+    this.$todoCount = document.querySelector("#todo-count");
 
     this.addItem = item => {
         this.todoItems.push(item);
@@ -48,7 +50,7 @@ function TodoApp() {
     };
 }
 
-function TodoList({$todoList}) {
+function TodoList({$todoList, $todoCount}) {
     this.render = items => {
         const todoTemplate = items.filter(item => !item.complete).map(item => {
             if (item.edit) {
@@ -57,7 +59,10 @@ function TodoList({$todoList}) {
             return todoItemTemplate(item);
         });
         const completedTemplate = items.filter(item => item.complete).map(completedItemTemplate);
-        $todoList.innerHTML = todoTemplate.join("") + completedTemplate.join("");
+
+        const templates = todoTemplate.concat(completedTemplate);
+        $todoList.innerHTML = templates.join("");
+        $todoCount.innerHTML = todoCountTemplate(templates.length);
     };
 }
 
