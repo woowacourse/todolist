@@ -1,5 +1,5 @@
 export const todoItemTemplate = item => {
-    return `<li id="${item.id}" data-id="${item.id}">
+    return `<li data-id="${item.id}">
         <div class="view">
         <input class="toggle" type="checkbox">
         <label class="label">${item.title}</label>

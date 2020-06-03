@@ -8,15 +8,15 @@ export function TodoView({getFilter, $todoList, $todoCount}) {
     this.render = items => {
         if (getFilter() === "all") {
             this.renderAll(items);
-            return;
         }
         if (getFilter() === "active") {
             this.renderActives(items);
-            return;
         }
         if (getFilter() === "completed") {
             this.renderCompletes(items);
         }
+        const $editing = document.querySelector(".editing .edit");
+        $editing ? $editing.focus() : false;
     };
 
     this.renderAll = items => {

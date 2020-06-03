@@ -1,4 +1,4 @@
-export function TodoInput({addItem, switchComplete, openEdit, deleteItem, setFilter}) {
+export function TodoInput({addItem, switchComplete, openEdit, endEdit, deleteItem, setFilter}) {
     this.onAdd = event => {
         const $newTodoItem = event.target;
 
@@ -29,6 +29,19 @@ export function TodoInput({addItem, switchComplete, openEdit, deleteItem, setFil
         if ($target.classList.contains("label")) {
             const id = $target.closest("li").dataset.id;
             openEdit(id);
+        }
+    };
+
+    this.onEditEnd = event => {
+        if (event.type === "keydown" && event.key !== "Enter") {
+            return;
+        }
+
+        const $target = event.target;
+        if ($target.classList.contains("edit")) {
+            const id = $target.closest("li").dataset.id;
+            const title = $target.value;
+            endEdit(id, title);
         }
     };
 

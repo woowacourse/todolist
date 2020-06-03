@@ -26,12 +26,15 @@ function TodoApp() {
     };
 
     this.openEdit = id => {
-        this.todoItems = this.todoItems.map(item => {
-            if (item.id === id) {
-                item.edit = !item.edit;
-            }
-            return item;
-        });
+        const editItem = this.todoItems.filter(item => item.id === id)[0];
+        editItem.edit = true;
+        this.todoList.render(this.todoItems);
+    };
+
+    this.endEdit = (id, title) => {
+        const endedItem = this.todoItems.filter(item => item.id === id)[0];
+        endedItem.edit = false;
+        endedItem.title = title;
         this.todoList.render(this.todoItems);
     };
 
@@ -56,6 +59,8 @@ function TodoApp() {
         this.$todoList.addEventListener("dblclick", this.todoInput.onEdit);
         this.$todoList.addEventListener("click", this.todoInput.onDelete);
         this.$filters.addEventListener("click", this.todoInput.onFilter);
+        this.$todoList.addEventListener("focusout", this.todoInput.onEditEnd);
+        this.$todoList.addEventListener("keydown", this.todoInput.onEditEnd);
     };
 }
 
