@@ -1,4 +1,5 @@
 import {completedItemTemplate, todoItemTemplate} from "./templates/template.js";
+import {editingItemTemplate} from "./templates/template.js";
 
 function TodoApp() {
     this.addItem = item => {
@@ -6,7 +7,7 @@ function TodoApp() {
         this.todoList.render(this.todoItems);
     };
 
-    this.toggleComplete = id => {
+    this.switchComplete = id => {
         this.todoItems = this.todoItems.map(item => {
             if (item.id === id) {
                 item.complete = !item.complete;
@@ -16,9 +17,20 @@ function TodoApp() {
         this.todoList.render(this.todoItems);
     };
 
+    this.openEdit = id => {
+        this.todoItems = this.todoItems.map(item => {
+            if (item.id === id) {
+                item.edit = !item.edit;
+            }
+            return item;
+        });
+        this.todoList.render(this.todoItems);
+    };
+
     this.init = () => {
-        this.$todoInput.addEventListener("keydown", this.todoInput.addTodoItem);
-        this.$todoList.addEventListener("click", this.todoInput.toggleComplete);
+        this.$todoInput.addEventListener("keydown", this.todoInput.onAdd);
+        this.$todoList.addEventListener("click", this.todoInput.onComplete);
+        this.$todoList.addEventListener("dblclick", this.todoInput.onEdit);
     };
 
     this.todoItems = [];
@@ -32,33 +44,48 @@ function TodoApp() {
 
 function TodoList({$todoList}) {
     this.render = items => {
-        const todoTemplate = items.filter(item => !item.complete).map(todoItemTemplate);
+        const todoTemplate = items.filter(item => !item.complete).map(item => {
+            if (item.edit) {
+                return editingItemTemplate(item);
+            }
+            return todoItemTemplate(item);
+        });
         const completedTemplate = items.filter(item => item.complete).map(completedItemTemplate);
         $todoList.innerHTML = todoTemplate.join("") + completedTemplate.join("");
     };
 }
 
-function TodoInput({addItem, toggleComplete}) {
-    this.addTodoItem = event => {
+function TodoInput({addItem, switchComplete, openEdit}) {
+    this.onAdd = event => {
         const $newTodoItem = event.target;
 
         if (event.key === "Enter" && $newTodoItem.value) {
             addItem({
                 id: "#" + Math.random(),
                 title: $newTodoItem.value,
-                complete: false
+                complete: false,
+                edit: false
             });
 
             $newTodoItem.value = "";
         }
     };
 
-    this.toggleComplete = event => {
+    this.onComplete = event => {
         const $target = event.target;
 
         if ($target.classList.contains("toggle")) {
             const id = $target.closest("li").dataset.id;
-            toggleComplete(id);
+            switchComplete(id);
+        }
+    };
+
+    this.onEdit = event => {
+        const $target = event.target;
+
+        if ($target.classList.contains("label")) {
+            const id = $target.closest("li").dataset.id;
+            openEdit(id);
         }
     }
 }
