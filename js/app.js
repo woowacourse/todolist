@@ -8,25 +8,47 @@ function TodoApp() {
   
   const todoItems = [];
 
-  const todoList = new TodoList();
+  const todoList = new TodoList({
+    onDelete: event => {
+      if (!event.target.classList.contains("destroy")) {
+        return;
+      }
+      remove(event.target.dataset.id);
+      console.log("ondelete");
+    }
+  });
 
-  const addTodoTitle = todoTitle => {
+  const add = todoTitle => {
     todoItems.push(new TodoItem(todoTitle));
     todoList.setState(todoItems);
+    document.querySelectorAll(".destroy")
   };
 
-  const onAddTodo = (event, todoTitle) => {
-    if (event.key !== KEY_TYPE.ENTER) {
+  const onAdd = (event, todoTitle) => {
+    if (event.key !== KEY_TYPE.ENTER)    {
       return;
     }
-    addTodoTitle(todoTitle);
+    add(todoTitle);
     $todoTitleInput.value = "";
   };
+
+  const remove = id => {
+    for (let index in todoItems) {
+      console.log("## remove")
+      console.log(index)
+      console.log(id)
+      console.log(todoItems[index].id)
+      if (todoItems[index].id + "" === id + "") {
+        todoItems.splice(index, 1);
+      }
+    }
+    todoList.setState(todoItems);
+  }
 
   const init = () => {
     $todoTitleInput.addEventListener(
       EVENT_TYPE.KEY_PRESS, 
-      event => onAddTodo(event, $todoTitleInput.value)
+      event => onAdd(event, $todoTitleInput.value)
     );
   };
 
@@ -35,15 +57,20 @@ function TodoApp() {
   };
 };
 
-function TodoList() {
-  const $todoList = document.getElementById("todo-list");
+class TodoList {
 
-  this.render = todoItems => {
-    $todoList.innerHTML = todoItems.map(todoItem => makeTodoItemTemplate(todoItem)).join("");
-  }
-  
-  this.setState = todoItems => {
-    this.render(todoItems);
+  constructor({ onDelete }) {
+    const $todoList = document.getElementById("todo-list");
+
+    $todoList.addEventListener(EVENT_TYPE.CLICK, onDelete);
+
+    this.render = todoItems => {
+      $todoList.innerHTML = todoItems.map(todoItem => makeTodoItemTemplate(todoItem)).join("");
+    };
+
+    this.setState = todoItems => {
+      this.render(todoItems);
+    };
   }
 }
 
