@@ -1,6 +1,9 @@
-class TodoItem { 
+let id = 0;
+
+class TodoItem {
 
   constructor(todoTitle) {
+    this.id = id++;
     this.title = todoTitle;
     this.completed = false;
     this.isBeingEdited = false;
