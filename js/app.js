@@ -4,40 +4,14 @@ import TodoItem from "./domain/todo-item.js"
 
 function TodoApp() {
   
-  const $todoTitleInput = document.getElementById("new-todo-title");
-  
   const todoItems = [];
 
-  const todoList = new TodoList({
-    onDelete: event => {
-      if (!event.target.classList.contains("destroy")) {
-        return;
-      }
-      remove(event.target.dataset.id);
-      console.log("ondelete");
-    }
-  });
+  const todoInput = new TodoInput({ onAdd: onAdd });
 
-  const add = todoTitle => {
-    todoItems.push(new TodoItem(todoTitle));
-    todoList.setState(todoItems);
-    document.querySelectorAll(".destroy")
-  };
+  const todoList = new TodoList({ onDelete: onDelete });
 
-  const onAdd = (event, todoTitle) => {
-    if (event.key !== KEY_TYPE.ENTER)    {
-      return;
-    }
-    add(todoTitle);
-    $todoTitleInput.value = "";
-  };
-
-  const remove = id => {
+  function remove(id) {
     for (let index in todoItems) {
-      console.log("## remove")
-      console.log(index)
-      console.log(id)
-      console.log(todoItems[index].id)
       if (todoItems[index].id + "" === id + "") {
         todoItems.splice(index, 1);
       }
@@ -45,17 +19,40 @@ function TodoApp() {
     todoList.setState(todoItems);
   }
 
-  const init = () => {
-    $todoTitleInput.addEventListener(
-      EVENT_TYPE.KEY_PRESS, 
-      event => onAdd(event, $todoTitleInput.value)
-    );
+  function onDelete(event) {
+    if (!event.target.classList.contains("destroy")) {
+      return;
+    }
+    remove(event.target.dataset.id);
+  }
+
+  function add(todoTitle) {
+    todoItems.push(new TodoItem(todoTitle));
+    todoList.setState(todoItems);
   };
 
-  return {
-    init
+  function onAdd (event, todoTitle) {
+    if (event.key !== KEY_TYPE.ENTER) {
+      return;
+    }
+    add(todoTitle);
   };
 };
+
+class TodoInput {
+
+  constructor({ onAdd }) {
+    const $todoTitleInput = document.getElementById("new-todo-title");
+    
+    $todoTitleInput.addEventListener(
+      EVENT_TYPE.KEY_PRESS, 
+      event => { 
+        onAdd(event, $todoTitleInput.value);
+        $todoTitleInput.value = "";
+      }
+    );
+  }
+}
 
 class TodoList {
 
@@ -74,4 +71,4 @@ class TodoList {
   }
 }
 
-new TodoApp().init();
+new TodoApp();
