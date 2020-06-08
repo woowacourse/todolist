@@ -19,34 +19,36 @@ function TodoApp() {
 
   const todoListCount = new TodoListCount({
     selectedTodoItems: selectedTodoItems => {
-      todoList.setState(selectedTodoItems);
+      todoList.render(selectedTodoItems);
     }
   });
 
   this.setState = updatedItems => {
     this.todoItems = [...updatedItems];
-    todoListCount.updateList(this.todoItems);
-    todoList.setState(this.todoItems);
+    todoListCount.setState(this.todoItems);
+    todoList.render(this.todoItems);
   };
 
   new TodoInput({
     onAdd: newTodoName => {
       const newTodoItem = new TodoItem(id++, newTodoName, false);
-      const updatedList = [...this.todoItems, newTodoItem];
+      const updatedList = [...this.todoItems];
+      updatedList.push(newTodoItem);
       this.setState(updatedList);
     }
   });
 
   new TodoDelete({
     onDelete: id => {
-      this.setState([...this.todoItems].filter(todoItem => todoItem._id !== id));
+      const deletedList = [...this.todoItems].filter(todoItem => todoItem.id !== id);
+      this.setState(deletedList);
     }
   })
 
   new TodoListCheckBox({
     onCheck: checkedListId => {
       const listId = parseInt(checkedListId);
-      const updatedTodoList = [...this.todoItems].map(todoItem => {
+      const updatedTodoList = this.todoItems.map(todoItem => {
         if (todoItem._id === listId) {
           return new TodoItem(listId, todoItem.content, !todoItem.isCompleted);
         }
@@ -63,7 +65,7 @@ function TodoApp() {
   };
 
   const switchToViewMode = event => {
-    if (event.keyCode !== 27) {
+    if (event.key !== 'Escape') {
       return;
     }
     document.getSelection().anchorNode.classList.remove("editing");
@@ -77,8 +79,8 @@ function TodoApp() {
   this.init = () => {
     initEventListener();
     todoListCount.init();
-    todoListCount.updateList(this.todoItems);
-    todoList.setState(this.todoItems);
+    todoListCount.setState(this.todoItems);
+    todoList.render(this.todoItems);
   };
 }
 

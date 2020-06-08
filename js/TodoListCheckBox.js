@@ -9,6 +9,6 @@ export function TodoListCheckBox({ onCheck }) {
       return;
     }
 
-    onCheck($target.closest("li").id);
+    onCheck($target.closest("li").dataset.id);
   }
 }

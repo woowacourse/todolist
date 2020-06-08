@@ -10,7 +10,7 @@ export function TodoDelete({ onDelete }) {
     }
     event.preventDefault();
     if (confirm("삭제하시겠습니까?")) {
-      onDelete($target.closest("li").id);
+      onDelete(parseInt($target.closest("li").dataset.id));
     }
   }
 }

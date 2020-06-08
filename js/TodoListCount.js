@@ -2,6 +2,7 @@ import { countTemplate } from './Templates.js';
 
 export function TodoListCount({ selectedTodoItems }) {
   const $count = document.querySelector(".todo-count");
+  const $filters = document.querySelector(".filters");
   const $all = document.querySelector(".all");
   const $active = document.querySelector(".active");
   const $completed = document.querySelector(".completed");
@@ -14,41 +15,34 @@ export function TodoListCount({ selectedTodoItems }) {
     $completed.classList.remove("selected");
   }
 
-  const showAllItems = event => {
+  this.filterTodoItems = event => {
     event.preventDefault();
     this.removeSelected();
-    $all.classList.toggle("selected");
-    this.render(this.list);
-    selectedTodoItems(this.list);
+    const $target = event.target;
+    $target.closest("li").firstElementChild.classList.toggle("selected");
+
+    if ($target.classList.contains("all")) {
+      return this.list
+    } else if ($target.classList.contains("active")) {
+      return [...this.list].filter(todoItem => !todoItem.isCompleted);
+    } else {
+      return [...this.list].filter(todoItem => todoItem.isCompleted);
+    }
   }
 
-  const showActiveItems = event => {
-    event.preventDefault();
-    this.removeSelected();
-    $active.classList.toggle("selected");
-    const selected = [...this.list].filter(todoItem => !todoItem.isCompleted);
-    this.render(selected);
-    selectedTodoItems(selected);
+  const showFilteredTotoItems = event => {
+    const selectedItems = this.filterTodoItems(event);
+    this.render(selectedItems);
+    selectedTodoItems(selectedItems);
   }
 
-  const showCompletedItems = event => {
-    event.preventDefault();
-    this.removeSelected();
-    $completed.classList.toggle("selected");
-    const selected = [...this.list].filter(todoItem => todoItem.isCompleted);
-    this.render(selected);
-    selectedTodoItems(selected);
-  }
-
-  this.updateList = updatedList => {
+  this.setState = updatedList => {
     this.list = [...updatedList];
     this.render(this.list);
   }
 
   this.init = () => {
-    $all.addEventListener('click', showAllItems);
-    $active.addEventListener('click', showActiveItems);
-    $completed.addEventListener('click', showCompletedItems);
+    $filters.addEventListener('click', showFilteredTotoItems);
   };
 
   this.render = selectedList => {

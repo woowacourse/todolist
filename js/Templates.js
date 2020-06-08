@@ -1,5 +1,5 @@
 export const listTemplate = todoItem => {
-  return `<li id=${todoItem._id} class="${todoItem.isCompleted ? "completed" : ""}">
+  return `<li data-id=${todoItem._id} class="${todoItem.isCompleted ? "completed" : ""}">
   <div class="view">
     <input class="toggle" type="checkbox" ${todoItem.isCompleted ? "checked" : "unchecked"}>
     <label class="label">${todoItem.content}</label>
@@ -9,6 +9,4 @@ export const listTemplate = todoItem => {
     </li>`;
 };
 
-export const countTemplate = list => {
-  return `총 <strong>${list.length}</strong> 개`;
-};
+export const countTemplate = list => `총 <strong>${list.length}</strong> 개`;

@@ -4,4 +4,8 @@ export class TodoItem {
     this.content = content;
     this.isCompleted = isCompleted;
   }
+
+  get id() {
+    return this._id;
+  }
 }
