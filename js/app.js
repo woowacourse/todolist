@@ -1,11 +1,7 @@
-import {
-  activeFilterTemplate,
-  allFilterTemplate,
-  completeFilterTemplate,
-  todoItemTemplate,
-} from "./templates.js";
-
-import { EVENT_TYPE, GROUP_TYPE, INPUT_TYPE, KEY_TYPE } from "./constants.js";
+import { GROUP_TYPE } from "./constants.js";
+import TodoInput from "./TodoInput.js";
+import TodoList from "./TodoList.js";
+import TodoCount from "./TodoCount.js";
 
 function TodoApp() {
   this.todoItems = [];
@@ -101,106 +97,10 @@ function TodoApp() {
   new TodoInput(onAdd);
 }
 
-function TodoInput(onAdd) {
-  const $todoInput = document.querySelector("#new-todo-title");
-
-  $todoInput.addEventListener(EVENT_TYPE.KEYUP, (event) =>
-    this.addTodoItem(event)
-  );
-
-  this.addTodoItem = (event) => {
-    const $newTodoTarget = event.target;
-    if (this.isValid(event, $newTodoTarget.value)) {
-      onAdd($newTodoTarget.value);
-      $newTodoTarget.value = "";
-    }
-  };
-
-  this.isValid = function (event, s) {
-    return !!(event.key === KEY_TYPE.ENTER && s.trim());
-  };
-}
-
-function TodoList(onToggle, onDelete, onDblClick, onRollback, onCommit) {
-  this.$todoList = document.querySelector("#todo-list");
-
-  this.$todoList.addEventListener(EVENT_TYPE.CLICK, (event) =>
-    this.onClick(event)
-  );
-  this.$todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, (event) =>
-    this.startEdit(event)
-  );
-  this.$todoList.addEventListener(EVENT_TYPE.KEYUP, (event) =>
-    this.finishEdit(event)
-  );
-
-  this.onClick = (event) => {
-    const $target = event.target;
-    const id = Number($target.closest("li").getAttribute("id"));
-    if ($target.classList.contains(INPUT_TYPE.TOGGLE)) {
-      onToggle(event, id);
-    } else if ($target.classList.contains(INPUT_TYPE.DESTROY)) {
-      onDelete(event, id);
-    }
-  };
-
-  this.startEdit = (event) => {
-    const $target = event.target;
-    const id = Number($target.closest("li").getAttribute("id"));
-    if ($target.classList.contains("label")) {
-      onDblClick(event, id);
-    }
-  };
-
-  this.finishEdit = (event) => {
-    const $target = event.target;
-    const id = Number($target.closest("li").getAttribute("id"));
-    if ($target.classList.contains("edit")) {
-      if (event.key === KEY_TYPE.ENTER) {
-        onCommit(event, id, $target.value);
-      } else if (event.key === KEY_TYPE.ESC) {
-        onRollback(event, id);
-      }
-    }
-  };
-
-  this.render = (items) => {
-    this.$todoList.innerHTML = items.map(todoItemTemplate).join("");
-  };
-}
-
 function TodoItem(id, content, status) {
   this.id = id;
   this.content = content;
   this.status = status;
-}
-
-function TodoCount(groupBy) {
-  this.$todoCount = document.querySelector(".count-container");
-
-  this.$todoCount.addEventListener(EVENT_TYPE.CLICK, (event) =>
-    this.groupByStatus(event)
-  );
-
-  this.groupByStatus = (event) => {
-    if (event.target.classList.contains(GROUP_TYPE.ACTIVE)) {
-      groupBy(event, GROUP_TYPE.ACTIVE);
-    } else if (event.target.classList.contains(GROUP_TYPE.COMPLETED)) {
-      groupBy(event, GROUP_TYPE.COMPLETED);
-    } else if (event.target.classList.contains(GROUP_TYPE.ALL)) {
-      groupBy(event, GROUP_TYPE.ALL);
-    }
-  };
-
-  this.render = (total, type) => {
-    if (type === GROUP_TYPE.ALL || type === undefined) {
-      this.$todoCount.innerHTML = allFilterTemplate(total);
-    } else if (type === GROUP_TYPE.ACTIVE) {
-      this.$todoCount.innerHTML = activeFilterTemplate(total);
-    } else if (type === GROUP_TYPE.COMPLETED) {
-      this.$todoCount.innerHTML = completeFilterTemplate(total);
-    }
-  };
 }
 
 new TodoApp();
