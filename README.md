@@ -1,6 +1,10 @@
 ### 기능목록
 - [x] todo title 추가하기
 - [ ] todo title 수정하기
+    - [x] todo title 을 더블클릭하여 수정하기
+        - [x] 기존 title을 place holder 로 보여주기
+    - [ ] 수정중인 상태에서 enter 키를 입력하여 수정 완료하기
+    - [ ] 수정중인 상태에서 esc 키를 입력하여 수정 취소하기
 - [x] todo title 삭제하기 (X 버튼을 눌러 삭제)
 - [x] todo title 의 체크박스를 클릭하여 complete 상태로 변경
 

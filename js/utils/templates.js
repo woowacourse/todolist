@@ -14,7 +14,7 @@ const makeTodoItemTemplateInNormal = todoItem => `
   <li>
     <div class="view">
       <input class="complete toggle" type="checkbox" data-id="` + todoItem.id + `">
-      <label class="label">` + todoItem.title + `</label>
+      <label class="label" data-id="` + todoItem.id + `">` + todoItem.title + `</label>
       <button class="destroy" data-id="` + todoItem.id + `"></button>
     </div>
     <input class="edit" value="새로운 타이틀">
@@ -24,17 +24,17 @@ const makeTodoItemTemplateBeingEdited = todoItem => `
   <li class="editing">
     <div class="view">
       <input class="complete toggle" type="checkbox" data-id="` + todoItem.id + `">
-      <label class="label">` + todoItem.title + `</label>
+      <label class="label" data-id="` + todoItem.id + `">` + todoItem.title + `</label>
       <button class="destroy" data-id="` + todoItem.id + `"></button>
     </div>
-    <input class="edit" value="새로운 타이틀">
+    <input class="edit" placeholder="` + todoItem.title + `">
   </li>`;
 
 const makeTodoItemTemplateCompleted = todoItem => `
   <li class="completed">
     <div class="view">
       <input class="complete toggle" checked="true" type="checkbox" data-id="` + todoItem.id + `">
-      <label class="label">` + todoItem.title + `</label>
+      <label class="label" data-id="` + todoItem.id + `">` + todoItem.title + `</label>
       <button class="destroy" data-id="` + todoItem.id + `"></button>
     </div>
     <input class="edit" value="새로운 타이틀">

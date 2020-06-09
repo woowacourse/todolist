@@ -8,16 +8,24 @@ function TodoApp() {
 
   const todoInput = new TodoInput({ onAdd: onAdd });
 
-  const todoList = new TodoList({ onDelete: onDelete, onComplete: onComplete });
+  const todoList = new TodoList({
+    onDelete: onDelete,
+    onComplete: onComplete,
+    onEdit: onEdit
+  });
 
-  function remove(id) {
-    for (let index in todoItems) {
-      if (todoItems[index].id + "" === id + "") {
-        todoItems.splice(index, 1);
-      }
+  function onAdd (event, todoTitle) {
+    if (event.key !== KEY_TYPE.ENTER) {
+      return;
     }
+    add(todoTitle);
+  };
+
+  function add(todoTitle) {
+    todoItems.push(new TodoItem(todoTitle));
     todoList.setState(todoItems);
-  }
+    todoInput.clear();
+  };
 
   function onDelete(event) {
     if (!event.target.classList.contains("destroy")) {
@@ -26,14 +34,10 @@ function TodoApp() {
     remove(event.target.dataset.id);
   }
 
-  function complete(id) {
+  function remove(id) {
     for (let index in todoItems) {
-      console.log("## index");
-      console.log(index);
-      console.log("## id");
-      console.log(id);
       if (todoItems[index].id + "" === id + "") {
-        todoItems[index].completed = true;
+        todoItems.splice(index, 1);
       }
     }
     todoList.setState(todoItems);
@@ -46,18 +50,31 @@ function TodoApp() {
     complete(event.target.dataset.id);
   }
 
-  function add(todoTitle) {
-    todoItems.push(new TodoItem(todoTitle));
+  function complete(id) {
+    for (let index in todoItems) {
+      if (todoItems[index].id + "" === id + "") {
+        todoItems[index].completed = true;
+      }
+    }
     todoList.setState(todoItems);
-    todoInput.clear();
-  };
+  }
 
-  function onAdd (event, todoTitle) {
-    if (event.key !== KEY_TYPE.ENTER) {
+  function onEdit(event) {
+    event.preventDefault();
+    if (!event.target.classList.contains("label")) {
       return;
     }
-    add(todoTitle);
-  };
+    edit(event.target.dataset.id);
+  }
+
+  function edit(id) {
+    for (let index in todoItems) {
+      if (todoItems[index].id + "" === id + "") {
+        todoItems[index].isBeingEdited = true;
+      }
+    }
+    todoList.setState(todoItems);
+  }
 };
 
 class TodoInput {
@@ -80,11 +97,12 @@ class TodoInput {
 
 class TodoList {
 
-  constructor({ onDelete, onComplete }) {
+  constructor({ onDelete, onComplete, onEdit }) {
     const $todoList = document.getElementById("todo-list");
 
     $todoList.addEventListener(EVENT_TYPE.CLICK, onDelete);
     $todoList.addEventListener(EVENT_TYPE.CLICK, onComplete);
+    $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, onEdit);
 
     this.render = todoItems => {
       $todoList.innerHTML = todoItems.map(todoItem => makeTodoItemTemplate(todoItem)).join("");
