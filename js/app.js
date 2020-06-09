@@ -29,6 +29,7 @@ function TodoApp() {
   function add(todoTitle) {
     todoItems.push(new TodoItem(todoTitle));
     todoList.setState(todoItems);
+    todoInput.clear();
   };
 
   function onAdd (event, todoTitle) {
@@ -48,9 +49,12 @@ class TodoInput {
       EVENT_TYPE.KEY_PRESS, 
       event => { 
         onAdd(event, $todoTitleInput.value);
-        $todoTitleInput.value = "";
       }
     );
+
+    this.clear = () => {
+      $todoTitleInput.value = "";
+    }
   }
 }
 
