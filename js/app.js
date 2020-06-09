@@ -8,7 +8,7 @@ function TodoApp() {
 
   const todoInput = new TodoInput({ onAdd: onAdd });
 
-  const todoList = new TodoList({ onDelete: onDelete });
+  const todoList = new TodoList({ onDelete: onDelete, onComplete: onComplete });
 
   function remove(id) {
     for (let index in todoItems) {
@@ -24,6 +24,26 @@ function TodoApp() {
       return;
     }
     remove(event.target.dataset.id);
+  }
+
+  function complete(id) {
+    for (let index in todoItems) {
+      console.log("## index");
+      console.log(index);
+      console.log("## id");
+      console.log(id);
+      if (todoItems[index].id + "" === id + "") {
+        todoItems[index].completed = true;
+      }
+    }
+    todoList.setState(todoItems);
+  }
+
+  function onComplete(event) {
+    if (!event.target.classList.contains("complete")) {
+      return;
+    }
+    complete(event.target.dataset.id);
   }
 
   function add(todoTitle) {
@@ -60,10 +80,11 @@ class TodoInput {
 
 class TodoList {
 
-  constructor({ onDelete }) {
+  constructor({ onDelete, onComplete }) {
     const $todoList = document.getElementById("todo-list");
 
     $todoList.addEventListener(EVENT_TYPE.CLICK, onDelete);
+    $todoList.addEventListener(EVENT_TYPE.CLICK, onComplete);
 
     this.render = todoItems => {
       $todoList.innerHTML = todoItems.map(todoItem => makeTodoItemTemplate(todoItem)).join("");

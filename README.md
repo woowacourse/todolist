@@ -2,7 +2,7 @@
 - [x] todo title 추가하기
 - [ ] todo title 수정하기
 - [x] todo title 삭제하기 (X 버튼을 눌러 삭제)
-- [ ] todo title 의 체크박스를 클릭하여 complete 상태로 변경
+- [x] todo title 의 체크박스를 클릭하여 complete 상태로 변경
 
 ### 용어정리
 - todo title : 할일 목록의 내용들 각각.  

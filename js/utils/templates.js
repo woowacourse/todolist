@@ -2,10 +2,10 @@ const makeTodoItemTemplate = todoItem => {
   if (todoItem.isInNormal()) {
     return makeTodoItemTemplateInNormal(todoItem);
   }
-  else if (todoItem.isBeingEdited()) {
+  else if (todoItem.isBeingEdited) {
     return makeTodoItemTemplateBeingEdited(todoItem);
   }
-  else if (todoItem.completed()) {
+  else if (todoItem.completed) {
     return makeTodoItemTemplateCompleted(todoItem);
   }
 };
@@ -13,7 +13,7 @@ const makeTodoItemTemplate = todoItem => {
 const makeTodoItemTemplateInNormal = todoItem => `
   <li>
     <div class="view">
-      <input class="toggle" type="checkbox">
+      <input class="complete toggle" type="checkbox" data-id="` + todoItem.id + `">
       <label class="label">` + todoItem.title + `</label>
       <button class="destroy" data-id="` + todoItem.id + `"></button>
     </div>
@@ -23,7 +23,7 @@ const makeTodoItemTemplateInNormal = todoItem => `
 const makeTodoItemTemplateBeingEdited = todoItem => `
   <li class="editing">
     <div class="view">
-      <input class="toggle" type="checkbox">
+      <input class="complete toggle" type="checkbox" data-id="` + todoItem.id + `">
       <label class="label">` + todoItem.title + `</label>
       <button class="destroy" data-id="` + todoItem.id + `"></button>
     </div>
@@ -33,7 +33,7 @@ const makeTodoItemTemplateBeingEdited = todoItem => `
 const makeTodoItemTemplateCompleted = todoItem => `
   <li class="completed">
     <div class="view">
-      <input class="toggle" type="checkbox">
+      <input class="complete toggle" checked="true" type="checkbox" data-id="` + todoItem.id + `">
       <label class="label">` + todoItem.title + `</label>
       <button class="destroy" data-id="` + todoItem.id + `"></button>
     </div>
