@@ -135,6 +135,8 @@ class TodoList {
   constructor({ onDelete, onComplete, onStartEditing, onSaveEditing, onCancleEditing }) {
     const $todoList = document.getElementById("todo-list");
 
+    const countContainer = new CountContainer();
+
     $todoList.addEventListener(EVENT_TYPE.CLICK, onDelete);
     $todoList.addEventListener(EVENT_TYPE.CLICK, onComplete);
     $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, onStartEditing);
@@ -147,7 +149,23 @@ class TodoList {
 
     this.setState = todoItems => {
       this.render(todoItems);
+      countContainer.setState(todoItems.length);
     };
+  }
+}
+
+class CountContainer {
+
+  constructor() {
+    const $todoCountValue = document.getElementById("todo-count-value");
+
+    this.setState = todoCount => {
+      this.render(todoCount);
+    }
+
+    this.render = todoCount => {
+      $todoCountValue.innerHTML = todoCount;
+    }
   }
 }
 
