@@ -21,16 +21,6 @@ function TodoApp() {
         });
     };
 
-    this.switchComplete = id => {
-        this.todoItems = this.todoItems.map(item => {
-            if (item.id === id) {
-                item.complete = !item.complete;
-            }
-            return item;
-        });
-        this.todoList.render(this.todoItems);
-    };
-
     this.openEdit = id => {
         const editItem = this.todoItems.filter(item => item.id === id)[0];
         editItem.edit = true;
