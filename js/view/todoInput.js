@@ -1,14 +1,11 @@
+import {todoItem} from "../data/item.js";
+
 export function TodoInput({addItem, switchComplete, openEdit, saveEdit, abortEdit, deleteItem, setFilter}) {
     this.onAdd = event => {
         const $newTodoItem = event.target;
 
         if (event.key === "Enter" && $newTodoItem.value) {
-            addItem({
-                id: "#" + Math.random(),
-                title: $newTodoItem.value,
-                complete: false,
-                edit: false
-            });
+            addItem(todoItem("#" + Math.random(), $newTodoItem.value, false, false));
 
             $newTodoItem.value = "";
         }

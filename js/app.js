@@ -1,5 +1,7 @@
 import {TodoView} from "./view/todoView.js";
 import {TodoInput} from "./view/todoInput.js";
+import {api} from "./api/index.js";
+import {todoItem} from "./data/item.js";
 
 function TodoApp() {
     this.todoItems = [];
@@ -9,6 +11,16 @@ function TodoApp() {
     this.$todoInput = document.querySelector("#new-todo-title");
     this.$todoCount = document.querySelector("#todo-count");
     this.$filters = document.querySelector("#filters");
+
+    this.findAll = async () => {
+        await api.todoList.add("잠자기").then();
+        api.todoList.findAll().then(jsonData => {
+            this.todoItems = jsonData.map(item =>
+                todoItem(item['_id'], item['content'], item['isCompleted'], false));
+            console.log(this.todoItems);
+            this.todoList.render(this.todoItems);
+        });
+    };
 
     this.addItem = item => {
         this.todoItems.push(item);
@@ -56,6 +68,7 @@ function TodoApp() {
     this.getFilter = () => this.filter;
 
     this.init = () => {
+        this.findAll();
         this.todoList = new TodoView(this);
         this.todoInput = new TodoInput(this);
 
