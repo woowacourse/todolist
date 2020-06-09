@@ -11,7 +11,8 @@ function TodoApp() {
   const todoList = new TodoList({
     onDelete: onDelete,
     onComplete: onComplete,
-    onEdit: onEdit
+    onStartEditing: onStartEditing,
+    onSaveEditing: onSaveEditing
   });
 
   function onAdd (event, todoTitle) {
@@ -59,18 +60,35 @@ function TodoApp() {
     todoList.setState(todoItems);
   }
 
-  function onEdit(event) {
+  function onStartEditing(event) {
     event.preventDefault();
     if (!event.target.classList.contains("label")) {
       return;
     }
-    edit(event.target.dataset.id);
+    startEditing(event.target.dataset.id);
   }
 
-  function edit(id) {
+  function startEditing(id) {
     for (let index in todoItems) {
       if (todoItems[index].id + "" === id + "") {
         todoItems[index].isBeingEdited = true;
+      }
+    }
+    todoList.setState(todoItems);
+  }
+
+  function onSaveEditing(event) {
+    if (!(event.target.classList.contains("edit") && event.key === KEY_TYPE.ENTER)) {
+      return;
+    }
+    saveEditing(event.target.dataset.id, event.target.value);
+  }
+
+  function saveEditing(id, newTodoTitle) {
+    for (let index in todoItems) {
+      if (todoItems[index].id + "" === id + "") {
+        todoItems[index].title = newTodoTitle;
+        todoItems[index].isBeingEdited = false;
       }
     }
     todoList.setState(todoItems);
@@ -97,12 +115,13 @@ class TodoInput {
 
 class TodoList {
 
-  constructor({ onDelete, onComplete, onEdit }) {
+  constructor({ onDelete, onComplete, onStartEditing, onSaveEditing }) {
     const $todoList = document.getElementById("todo-list");
 
     $todoList.addEventListener(EVENT_TYPE.CLICK, onDelete);
     $todoList.addEventListener(EVENT_TYPE.CLICK, onComplete);
-    $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, onEdit);
+    $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, onStartEditing);
+    $todoList.addEventListener(EVENT_TYPE.KEY_PRESS, onSaveEditing);
 
     this.render = todoItems => {
       $todoList.innerHTML = todoItems.map(todoItem => makeTodoItemTemplate(todoItem)).join("");

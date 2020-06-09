@@ -27,7 +27,7 @@ const makeTodoItemTemplateBeingEdited = todoItem => `
       <label class="label" data-id="` + todoItem.id + `">` + todoItem.title + `</label>
       <button class="destroy" data-id="` + todoItem.id + `"></button>
     </div>
-    <input class="edit" placeholder="` + todoItem.title + `">
+    <input class="edit" data-id="` + todoItem.id + `" placeholder="` + todoItem.title + `">
   </li>`;
 
 const makeTodoItemTemplateCompleted = todoItem => `
