@@ -12,7 +12,8 @@ function TodoApp() {
     onDelete: onDelete,
     onComplete: onComplete,
     onStartEditing: onStartEditing,
-    onSaveEditing: onSaveEditing
+    onSaveEditing: onSaveEditing,
+    onCancleEditing: onCancleEditing
   });
 
   function onAdd (event, todoTitle) {
@@ -93,6 +94,22 @@ function TodoApp() {
     }
     todoList.setState(todoItems);
   }
+
+  function onCancleEditing(event) {
+    if (!(event.target.classList.contains("edit") && event.key === KEY_TYPE.ESC)) {
+      return;
+    }
+    cancleEditing(event.target.dataset.id);
+  }
+
+  function cancleEditing(id) {
+    for (let index in todoItems) {
+      if (todoItems[index].id + "" === id + "") {
+        todoItems[index].isBeingEdited = false;
+      }
+    }
+    todoList.setState(todoItems);
+  }
 };
 
 class TodoInput {
@@ -115,13 +132,14 @@ class TodoInput {
 
 class TodoList {
 
-  constructor({ onDelete, onComplete, onStartEditing, onSaveEditing }) {
+  constructor({ onDelete, onComplete, onStartEditing, onSaveEditing, onCancleEditing }) {
     const $todoList = document.getElementById("todo-list");
 
     $todoList.addEventListener(EVENT_TYPE.CLICK, onDelete);
     $todoList.addEventListener(EVENT_TYPE.CLICK, onComplete);
     $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, onStartEditing);
     $todoList.addEventListener(EVENT_TYPE.KEY_PRESS, onSaveEditing);
+    $todoList.addEventListener(EVENT_TYPE.KEY_DOWN, onCancleEditing);
 
     this.render = todoItems => {
       $todoList.innerHTML = todoItems.map(todoItem => makeTodoItemTemplate(todoItem)).join("");
