@@ -56,7 +56,7 @@ function TodoApp() {
 
     this.getFilter = () => this.filter;
 
-    this.init = async () => {
+    this.init = () => {
         this.todoList = new TodoView(this);
         this.todoInput = new TodoInput(this);
         this.$todoInput.addEventListener("keydown", this.todoInput.onAdd);
@@ -68,7 +68,7 @@ function TodoApp() {
         this.$todoList.addEventListener("focusout", this.todoInput.onEndEdit);
         this.$todoList.addEventListener("keydown", this.todoInput.onEndEdit);
 
-        await this.update();
+        this.update().then();
     };
 }
 

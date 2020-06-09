@@ -1,6 +1,6 @@
 import {api} from "../api/index.js";
 
-export function TodoInput({update, switchComplete, openEdit, saveEdit, abortEdit, setFilter}) {
+export function TodoInput({update, openEdit, saveEdit, abortEdit, setFilter}) {
     this.onAdd = async event => {
         const $newTodoItem = event.target;
 
@@ -11,12 +11,13 @@ export function TodoInput({update, switchComplete, openEdit, saveEdit, abortEdit
         }
     };
 
-    this.onComplete = event => {
+    this.onComplete = async event => {
         const $target = event.target;
 
         if ($target.classList.contains("toggle")) {
             const id = $target.closest("li").dataset.id;
-            switchComplete(id);
+            await api.todoList.toggle(id).then();
+            await update();
         }
     };
 

@@ -1,5 +1,5 @@
 const method = {
-    putWithContent(content) {
+    post(content) {
         return {
             method: 'POST',
             headers: {
@@ -36,13 +36,13 @@ export const api = (() => {
             return requestWithJsonData(url);
         },
         add(content) {
-            return request(url, method.putWithContent(content));
+            return request(url, method.post(content));
         },
         delete(todoId) {
             return request(url + '/' + todoId, method.delete());
         },
         toggle(todoId) {
-            return request(url + '/' + todoId, method.put());
+            return request(url + '/' + todoId + '/toggle', method.put());
         }
     };
 
