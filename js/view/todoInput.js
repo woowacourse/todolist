@@ -1,12 +1,12 @@
-import {todoItem} from "../data/item.js";
+import {api} from "../api/index.js";
 
-export function TodoInput({addItem, switchComplete, openEdit, saveEdit, abortEdit, deleteItem, setFilter}) {
-    this.onAdd = event => {
+export function TodoInput({update, switchComplete, openEdit, saveEdit, abortEdit, deleteItem, setFilter}) {
+    this.onAdd = async event => {
         const $newTodoItem = event.target;
 
         if (event.key === "Enter" && $newTodoItem.value) {
-            addItem(todoItem("#" + Math.random(), $newTodoItem.value, false, false));
-
+            await api.todoList.add($newTodoItem.value).then();
+            update();
             $newTodoItem.value = "";
         }
     };

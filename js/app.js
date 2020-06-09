@@ -12,19 +12,14 @@ function TodoApp() {
     this.$todoCount = document.querySelector("#todo-count");
     this.$filters = document.querySelector("#filters");
 
-    this.findAll = async () => {
+    this.update = async () => {
         await api.todoList.add("잠자기").then();
-        api.todoList.findAll().then(jsonData => {
+        await api.todoList.findAll().then(jsonData => {
             this.todoItems = jsonData.map(item =>
                 todoItem(item['_id'], item['content'], item['isCompleted'], false));
             console.log(this.todoItems);
             this.todoList.render(this.todoItems);
         });
-    };
-
-    this.addItem = item => {
-        this.todoItems.push(item);
-        this.todoList.render(this.todoItems);
     };
 
     this.switchComplete = id => {
@@ -67,18 +62,19 @@ function TodoApp() {
 
     this.getFilter = () => this.filter;
 
-    this.init = () => {
-        this.findAll();
+    this.init = async () => {
         this.todoList = new TodoView(this);
         this.todoInput = new TodoInput(this);
-
         this.$todoInput.addEventListener("keydown", this.todoInput.onAdd);
+
         this.$todoList.addEventListener("click", this.todoInput.onComplete);
         this.$todoList.addEventListener("dblclick", this.todoInput.onEdit);
         this.$todoList.addEventListener("click", this.todoInput.onDelete);
         this.$filters.addEventListener("click", this.todoInput.onFilter);
         this.$todoList.addEventListener("focusout", this.todoInput.onEndEdit);
         this.$todoList.addEventListener("keydown", this.todoInput.onEndEdit);
+
+        await this.update();
     };
 }
 
