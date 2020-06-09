@@ -1,12 +1,12 @@
 import {api} from "../api/index.js";
 
-export function TodoInput({update, switchComplete, openEdit, saveEdit, abortEdit, deleteItem, setFilter}) {
+export function TodoInput({update, switchComplete, openEdit, saveEdit, abortEdit, setFilter}) {
     this.onAdd = async event => {
         const $newTodoItem = event.target;
 
         if (event.key === "Enter" && $newTodoItem.value) {
             await api.todoList.add($newTodoItem.value).then();
-            update();
+            await update();
             $newTodoItem.value = "";
         }
     };
@@ -47,12 +47,13 @@ export function TodoInput({update, switchComplete, openEdit, saveEdit, abortEdit
         }
     };
 
-    this.onDelete = event => {
+    this.onDelete = async event => {
         const $target = event.target;
 
         if ($target.classList.contains("destroy")) {
             const id = $target.closest("li").dataset.id;
-            deleteItem(id);
+            await api.todoList.delete(id).then();
+            await update();
         }
     };
 

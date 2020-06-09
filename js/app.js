@@ -13,7 +13,6 @@ function TodoApp() {
     this.$filters = document.querySelector("#filters");
 
     this.update = async () => {
-        await api.todoList.add("잠자기").then();
         await api.todoList.findAll().then(jsonData => {
             this.todoItems = jsonData.map(item =>
                 todoItem(item['_id'], item['content'], item['isCompleted'], false));
@@ -47,11 +46,6 @@ function TodoApp() {
 
     this.abortEdit = () => {
         this.todoItems.forEach(item => item.edit = false);
-        this.todoList.render(this.todoItems);
-    };
-
-    this.deleteItem = id => {
-        this.todoItems = this.todoItems.filter(item => !(item.id === id));
         this.todoList.render(this.todoItems);
     };
 
