@@ -1,3 +1,3 @@
-import TodoApp from "./TodoApp.js";
+import TodoApp from './TodoApp.js';
 
-const todoApp = new TodoApp();
+new TodoApp();
