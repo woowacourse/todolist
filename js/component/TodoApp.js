@@ -3,9 +3,11 @@ import {TodoInput} from "./TodoInput.js";
 import {TodoItem} from "./TodoItem.js";
 import {TodoCount} from "./TodoCount.js";
 import {TodoFilter} from "./TodoFilter.js";
+import {ALL_FILTER} from "../constant/filter.js";
 
 export function TodoApp() {
   this.todoItems = [new TodoItem("예시입니다.")];
+  this.todoFilter = ALL_FILTER;
 
   this.setItems = (updatedItems) => {
     this.todoItems = updatedItems;
@@ -17,15 +19,11 @@ export function TodoApp() {
     this.render();
   };
 
-  const filters = new TodoFilter(this.setFilter);
-
-  this.todoFilter = filters.getFilter();
-
   this.render = () => {
     this.todoList.render(this.todoItems, this.todoFilter);
     const showItemCount = this.todoItems.filter(item => this.todoFilter.expression(item)).length;
     this.todoCount.render(showItemCount);
-    filters.render(this.todoFilter);
+    this.todoFilters.render(this.todoFilter);
   };
 
   this.addItem = (content) => {
@@ -53,10 +51,9 @@ export function TodoApp() {
     this.setItems(updatedItems);
   };
 
+  this.todoFilters = new TodoFilter(this.setFilter);
   this.todoList = new TodoList(this.toggleComplete, this.deleteItem, this.toggleEdit, this.saveEdit);
-
   this.todoCount = new TodoCount();
-
   new TodoInput(this.addItem);
 
   this.render();

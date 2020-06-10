@@ -3,7 +3,6 @@ import {EVENT_TYPE} from "../constant/event.js";
 import {COMPLETED_FILTER, ACTIVE_FILTER, ALL_FILTER} from "../constant/filter.js";
 import {FILTER_CLASS} from "../constant/filter.js";
 
-
 export function TodoFilter(changeFilter) {
   const $filters = document.querySelector(".filters");
 
