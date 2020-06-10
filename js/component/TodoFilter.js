@@ -34,9 +34,10 @@ export function TodoFilter(changeFilter) {
 
   this.filterHandler = (event) => {
     const $target = event.target;
-    if ($target.tagName === "A") {
-      changeFilter(this.getFilter($target.href));
+    if (!$target.classList.contains("filter")) {
+      return;
     }
+    changeFilter(this.getFilter($target.href));
   };
 
   this.render = (selectedFilter) => {

@@ -1,3 +1,1 @@
-export const todoCountTemplate = (count) => {
-  return `<span class="todo-count">총 <strong>${count}</strong> 개</span>`;
-};
+export const todoCountTemplate = (count) => `<span class="todo-count">총 <strong>${count}</strong> 개</span>`;

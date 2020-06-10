@@ -10,7 +10,6 @@ export function TodoApp() {
   this.setItems = (updatedItems) => {
     this.todoItems = updatedItems;
     this.render();
-
   };
 
   this.setFilter = (updatedFilter) => {
