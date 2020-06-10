@@ -2,6 +2,7 @@ import { TODO_ITEM_STATE } from './utils/Constants.js';
 import TodoInput from './views/TodoInput.js';
 import TodoList from './views/TodoList.js';
 import TodoItem from './views/TodoItem.js';
+import TodoCount from './views/TodoCount.js';
 
 class TodoApp {
     constructor() {
@@ -12,6 +13,7 @@ class TodoApp {
             onToggleCompleted: this.onToggleCompleted.bind(this),
             onDelete: this.onDelete.bind(this),
         });
+        this.todoCount = new TodoCount(this.todoItems.length);
     }
 
     onAdd(contents) {
@@ -23,7 +25,7 @@ class TodoApp {
     onToggleCompleted(id) {
         const updatedItems = this.todoItems.map((todoItem) => {
             if (todoItem.id === Number(id)) {
-                todoItem.toggle();
+                todoItem.toggleCompleted();
             }
             return todoItem;
         });
@@ -38,6 +40,7 @@ class TodoApp {
     setState(updatedItems) {
         this.todoItems = updatedItems;
         this.todoList.render(updatedItems);
+        this.todoCount.render(updatedItems.length);
     }
 }
 

@@ -1,5 +1,5 @@
 import { todoItemTemplate } from '../utils/Templates.js';
-import { EVENT_TYPE, TODO_CLASS_NAME, ELEMENT_TYPE } from '../utils/Constants.js';
+import { EVENT_TYPE, TODO_CLASS_NAME, ELEMENT_TYPE, WORD_TYPE } from '../utils/Constants.js';
 
 class TodoList {
     constructor(todoItems, { onToggleCompleted, onDelete }) {
@@ -9,7 +9,7 @@ class TodoList {
     }
 
     render(todoItems) {
-        this.$todoList.innerHTML = todoItems.map((todoItem) => todoItemTemplate(todoItem)).join('');
+        this.$todoList.innerHTML = todoItems.map((todoItem) => todoItemTemplate(todoItem)).join(WORD_TYPE.EMPTY);
     }
 
     addEventListeners(onToggleCompleted, onDelete) {
