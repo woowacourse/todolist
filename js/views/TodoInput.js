@@ -3,12 +3,10 @@ import { EVENT_TYPE, KEY_TYPE, WORD_TYPE } from '../utils/Constants.js';
 class TodoInput {
     constructor({ onAdd }) {
         this.$todoInput = document.querySelector('#new-todo-title');
-        this.onAdd = onAdd;
-
-        this.$todoInput.addEventListener(EVENT_TYPE.KEY_DOWN, this.addTodoItem);
+        this.$todoInput.addEventListener(EVENT_TYPE.KEY_DOWN, (event) => this.addTodoItem(event, onAdd));
     }
 
-    addTodoItem = (event) => {
+    addTodoItem(event, onAdd) {
         if (event.key !== KEY_TYPE.ENTER) {
             return;
         }
@@ -16,9 +14,9 @@ class TodoInput {
         if ($newTodoTarget.value.trim(WORD_TYPE.BLANK).length === 0) {
             return;
         }
-        this.onAdd($newTodoTarget.value);
+        onAdd($newTodoTarget.value);
         $newTodoTarget.value = WORD_TYPE.EMPTY;
-    };
+    }
 }
 
 export default TodoInput;
