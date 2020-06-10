@@ -1,10 +1,10 @@
 import { todoItemTemplate } from '../utils/Templates.js';
-import { EVENT_TYPE, TODO_CLASS_NAME } from '../utils/Constants.js';
+import { EVENT_TYPE, TODO_CLASS_NAME, ELEMENT_TYPE } from '../utils/Constants.js';
 
 class TodoList {
-    constructor(todoItems, { onToggleCompleted }) {
+    constructor(todoItems, { onToggleCompleted, onDelete }) {
         this.$todoList = document.querySelector('#todo-list');
-        this.addEventListeners(onToggleCompleted);
+        this.addEventListeners(onToggleCompleted, onDelete);
         this.render(todoItems);
     }
 
@@ -12,8 +12,11 @@ class TodoList {
         this.$todoList.innerHTML = todoItems.map((todoItem) => todoItemTemplate(todoItem)).join('');
     }
 
-    addEventListeners(onToggleCompleted) {
-        this.$todoList.addEventListener(EVENT_TYPE.CLICK, (event) => this.toggleCompleted(event, onToggleCompleted));
+    addEventListeners(onToggleCompleted, onDelete) {
+        this.$todoList.addEventListener(EVENT_TYPE.CLICK, (event) => {
+            this.toggleCompleted(event, onToggleCompleted);
+            this.deleteItem(event, onDelete);
+        });
     }
 
     toggleCompleted(event, onToggleCompleted) {
@@ -21,8 +24,17 @@ class TodoList {
         if (!$target.classList.contains(TODO_CLASS_NAME.TOGGLE)) {
             return;
         }
-        const $todoItem = $target.closest('li');
+        const $todoItem = $target.closest(ELEMENT_TYPE.LIST);
         onToggleCompleted($todoItem.dataset.id);
+    }
+
+    deleteItem(event, onDelete) {
+        const $target = event.target;
+        if (!$target.classList.contains(TODO_CLASS_NAME.DESTROY)) {
+            return;
+        }
+        const $todoItem = $target.closest(ELEMENT_TYPE.LIST);
+        onDelete($todoItem.dataset.id);
     }
 }
 

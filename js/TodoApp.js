@@ -8,7 +8,10 @@ class TodoApp {
         this.todoItems = [];
 
         this.todoInput = new TodoInput({ onAdd: this.onAdd.bind(this) });
-        this.todoList = new TodoList(this.todoItems, { onToggleCompleted: this.onToggleCompleted.bind(this) });
+        this.todoList = new TodoList(this.todoItems, {
+            onToggleCompleted: this.onToggleCompleted.bind(this),
+            onDelete: this.onDelete.bind(this),
+        });
     }
 
     onAdd(contents) {
@@ -28,7 +31,8 @@ class TodoApp {
     }
 
     onDelete(id) {
-        const updatedItems = this.todoItems.
+        const updatedItems = this.todoItems.filter((todoItem) => todoItem.id !== Number(id));
+        this.setState(updatedItems);
     }
 
     setState(updatedItems) {
