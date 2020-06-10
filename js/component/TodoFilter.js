@@ -2,6 +2,7 @@ import {todoFilterTemplate} from "../templates/TodoFilterTemplate.js";
 import {EVENT_TYPE} from "../constant/event.js";
 import {COMPLETED_FILTER, ACTIVE_FILTER, ALL_FILTER} from "../constant/filter.js";
 import {FILTER_CLASS} from "../constant/filter.js";
+import {eventUtil} from "../util/event.js";
 
 export function TodoFilter(changeFilter) {
   const $filters = document.querySelector(".filters");
@@ -16,7 +17,7 @@ export function TodoFilter(changeFilter) {
 
   this.filterHandler = (event) => {
     const $target = event.target;
-    if (!$target.classList.contains(FILTER_CLASS.filter)) {
+    if (!eventUtil.hasClass($target, FILTER_CLASS.filter)) {
       return;
     }
     changeFilter(this.getFilter($target.href));

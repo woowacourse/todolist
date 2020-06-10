@@ -1,6 +1,7 @@
 import {KEY_TYPE, EVENT_TYPE} from "../constant/event.js";
 import {ITEM_CLASS} from "../constant/todoItem.js";
 import {SELECTOR_TYPE} from "../constant/event.js";
+import {eventUtil} from "../util/event.js"
 
 export function TodoList(toggleComplete, deleteItem, toggleEdit, saveEdit) {
   const $todoList = document.querySelector("#todo-list");
@@ -10,13 +11,11 @@ export function TodoList(toggleComplete, deleteItem, toggleEdit, saveEdit) {
     $todoList.innerHTML = itemsTemplate;
   };
 
-  const hasClass = (target, className) => target.classList.contains(className);
-
   const findSelectedItemId = (target) => target.closest(SELECTOR_TYPE.CLASS + ITEM_CLASS.ITEM).dataset.itemId;
 
   this.completeToggleHandler = (event) => {
     const $target = event.target;
-    if (!hasClass($target, ITEM_CLASS.COMPLETE_TOGGLE_BUTTON)) {
+    if (!eventUtil.hasClass($target, ITEM_CLASS.COMPLETE_TOGGLE_BUTTON)) {
       return;
     }
     toggleComplete(findSelectedItemId($target));
@@ -24,7 +23,7 @@ export function TodoList(toggleComplete, deleteItem, toggleEdit, saveEdit) {
 
   this.deleteToggleHandler = (event) => {
     const $target = event.target;
-    if (!hasClass($target, ITEM_CLASS.DELETE_BUTTON)) {
+    if (!eventUtil.hasClass($target, ITEM_CLASS.DELETE_BUTTON)) {
       return;
     }
     deleteItem(findSelectedItemId($target));
@@ -32,7 +31,7 @@ export function TodoList(toggleComplete, deleteItem, toggleEdit, saveEdit) {
 
   this.editToggleHandler = (event) => {
     const $target = event.target;
-    if (!hasClass($target, ITEM_CLASS.CONTENT)) {
+    if (!eventUtil.hasClass($target, ITEM_CLASS.CONTENT)) {
       return;
     }
     toggleEdit(findSelectedItemId($target));
@@ -43,7 +42,7 @@ export function TodoList(toggleComplete, deleteItem, toggleEdit, saveEdit) {
       return;
     }
     const $target = event.target;
-    if (!hasClass($target, ITEM_CLASS.EDIT)) {
+    if (!eventUtil.hasClass($target, ITEM_CLASS.EDIT)) {
       return;
     }
     const content = $target.value;
@@ -55,7 +54,7 @@ export function TodoList(toggleComplete, deleteItem, toggleEdit, saveEdit) {
       return;
     }
     const $target = event.target;
-    if (!hasClass($target, ITEM_CLASS.EDIT)) {
+    if (!eventUtil.hasClass($target, ITEM_CLASS.EDIT)) {
       return;
     }
     toggleEdit(findSelectedItemId($target));
