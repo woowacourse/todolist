@@ -6,7 +6,7 @@ class TodoApp {
   constructor() {
     this.todoItems = [];
     this.todoInput = new TodoInput(this.onAdd.bind(this));
-    this.todoList = new TodoList(this.onToggle.bind(this));
+    this.todoList = new TodoList(this.onToggle.bind(this), this.onDelete.bind(this));
   }
 
   onAdd(todoInputValue) {
@@ -23,6 +23,11 @@ class TodoApp {
         return todoItem;
       }
     );
+    this.setState(todoItems);
+  }
+
+  onDelete(id) {
+    const todoItems = this.todoItems.filter(todoItem => todoItem.id !== Number(id));
     this.setState(todoItems);
   }
 
