@@ -13,18 +13,21 @@ export default function TodoList({ onRemove, onCompleted, onUpdate }) {
   $todoList.addEventListener(EVENT.CLICK, event => onRemoveHandler(event))
   $todoList.addEventListener(EVENT.CLICK, event => onEditHandler(event))
 
+  const getTodoItemId = event => {
+    const $todoItem = event.target.closest("li")
+    return $todoItem.dataset.id
+  }
+
   const onRemoveHandler = event => {
     if (event.target.classList.contains("destroy")) {
-      const $todoItem = event.target.closest("li")
-      const id = $todoItem.dataset.id
+      const id = getTodoItemId(event)
       onRemove(id)
     }
   }
 
   const onCheckBoxHandler = event => {
     if (event.target.classList.contains("toggle")) {
-      const $todoItem = event.target.closest("li")
-      const id = $todoItem.dataset.id
+      const id = getTodoItemId(event)
       onCompleted(id)
     }
   }
@@ -51,8 +54,7 @@ export default function TodoList({ onRemove, onCompleted, onUpdate }) {
     }
 
     if (event.target.classList.contains("edit")) {
-      const $todoItem = event.target.closest("li")
-      const id = $todoItem.dataset.id
+      const id = getTodoItemId(event)
       const content = event.target.value
       onUpdate(id, content)
     }
