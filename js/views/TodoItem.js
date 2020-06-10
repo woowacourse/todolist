@@ -1,7 +1,11 @@
 export class TodoItem {
-  constructor(id, content, state) {
+  constructor(id, content, isCompleted) {
     this.id = id;
     this.content = content;
-    this.state = state;
+    this.isCompleted = isCompleted;
+  }
+
+  changeIsCompleted(){
+    this.isCompleted = !this.isCompleted;
   }
 }
