@@ -1,3 +1,7 @@
+import {KEY_TYPE, EVENT_TYPE} from "../constant/event.js";
+import {ITEM_CLASS} from "../constant/todoItem.js";
+import {SELECTOR_TYPE} from "../constant/event.js";
+
 export function TodoList(toggleComplete, deleteItem, toggleEdit, saveEdit) {
   const $todoList = document.querySelector("#todo-list");
 
@@ -6,66 +10,60 @@ export function TodoList(toggleComplete, deleteItem, toggleEdit, saveEdit) {
     $todoList.innerHTML = itemsTemplate;
   };
 
+  const hasClass = (target, className) => target.classList.contains(className);
+
+  const findSelectedItemId = (target) => target.closest(SELECTOR_TYPE.CLASS + ITEM_CLASS.ITEM).dataset.itemId;
+
   this.completeToggleHandler = (event) => {
     const $target = event.target;
-    if (!$target.classList.contains("toggle")) {
+    if (!hasClass($target, ITEM_CLASS.COMPLETE_TOGGLE_BUTTON)) {
       return;
     }
-    const selectedItem = $target.closest("li");
-    const itemId = selectedItem.dataset.itemId;
-    toggleComplete(itemId);
+    toggleComplete(findSelectedItemId($target));
   };
 
   this.deleteToggleHandler = (event) => {
     const $target = event.target;
-    if (!$target.classList.contains("destroy")) {
+    if (!hasClass($target, ITEM_CLASS.DELETE_BUTTON)) {
       return;
     }
-    const selectedItem = $target.closest("li");
-    const itemId = selectedItem.dataset.itemId;
-    deleteItem(itemId);
+    deleteItem(findSelectedItemId($target));
   };
 
   this.editToggleHandler = (event) => {
     const $target = event.target;
-    if (!$target.classList.contains("label")) {
+    if (!hasClass($target, ITEM_CLASS.CONTENT)) {
       return;
     }
-    const selectedItem = $target.closest("li");
-    const itemId = selectedItem.dataset.itemId;
-    toggleEdit(itemId);
+    toggleEdit(findSelectedItemId($target));
   };
 
   this.saveEditHandler = (event) => {
-    if (event.key !== "Enter") {
+    if (event.key !== KEY_TYPE.ENTER) {
       return;
     }
     const $target = event.target;
-    if (!$target.classList.contains("edit")) {
+    if (!hasClass($target, ITEM_CLASS.EDIT)) {
       return;
     }
-    const selectedItem = $target.closest("li");
-    const itemId = selectedItem.dataset.itemId;
     const content = $target.value;
-    saveEdit(itemId, content);
+    saveEdit(findSelectedItemId($target), content);
   };
 
   this.cancelEditHandler = (event) => {
-    if (event.key !== "Escape") {
+    if (event.key !== KEY_TYPE.ESCAPE) {
       return;
     }
     const $target = event.target;
-    if (!$target.classList.contains("edit")) {
+    if (!hasClass($target, ITEM_CLASS.EDIT)) {
       return;
     }
-    const selectedItem = $target.closest("li");
-    const itemId = selectedItem.dataset.itemId;
-    toggleEdit(itemId);
+    toggleEdit(findSelectedItemId($target));
   };
 
-  $todoList.addEventListener("click", this.completeToggleHandler);
-  $todoList.addEventListener("click", this.deleteToggleHandler);
-  $todoList.addEventListener("dblclick", this.editToggleHandler);
-  $todoList.addEventListener("keyup", this.saveEditHandler);
-  $todoList.addEventListener("keyup", this.cancelEditHandler);
+  $todoList.addEventListener(EVENT_TYPE.CLICK, this.completeToggleHandler);
+  $todoList.addEventListener(EVENT_TYPE.CLICK, this.deleteToggleHandler);
+  $todoList.addEventListener(EVENT_TYPE.DB_CLICK, this.editToggleHandler);
+  $todoList.addEventListener(EVENT_TYPE.KEY_UP, this.saveEditHandler);
+  $todoList.addEventListener(EVENT_TYPE.KEY_UP, this.cancelEditHandler);
 }

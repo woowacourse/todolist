@@ -1,22 +1,25 @@
+import {KEY_TYPE, EVENT_TYPE} from "../constant/event.js";
+import {ERROR_MESSAGE} from "../constant/event.js";
+
 export function TodoInput(addItem) {
   const $todoInput = document.querySelector("#new-todo-title");
 
   const initInput = () => {
-    $todoInput.value = "";
+    $todoInput.value = '';
   };
 
   this.addItemEventHandler = (event) => {
-    if (event.key !== "Enter") {
+    if (event.key !== KEY_TYPE.ENTER) {
       return;
     }
     const content = $todoInput.value;
     if (!content) {
-      alert("값을 입력해주세요.");
+      alert(ERROR_MESSAGE.NEED_INPUT);
       return;
     }
     addItem(content);
     initInput();
   };
 
-  $todoInput.addEventListener("keyup", this.addItemEventHandler);
+  $todoInput.addEventListener(EVENT_TYPE.KEY_UP, this.addItemEventHandler);
 }

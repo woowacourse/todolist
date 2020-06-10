@@ -1,25 +1,8 @@
 import {todoFilterTemplate} from "../templates/TodoFilterTemplate.js";
+import {EVENT_TYPE} from "../constant/event.js";
+import {COMPLETED_FILTER, ACTIVE_FILTER, ALL_FILTER} from "../constant/filter.js";
+import {FILTER_CLASS} from "../constant/filter.js";
 
-const COMPLETED_FILTER = {
-  name: "completed",
-  condition: "completed",
-  content: "완료한 일",
-  expression: item => item.isComplete(),
-};
-
-const ACTIVE_FILTER = {
-  name: "active",
-  condition: "active",
-  content: "해야할 일",
-  expression: item => !item.isComplete(),
-};
-
-const ALL_FILTER = {
-  name: "all",
-  condition: "all",
-  content: "전체 보기",
-  expression: item => true,
-};
 
 export function TodoFilter(changeFilter) {
   const $filters = document.querySelector(".filters");
@@ -34,7 +17,7 @@ export function TodoFilter(changeFilter) {
 
   this.filterHandler = (event) => {
     const $target = event.target;
-    if (!$target.classList.contains("filter")) {
+    if (!$target.classList.contains(FILTER_CLASS.filter)) {
       return;
     }
     changeFilter(this.getFilter($target.href));
@@ -49,5 +32,5 @@ export function TodoFilter(changeFilter) {
     $filters.innerHTML = filterTemplate;
   };
 
-  $filters.addEventListener("click", this.filterHandler);
+  $filters.addEventListener(EVENT_TYPE.CLICK, this.filterHandler);
 }
