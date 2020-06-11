@@ -2,6 +2,8 @@ import { TodoItem } from "./views/TodoItem.js";
 import { TodoInput } from "./views/TodoInput.js";
 import { TodoList } from "./views/TodoList.js";
 import { TodoCount } from "./views/TodoCount.js";
+import { TodoFilter } from "./views/TodoFilter.js";
+import { FILTER } from "./utils/Constracts.js";
 
 class TodoApp {
   constructor() {
@@ -14,13 +16,13 @@ class TodoApp {
       this.onCancelEdit.bind(this)
     );
     this.todoCount = new TodoCount();
+    this.todoFilter = new TodoFilter(this.onFilter.bind(this));
   }
 
   onAdd(todoInputValue) {
     const todoItem = new TodoItem(this.todoItems.length, todoInputValue, false);
     this.todoItems.push(todoItem);
     this.setState(this.todoItems);
-    this.setCount(this.todoItems.length);
   }
 
   onToggle(id) {
@@ -30,6 +32,7 @@ class TodoApp {
       }
       return todoItem;
     });
+    console.log(todoItems);
     this.setState(todoItems);
   }
 
@@ -53,12 +56,30 @@ class TodoApp {
       (todoItem) => todoItem.id !== Number(id)
     );
     this.setState(todoItems);
-    this.setCount(this.todoItems.length);
   }
 
-  setState(todoItems) {
-    this.todoItems = todoItems;
-    this.todoList.render(todoItems);
+  onFilter(filter) {
+    this.setState(this.todoItems, filter);
+  }
+
+  setState(todoItems, filter) {
+    if (filter === FILTER.ACTIVE) {
+      const activeItems = this.todoItems.filter(
+        (todoItem) => todoItem.isCompleted === false
+      );
+      this.todoList.render(activeItems);
+      this.todoCount.render(activeItems.length);
+    } else if (filter === FILTER.COMPLETED) {
+      const completedItems = this.todoItems.filter(
+        (todoItem) => todoItem.isCompleted === true
+      );
+      this.todoList.render(completedItems);
+      this.setCount(completedItems.length);
+    } else {
+      this.todoItems = todoItems;
+      this.todoList.render(todoItems);
+      this.setCount(this.todoItems.length);
+    }
   }
 
   setCount(count) {
