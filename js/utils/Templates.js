@@ -7,3 +7,7 @@ export const todoListRender = (todoItem) =>
   </div>
   <input class="edit" value="${todoItem.content}">
   </li>`
+
+export const countRender = (count) => `
+  총 <strong>${count}</strong> 개
+`

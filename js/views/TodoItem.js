@@ -5,7 +5,7 @@ export class TodoItem {
     this.isCompleted = isCompleted;
   }
 
-  changeIsCompleted(){
+  changeIsCompleted() {
     this.isCompleted = !this.isCompleted;
   }
 }
