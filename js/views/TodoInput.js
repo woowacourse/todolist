@@ -1,4 +1,4 @@
-import {ERROR_MESSAGE, EVENT_TYPE, KEY_CODE} from "../utils/Constracts.js";
+import { ERROR_MESSAGE, EVENT_TYPE, KEY_CODE } from "../utils/Constracts.js";
 
 export class TodoInput {
   constructor(onAdd) {

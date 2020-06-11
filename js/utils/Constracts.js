@@ -1,10 +1,12 @@
 export const KEY_CODE = {
-  ENTER: 'Enter'
+  ENTER: 'Enter',
+  ESC: "Escape"
 };
 
 export const EVENT_TYPE = {
   CLICK: "click",
-  KEY_DOWN: "keydown"
+  KEY_DOWN: "keydown",
+  DOUBLE_CLICK: "dblclick"
 }
 
 export const ERROR_MESSAGE = {
@@ -12,7 +14,10 @@ export const ERROR_MESSAGE = {
 }
 
 export const CLASS_TYPE = {
-  TOGGLE: "toggle"
+  TOGGLE: "toggle",
+  EDITING: "editing",
+  LABEL: "label",
+  DESTROY: "destroy"
 }
 
 export const TAG_TYPE = {
