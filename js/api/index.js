@@ -26,19 +26,26 @@ const METHOD = {
 };
 
 const api = (() => {
-  const JsonAfterResponse = (uri, config) => fetch(uri, config).then(data => data.json());
+  const jsonAfterResponse = (uri, config) => fetch(uri, config).then(data => data.json());
+  const response = (uri, config) => fetch(uri, config);
 
   const todoItem = {
     create(todoItem) {
-      return JsonAfterResponse(
+      return jsonAfterResponse(
         "https://todo-api.roto.codes/rutgo",
         METHOD.POST(todoItem)
       );
     },
     get() {
-      return JsonAfterResponse(
+      return jsonAfterResponse(
         "https://todo-api.roto.codes/rutgo",
         METHOD.GET()
+      );
+    },
+    delete(id) {
+      return response(
+        "https://todo-api.roto.codes/rutgo/" + id,
+        METHOD.DELETE()
       );
     }
   };

@@ -55,10 +55,8 @@ class TodoApp {
   }
 
   onDelete(id) {
-    const todoItems = this.todoItems.filter(
-      (todoItem) => todoItem.id !== Number(id)
-    );
-    this.setState(todoItems);
+    api.todoItem.delete(id);
+    this.setState();
   }
 
   onFilter(filter) {
@@ -67,7 +65,6 @@ class TodoApp {
 
   async setState(todoItems, filter) {
     const todoItemsResponse = await api.todoItem.get();
-    console.log(todoItemsResponse);
     if (filter === FILTER.ACTIVE) {
       const activeItems = this.todoItems.filter(
         (todoItem) => todoItem.isCompleted === false
@@ -84,7 +81,6 @@ class TodoApp {
       this.todoItems = todoItemsResponse.map(
         (todoItem) => new TodoItem(todoItem)
       );
-    console.log(this.todoList);
     }
     this.todoList.render(this.todoItems);
     this.setCount(this.todoItems.length);
