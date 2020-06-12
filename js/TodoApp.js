@@ -4,6 +4,7 @@ import { TodoList } from "./views/TodoList.js";
 import { TodoCount } from "./views/TodoCount.js";
 import { TodoFilter } from "./views/TodoFilter.js";
 import { FILTER } from "./utils/Constracts.js";
+import api from "./api/index.js";
 
 class TodoApp {
   constructor() {
@@ -19,9 +20,12 @@ class TodoApp {
     this.todoFilter = new TodoFilter(this.onFilter.bind(this));
   }
 
-  onAdd(todoInputValue) {
-    const todoItem = new TodoItem(this.todoItems.length, todoInputValue, false);
-    this.todoItems.push(todoItem);
+  async onAdd(todoInputValue) {
+    const todoItem = {
+      content: todoInputValue,
+    };
+    await api.todoItem.create(todoItem).catch((error) => alert.log(error));
+
     this.setState(this.todoItems);
   }
 
@@ -32,7 +36,6 @@ class TodoApp {
       }
       return todoItem;
     });
-    console.log(todoItems);
     this.setState(todoItems);
   }
 
@@ -48,7 +51,7 @@ class TodoApp {
 
   onCancelEdit() {
     const todoItems = this.todoItems;
-    this.setState(todoItems);
+    this.setState(todoItems).catch((error) => alert(error));
   }
 
   onDelete(id) {
@@ -62,7 +65,9 @@ class TodoApp {
     this.setState(this.todoItems, filter);
   }
 
-  setState(todoItems, filter) {
+  async setState(todoItems, filter) {
+    const todoItemsResponse = await api.todoItem.get();
+    console.log(todoItemsResponse);
     if (filter === FILTER.ACTIVE) {
       const activeItems = this.todoItems.filter(
         (todoItem) => todoItem.isCompleted === false
@@ -76,10 +81,13 @@ class TodoApp {
       this.todoList.render(completedItems);
       this.setCount(completedItems.length);
     } else {
-      this.todoItems = todoItems;
-      this.todoList.render(todoItems);
-      this.setCount(this.todoItems.length);
+      this.todoItems = todoItemsResponse.map(
+        (todoItem) => new TodoItem(todoItem)
+      );
+    console.log(this.todoList);
     }
+    this.todoList.render(this.todoItems);
+    this.setCount(this.todoItems.length);
   }
 
   setCount(count) {
