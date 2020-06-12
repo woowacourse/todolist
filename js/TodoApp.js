@@ -26,17 +26,12 @@ class TodoApp {
     };
     await api.todoItem.create(todoItem).catch((error) => alert.log(error));
 
-    this.setState(this.todoItems);
+    this.setState(this.todoItems).catch((error) => alert(error));
   }
 
   onToggle(id) {
-    const todoItems = this.todoItems.map((todoItem) => {
-      if (todoItem.id === Number(id)) {
-        todoItem.changeIsCompleted();
-      }
-      return todoItem;
-    });
-    this.setState(todoItems);
+    api.todoItem.toggle(id).catch((error) => alert(error));
+    this.setState().catch((error) => alert(error));
   }
 
   onEdit(todoItemValue, id) {
@@ -46,7 +41,7 @@ class TodoApp {
       }
       return todoItem;
     });
-    this.setState(todoItems);
+    this.setState(todoItems).catch((error) => alert(error));
   }
 
   onCancelEdit() {
@@ -55,12 +50,12 @@ class TodoApp {
   }
 
   onDelete(id) {
-    api.todoItem.delete(id);
-    this.setState();
+    api.todoItem.delete(id).catch((error) => alert(error));
+    this.setState().catch((error) => alert(error));
   }
 
   onFilter(filter) {
-    this.setState(this.todoItems, filter);
+    this.setState(this.todoItems, filter).catch((error) => alert(error));
   }
 
   async setState(todoItems, filter) {

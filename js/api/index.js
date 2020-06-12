@@ -6,7 +6,7 @@ const METHOD = {
   },
   POST(todoItem) {
     return {
-      method: "post",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -26,7 +26,8 @@ const METHOD = {
 };
 
 const api = (() => {
-  const jsonAfterResponse = (uri, config) => fetch(uri, config).then(data => data.json());
+  const jsonAfterResponse = (uri, config) =>
+    fetch(uri, config).then((data) => data.json());
   const response = (uri, config) => fetch(uri, config);
 
   const todoItem = {
@@ -47,7 +48,13 @@ const api = (() => {
         "https://todo-api.roto.codes/rutgo/" + id,
         METHOD.DELETE()
       );
-    }
+    },
+    toggle(id) {
+      return response(
+        "https://todo-api.roto.codes/rutgo/" + id + "/toggle",
+        METHOD.PUT()
+      );
+    },
   };
   return {
     todoItem,

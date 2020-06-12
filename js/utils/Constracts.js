@@ -8,6 +8,7 @@ export const EVENT_TYPE = {
   KEY_DOWN: "keydown",
   DOUBLE_CLICK: "dblclick",
 };
+
 export const FILTER = {
   ALL: "all",
   ACTIVE: "active",
