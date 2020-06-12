@@ -86,4 +86,5 @@ class TodoApp {
   }
 }
 
-new TodoApp();
+new TodoApp().setState()
+  .catch((error) => alert(error));
