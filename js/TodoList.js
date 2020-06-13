@@ -1,16 +1,51 @@
-import { todoItemTemplate } from './templates.js';
+import {todoItemTemplate} from '../utils/templates.js';
+import {EVENT_TYPE, KEY} from "../utils/constants.js";
 
-// todoList 보여주는 컴포넌트
-export function TodoList() {
+export function TodoList({onEdit, onToggle, onDelete}) {
   const $todoList = document.querySelector('.todo-list');
 
   this.setState = updatedTodoItems => {
-    this.todoItems = updatedTodoItems;
-    this.render(this.todoItems);
+    this.render(updatedTodoItems);
   };
 
   this.render = items => {
     const template = items.map(todoItemTemplate);
     $todoList.innerHTML = template.join("");
   };
+
+  const onStartEditTodoItem = event => {
+    const $target = event.target;
+    const isEditing = $target.closest('li').classList.contains('editing');
+    if (isEditing) {
+      return;
+    }
+    //TODO:토글만 할 뿐인데 왜 todoItemTemplate 형식으로 바뀌는걸까
+    //TODO:토글하면 내용도 보여야 하는데 안보임. 또는 전에 입력했던적 있으면 그 텍스트가 뜸
+    $target.closest('li').classList.toggle('editing');
+  }
+
+  const onEndEditTodoItem = event => {
+    const $target = event.target;
+    if (event.key === KEY.ESC) {
+      $target.closest('li').classList.toggle('editing');
+    }
+    else if(event.key === KEY.ENTER) {
+      const input = $target.value;
+      const id = $target.closest('li').dataset.id;
+      onEdit(id, input);
+    }
+  }
+
+  const onToggleTodoItem = event => {
+
+  }
+
+  const onDeleteTodoItem = event => {
+
+  }
+
+  $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, onStartEditTodoItem);
+  $todoList.addEventListener(EVENT_TYPE.KEY_DOWN, onEndEditTodoItem);
+  $todoList.addEventListener(EVENT_TYPE.CLICK, onToggleTodoItem);
+  $todoList.addEventListener(EVENT_TYPE.CLICK, onDeleteTodoItem);
 }
