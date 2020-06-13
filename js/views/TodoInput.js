@@ -1,9 +1,9 @@
-import { EVENT_TYPE, KEY_TYPE, WORD_TYPE } from '../utils/Constants.js';
+import { EVENT_TYPE, KEY_TYPE, TEXT_TYPE } from '../utils/Constants.js';
 
 export default class TodoInput {
     constructor({ onAdd }) {
         this.$todoInput = document.querySelector('#new-todo-title');
-        this.$todoInput.addEventListener(EVENT_TYPE.KEY_DOWN, (event) => this.addTodoItem(event, onAdd));
+        this.$todoInput.addEventListener(EVENT_TYPE.KEY_PRESS, (event) => this.addTodoItem(event, onAdd));
     }
 
     addTodoItem(event, onAdd) {
@@ -11,10 +11,7 @@ export default class TodoInput {
             return;
         }
         const $newTodoTarget = event.target;
-        if ((Object.is($newTodoTarget.value.trim(WORD_TYPE.BLANK).length), 0)) {
-            return;
-        }
         onAdd($newTodoTarget.value);
-        $newTodoTarget.value = WORD_TYPE.EMPTY;
+        $newTodoTarget.value = TEXT_TYPE.EMPTY;
     }
 }

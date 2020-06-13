@@ -1,4 +1,4 @@
-import { WORD_TYPE } from '../utils/Constants.js';
+import { TEXT_TYPE } from '../utils/Constants.js';
 
 class Filter {
     constructor(name, content, { filter }) {
@@ -16,7 +16,7 @@ class Filter {
     }
 
     href() {
-        return Object.is(this.name, 'all') ? WORD_TYPE.EMPTY : this.name;
+        return Object.is(this.name, 'all') ? TEXT_TYPE.EMPTY : this.name;
     }
 }
 

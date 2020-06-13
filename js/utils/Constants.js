@@ -1,5 +1,6 @@
 export const EVENT_TYPE = {
     CLICK: 'click',
+    KEY_PRESS: 'keypress',
     KEY_DOWN: 'keydown',
     DOUBLE_CLICK: 'dblclick',
 };
@@ -20,7 +21,7 @@ export const TODO_CLASS_NAME = {
     DESTROY: 'destroy',
 };
 
-export const WORD_TYPE = {
+export const TEXT_TYPE = {
     EMPTY: '',
     BLANK: ' ',
 };
@@ -28,4 +29,5 @@ export const WORD_TYPE = {
 export const TAG_NAME = {
     LIST: 'li',
     A: 'A',
+    LABEL: 'label',
 };

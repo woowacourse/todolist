@@ -1,4 +1,4 @@
-import { EVENT_TYPE, TAG_NAME, WORD_TYPE } from '../utils/Constants.js';
+import { EVENT_TYPE, TAG_NAME, TEXT_TYPE } from '../utils/Constants.js';
 import FilterType from '../utils/FilterType.js';
 
 const todoFilterTemplate = (filter, selected) => `
@@ -8,13 +8,13 @@ const todoFilterTemplate = (filter, selected) => `
 `;
 
 export default class TodoFilter {
-    constructor(filter, { onToggleFilter }) {
+    constructor(filter, { onChangeFilter }) {
         this.filters = document.querySelector('.filters');
-        this.filters.addEventListener(EVENT_TYPE.CLICK, (event) => this.toggleFilter(event, onToggleFilter));
+        this.filters.addEventListener(EVENT_TYPE.CLICK, (event) => this.toggleFilter(event, onChangeFilter));
         this.render(filter);
     }
 
-    toggleFilter(event, onToggleFilter) {
+    toggleFilter(event, onChangeFilter) {
         const $target = event.target;
         if (!Object.is($target.tagName, TAG_NAME.A)) {
             return;
@@ -23,12 +23,12 @@ export default class TodoFilter {
         if (Object.is(filterType, undefined)) {
             return;
         }
-        onToggleFilter(filterType);
+        onChangeFilter(filterType);
     }
 
     render(filter) {
         this.filters.innerHTML = Object.values(FilterType)
             .map((filterType) => todoFilterTemplate(filterType, filterType.equals(filter)))
-            .join(WORD_TYPE.EMPTY);
+            .join(TEXT_TYPE.EMPTY);
     }
 }
