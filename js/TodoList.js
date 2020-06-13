@@ -28,8 +28,7 @@ export function TodoList({onEdit, onToggle, onDelete}) {
     const $target = event.target;
     if (event.key === KEY.ESC) {
       $target.closest('li').classList.toggle('editing');
-    }
-    else if(event.key === KEY.ENTER) {
+    } else if (event.key === KEY.ENTER) {
       const input = $target.value;
       const id = $target.closest('li').dataset.id;
       onEdit(id, input);
@@ -37,7 +36,11 @@ export function TodoList({onEdit, onToggle, onDelete}) {
   }
 
   const onToggleTodoItem = event => {
-
+    const isToggleButtonClicked = event.target.classList.contains('toggle');
+    if (!isToggleButtonClicked) {
+      return;
+    }
+    onToggle(event.target.closest('li').dataset.id);
   }
 
   const onDeleteTodoItem = event => {

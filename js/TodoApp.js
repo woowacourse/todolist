@@ -18,7 +18,7 @@ function TodoApp() {
     }
   }
 
-  function toggleById(id) {
+  const toggleById = id => {
     for (const todoItem of this.todoItems) {
       if (todoItem.id == id) {
         todoItem.toggle();
