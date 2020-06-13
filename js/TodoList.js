@@ -36,15 +36,21 @@ export function TodoList({onEdit, onToggle, onDelete}) {
   }
 
   const onToggleTodoItem = event => {
-    const isToggleButtonClicked = event.target.classList.contains('toggle');
+    const $target = event.target;
+    const isToggleButtonClicked = $target.classList.contains('toggle');
     if (!isToggleButtonClicked) {
       return;
     }
-    onToggle(event.target.closest('li').dataset.id);
+    onToggle($target.closest('li').dataset.id);
   }
 
   const onDeleteTodoItem = event => {
-
+    const $target = event.target;
+    const isDeleteButtonClicked = $target.classList.contains('destroy');
+    if (!isDeleteButtonClicked) {
+      return;
+    }
+    onDelete($target.closest('li').dataset.id);
   }
 
   $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, onStartEditTodoItem);

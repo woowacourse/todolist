@@ -27,8 +27,8 @@ function TodoApp() {
     }
   }
 
-  function deleteById(id) {
-    const itemToFind = this.todoItems.find(item => item.id === id);
+  const deleteById = id => {
+    const itemToFind = this.todoItems.find(item => item.id == id);
     const index = this.todoItems.indexOf(itemToFind);
     this.todoItems.splice(index, 1);
   }
