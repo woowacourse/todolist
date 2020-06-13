@@ -1,22 +1,24 @@
-import { todoItemTemplate } from '../utils/Templates.js';
-import { EVENT_TYPE, TODO_CLASS_NAME, ELEMENT_TYPE, WORD_TYPE } from '../utils/Constants.js';
+import { EVENT_TYPE, TODO_CLASS_NAME, TAG_NAME, WORD_TYPE } from '../utils/Constants.js';
 
-class TodoList {
+const todoItemTemplate = (todoItem) => `
+<li data-id="${todoItem.id}" class="${todoItem.state}">
+<div class="view">
+  <input class="toggle" type="checkbox" ${todoItem.isCompleted() ? 'checked' : ''}>
+  <label class="label">${todoItem.contents}</label>
+  <button class="destroy"></button>
+</div>
+<input class="edit" value="${todoItem.contents}">
+</li>
+`;
+
+export default class TodoList {
     constructor(todoItems, { onToggleCompleted, onDelete }) {
         this.$todoList = document.querySelector('#todo-list');
-        this.addEventListeners(onToggleCompleted, onDelete);
-        this.render(todoItems);
-    }
-
-    render(todoItems) {
-        this.$todoList.innerHTML = todoItems.map((todoItem) => todoItemTemplate(todoItem)).join(WORD_TYPE.EMPTY);
-    }
-
-    addEventListeners(onToggleCompleted, onDelete) {
         this.$todoList.addEventListener(EVENT_TYPE.CLICK, (event) => {
             this.toggleCompleted(event, onToggleCompleted);
             this.deleteItem(event, onDelete);
         });
+        this.render(todoItems);
     }
 
     toggleCompleted(event, onToggleCompleted) {
@@ -24,7 +26,7 @@ class TodoList {
         if (!$target.classList.contains(TODO_CLASS_NAME.TOGGLE)) {
             return;
         }
-        const $todoItem = $target.closest(ELEMENT_TYPE.LIST);
+        const $todoItem = $target.closest(TAG_NAME.LIST);
         onToggleCompleted($todoItem.dataset.id);
     }
 
@@ -33,9 +35,11 @@ class TodoList {
         if (!$target.classList.contains(TODO_CLASS_NAME.DESTROY)) {
             return;
         }
-        const $todoItem = $target.closest(ELEMENT_TYPE.LIST);
+        const $todoItem = $target.closest(TAG_NAME.LIST);
         onDelete($todoItem.dataset.id);
     }
-}
 
-export default TodoList;
+    render(todoItems) {
+        this.$todoList.innerHTML = todoItems.map(todoItemTemplate).join(WORD_TYPE.EMPTY);
+    }
+}

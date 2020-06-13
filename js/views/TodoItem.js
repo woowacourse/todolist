@@ -1,23 +1,31 @@
 import { TODO_ITEM_STATE } from '../utils/Constants.js';
 
-class TodoItem {
+export default class TodoItem {
     constructor(id, contents, state) {
         this.id = id;
         this.contents = contents;
         this.state = state;
     }
 
-    toggleCompleted() {
-        this.state = this.state === TODO_ITEM_STATE.COMPLETED ? TODO_ITEM_STATE.DOING : TODO_ITEM_STATE.COMPLETED;
+    toggle() {
+        this.state = Object.is(this.state, TODO_ITEM_STATE.COMPLETED)
+            ? TODO_ITEM_STATE.DOING
+            : TODO_ITEM_STATE.COMPLETED;
     }
 
-    isEditing() {
-        return this.state === TODO_ITEM_STATE.EDITING;
+    isSameId(id) {
+        return Object.is(this.id, id);
+    }
+
+    isNotSameId(id) {
+        return !Object.is(this.id, id);
     }
 
     isCompleted() {
-        return this.state === TODO_ITEM_STATE.COMPLETED;
+        return Object.is(this.state, TODO_ITEM_STATE.COMPLETED);
+    }
+
+    isNotCompleted() {
+        return Object.is(this.state, TODO_ITEM_STATE.DOING);
     }
 }
-
-export default TodoItem;

@@ -6,6 +6,7 @@ export const EVENT_TYPE = {
 
 export const KEY_TYPE = {
     ENTER: 'Enter',
+    ESCAPE: 'Escape',
 };
 
 export const TODO_ITEM_STATE = {
@@ -24,6 +25,7 @@ export const WORD_TYPE = {
     BLANK: ' ',
 };
 
-export const ELEMENT_TYPE = {
+export const TAG_NAME = {
     LIST: 'li',
+    A: 'A',
 };
