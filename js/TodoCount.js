@@ -1,4 +1,4 @@
-import {EVENT_TYPE} from "../utils/constants.js";
+import {EVENT_TYPE, STATUS} from "../utils/constants.js";
 
 export function TodoCount({onChangeStatus}) {
   const $totalCount = document.querySelector('.todo-count');
@@ -18,7 +18,7 @@ export function TodoCount({onChangeStatus}) {
     $activeTodosBtn.classList.remove('selected');
     $completedTodosBtn.classList.remove('selected');
     event.target.closest('a').classList.toggle('selected');
-    onChangeStatus('all');
+    onChangeStatus(STATUS.ALL);
   }
 
   const onShowActiveTodos = event => {
@@ -29,7 +29,7 @@ export function TodoCount({onChangeStatus}) {
     $allTodosBtn.classList.remove('selected');
     $completedTodosBtn.classList.remove('selected');
     event.target.closest('a').classList.toggle('selected');
-    onChangeStatus('active');
+    onChangeStatus(STATUS.ACTIVE);
   }
 
   const onShowCompletedTodos = event => {
@@ -40,7 +40,7 @@ export function TodoCount({onChangeStatus}) {
     $allTodosBtn.classList.remove('selected');
     $activeTodosBtn.classList.remove('selected');
     event.target.closest('a').classList.toggle('selected');
-    onChangeStatus('completed');
+    onChangeStatus(STATUS.COMPLETED);
   }
 
   $allTodosBtn.addEventListener(EVENT_TYPE.CLICK, onShowAllTodos);
