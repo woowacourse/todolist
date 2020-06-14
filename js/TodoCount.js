@@ -2,6 +2,7 @@ import {todoItemTemplate} from "../utils/templates.js";
 import {EVENT_TYPE} from "../utils/constants.js";
 
 export function TodoCount() {
+  const $totalCount = document.querySelector('.todo-count');
   const $allTodosBtn = document.querySelector('.all');
   const $activeTodosBtn = document.querySelector('.active');
   const $completedTodosBtn = document.querySelector('.completed');
@@ -10,8 +11,8 @@ export function TodoCount() {
     this.render(updatedTodoItems);
   }
 
-  this.render = items => {
-    const template = items.map(todoItemTemplate);
+  this.render = (size, status) => {
+    $totalCount.innerHTML = `총 <strong>${size}</strong> 개`;
   };
 
   const onShowAllTodos = event => {

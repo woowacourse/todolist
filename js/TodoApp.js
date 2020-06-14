@@ -9,6 +9,7 @@ function TodoApp() {
     new TodoItem(3, '프론트 미션', false)];
 
   let autoIncrementingId = 3;
+  let status = "all";
 
   const editByIdAndValue = (id, value) => {
     for (const todoItem of this.todoItems) {
@@ -57,11 +58,12 @@ function TodoApp() {
     }
   });
 
-  new TodoCount();
+  const todoCount = new TodoCount();
 
   this.setState = updatedItems => { //업데이트된 목록들로 정보를 갱신하고 리스트에 적용.
     this.todoItems = updatedItems;
     todoList.setState(this.todoItems);
+    todoCount.render(this.todoItems.length, status);
   };
 
   this.init = () => {
