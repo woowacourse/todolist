@@ -19,8 +19,7 @@ export function TodoList({onEdit, onToggle, onDelete}) {
     if (isEditing) {
       return;
     }
-    //TODO:토글만 할 뿐인데 왜 todoItemTemplate 형식으로 바뀌는걸까
-    //TODO:토글하면 내용도 보여야 하는데 안보임. 또는 전에 입력했던적 있으면 그 텍스트가 뜸
+    //TODO:수정 시작하려고 더블클릭하면 전에 입력했던 텍스트가 뜸
     $target.closest('li').classList.toggle('editing');
   }
 

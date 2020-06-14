@@ -1,6 +1,7 @@
 import {TodoInput} from './TodoInput.js'
 import {TodoList} from './TodoList.js'
 import {TodoItem} from './TodoItem.js'
+import {TodoCount} from './TodoCount.js'
 
 function TodoApp() {
   this.todoItems = [new TodoItem(1, '글쓰기 미션', false),
@@ -48,11 +49,6 @@ function TodoApp() {
     }
   });
 
-  this.setState = updatedItems => { //업데이트된 목록들로 정보를 갱신하고 리스트에 적용.
-    this.todoItems = updatedItems;
-    todoList.setState(this.todoItems);
-  };
-
   new TodoInput({
     onAdd: contents => { //추가하는 메서드를 부모 컴포넌트에서 관리
       const newTodoItem = new TodoItem(++autoIncrementingId, contents, false);
@@ -61,6 +57,12 @@ function TodoApp() {
     }
   });
 
+  new TodoCount();
+
+  this.setState = updatedItems => { //업데이트된 목록들로 정보를 갱신하고 리스트에 적용.
+    this.todoItems = updatedItems;
+    todoList.setState(this.todoItems);
+  };
 
   this.init = () => {
     this.setState(this.todoItems);
