@@ -6,7 +6,7 @@ export function TodoCount({onChangeStatus}) {
   const $activeTodosBtn = document.querySelector('.active');
   const $completedTodosBtn = document.querySelector('.completed');
 
-  this.render = (size, status) => {
+  this.render = size => {
     $totalCount.innerHTML = `총 <strong>${size}</strong> 개`;
   };
 
@@ -17,7 +17,7 @@ export function TodoCount({onChangeStatus}) {
     }
     $activeTodosBtn.classList.remove('selected');
     $completedTodosBtn.classList.remove('selected');
-    event.target.closest('a').classList.toggle('selected');
+    event.target.closest('a').classList.add('selected');
     onChangeStatus(STATUS.ALL);
   }
 
@@ -28,7 +28,7 @@ export function TodoCount({onChangeStatus}) {
     }
     $allTodosBtn.classList.remove('selected');
     $completedTodosBtn.classList.remove('selected');
-    event.target.closest('a').classList.toggle('selected');
+    event.target.closest('a').classList.add('selected');
     onChangeStatus(STATUS.ACTIVE);
   }
 
@@ -39,7 +39,7 @@ export function TodoCount({onChangeStatus}) {
     }
     $allTodosBtn.classList.remove('selected');
     $activeTodosBtn.classList.remove('selected');
-    event.target.closest('a').classList.toggle('selected');
+    event.target.closest('a').classList.add('selected');
     onChangeStatus(STATUS.COMPLETED);
   }
 

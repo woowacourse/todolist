@@ -16,18 +16,18 @@ function TodoApp() {
   const todoList = new TodoList({
     onEdit: (id, value) => {
       editByIdAndValue(id, value);
-      this.setState(this.todoItems);
-      this.render(this.todoItems, this.status);
+      this.setState(this.todoItems, this.status);
+      this.render(this.status);
     },
     onToggle: id => {
       toggleById(id);
-      this.setState(this.todoItems);
-      this.render(this.todoItems, this.status);
+      this.setState(this.todoItems, this.status);
+      this.render(this.status);
     },
     onDelete: id => {
       deleteById(id);
-      this.setState(this.todoItems);
-      this.render(this.todoItems, this.status);
+      this.setState(this.todoItems, this.status);
+      this.render(this.status);
     }
   });
 
@@ -35,28 +35,14 @@ function TodoApp() {
     onAdd: contents => { //추가하는 메서드를 부모 컴포넌트에서 관리
       const newTodoItem = new TodoItem(++autoIncrementingId, contents, false);
       this.todoItems.push(newTodoItem);
-      this.render(this.todoItems, status);
+      this.render(this.status);
     }
   });
 
   const todoCount = new TodoCount({
     onChangeStatus: status => {
-      switch (status) {
-        case STATUS.ALL:
-          this.status = STATUS.ALL;
-          this.render(this.todoItems, status);
-          break;
-        case STATUS.ACTIVE:
-          const activeItems = this.todoItems.filter(item => !item.isFinished);
-          this.status = STATUS.ACTIVE;
-          this.render(activeItems, status);
-          break;
-        case STATUS.COMPLETED:
-          const completedItems = this.todoItems.filter(item => item.isFinished);
-          this.status = STATUS.COMPLETED;
-          this.render(completedItems, status);
-          break;
-      }
+      this.status = status;
+      this.render(this.status);
     }
   });
 
@@ -89,14 +75,28 @@ function TodoApp() {
     this.status = status;
   };
 
-  this.render = (items, status) => { //주어진 정보들로 화면 렌더링
-    todoList.render(items);
-    todoCount.render(this.todoItems.length, status);
+  this.render = status => { //주어진 정보들로 화면 렌더링
+    switch (status) {
+      case STATUS.ALL:
+        todoList.render(this.todoItems);
+        todoCount.render(this.todoItems.length);
+        break;
+      case STATUS.ACTIVE:
+        const activeItems = this.todoItems.filter(item => !item.isFinished);
+        todoList.render(activeItems);
+        todoCount.render(this.todoItems.length);
+        break;
+      case STATUS.COMPLETED:
+        const completedItems = this.todoItems.filter(item => item.isFinished);
+        todoList.render(completedItems);
+        todoCount.render(this.todoItems.length);
+        break;
+    }
   }
 
   this.init = () => {
     this.setState(this.todoItems, this.status);
-    this.render(this.todoItems, STATUS.ALL);
+    this.render(STATUS.ALL);
   }
 }
 
