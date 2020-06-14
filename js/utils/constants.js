@@ -12,7 +12,7 @@ const KEY = {
 const STATUS = {
   ALL: 'all',
   ACTIVE: 'active',
-  COMPLETED: 'Completed',
+  COMPLETED: 'completed',
 }
 
 

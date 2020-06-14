@@ -12,6 +12,8 @@ export default function TodoFilter({ onSelect }) {
   const onFilterHandler = event => {
     event.preventDefault()
     const $target = event.target
-    onSelect($target.dataset.select)
+    const selected = $target.dataset.select
+    onSelect(selected)
+    this.render(selected)
   }
 }

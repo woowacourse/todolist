@@ -54,9 +54,8 @@ function TodoApp() {
     }
   })
 
-  const todoFilter = new TodoFilter({
+  new TodoFilter({
     onSelect: selected => {
-      todoFilter.render(selected)
       const filteredTodoItems = filterTodoItems(selected);
       this.render(filteredTodoItems)
     }
