@@ -4,10 +4,6 @@ import {EVENT_TYPE, KEY} from "../utils/constants.js";
 export function TodoList({onEdit, onToggle, onDelete}) {
   const $todoList = document.querySelector('.todo-list');
 
-  this.setState = updatedTodoItems => {
-    this.render(updatedTodoItems);
-  };
-
   this.render = items => {
     const template = items.map(todoItemTemplate);
     $todoList.innerHTML = template.join("");

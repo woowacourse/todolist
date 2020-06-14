@@ -9,7 +9,7 @@ function TodoApp() {
     new TodoItem(3, '프론트 미션', false)];
 
   let autoIncrementingId = 3;
-  let status = "all";
+  let status = 'all';
 
   const editByIdAndValue = (id, value) => {
     for (const todoItem of this.todoItems) {
@@ -39,14 +39,17 @@ function TodoApp() {
     onEdit: (id, value) => {
       editByIdAndValue(id, value);
       this.setState(this.todoItems);
+      this.render(this.todoItems, status);
     },
     onToggle: id => {
       toggleById(id);
       this.setState(this.todoItems);
+      this.render(this.todoItems, status);
     },
     onDelete: id => {
       deleteById(id);
       this.setState(this.todoItems);
+      this.render(this.todoItems, status);
     }
   });
 
@@ -54,20 +57,40 @@ function TodoApp() {
     onAdd: contents => { //추가하는 메서드를 부모 컴포넌트에서 관리
       const newTodoItem = new TodoItem(++autoIncrementingId, contents, false);
       this.todoItems.push(newTodoItem);
-      this.setState(this.todoItems);
+      this.render(this.todoItems, status);
     }
   });
 
-  const todoCount = new TodoCount();
+  const todoCount = new TodoCount({
+    onChangeStatus: status => {
+      switch (status) {
+        case 'all':
+          this.render(this.todoItems, status);
+          break;
+        case 'active':
+          const activeItems = this.todoItems.filter(item => !item.isFinished);
+          this.render(activeItems, status);
+          break;
+        case 'completed':
+          const completedItems = this.todoItems.filter(item => item.isFinished);
+          this.render(completedItems, status);
+          break;
+      }
+    }
+  });
 
-  this.setState = updatedItems => { //업데이트된 목록들로 정보를 갱신하고 리스트에 적용.
-    this.todoItems = updatedItems;
-    todoList.setState(this.todoItems);
-    todoCount.render(this.todoItems.length, status);
+  this.setState = (items) => { //정보 갱신
+    this.todoItems = items;
   };
+
+  this.render = (items, status) => { //주어진 정보들로 화면 렌더링
+    todoList.render(items);
+    todoCount.render(this.todoItems.length, status);
+  }
 
   this.init = () => {
     this.setState(this.todoItems);
+    this.render(this.todoItems, 'all');
   }
 }
 

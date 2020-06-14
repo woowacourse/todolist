@@ -1,15 +1,10 @@
-import {todoItemTemplate} from "../utils/templates.js";
 import {EVENT_TYPE} from "../utils/constants.js";
 
-export function TodoCount() {
+export function TodoCount({onChangeStatus}) {
   const $totalCount = document.querySelector('.todo-count');
   const $allTodosBtn = document.querySelector('.all');
   const $activeTodosBtn = document.querySelector('.active');
   const $completedTodosBtn = document.querySelector('.completed');
-
-  this.setState = updatedTodoItems => {
-    this.render(updatedTodoItems);
-  }
 
   this.render = (size, status) => {
     $totalCount.innerHTML = `총 <strong>${size}</strong> 개`;
@@ -23,6 +18,7 @@ export function TodoCount() {
     $activeTodosBtn.classList.remove('selected');
     $completedTodosBtn.classList.remove('selected');
     event.target.closest('a').classList.toggle('selected');
+    onChangeStatus('all');
   }
 
   const onShowActiveTodos = event => {
@@ -33,6 +29,7 @@ export function TodoCount() {
     $allTodosBtn.classList.remove('selected');
     $completedTodosBtn.classList.remove('selected');
     event.target.closest('a').classList.toggle('selected');
+    onChangeStatus('active');
   }
 
   const onShowCompletedTodos = event => {
@@ -43,6 +40,7 @@ export function TodoCount() {
     $allTodosBtn.classList.remove('selected');
     $activeTodosBtn.classList.remove('selected');
     event.target.closest('a').classList.toggle('selected');
+    onChangeStatus('completed');
   }
 
   $allTodosBtn.addEventListener(EVENT_TYPE.CLICK, onShowAllTodos);
