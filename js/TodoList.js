@@ -1,5 +1,5 @@
 import {todoItemTemplate} from '../utils/templates.js';
-import {EVENT_TYPE, KEY} from "../utils/constants.js";
+import {EVENT_TYPE, KEY, MESSAGES} from "../utils/constants.js";
 
 export function TodoList({onEdit, onToggle, onDelete}) {
   const $todoList = document.querySelector('.todo-list');
@@ -45,7 +45,9 @@ export function TodoList({onEdit, onToggle, onDelete}) {
     if (!isDeleteButtonClicked) {
       return;
     }
-    onDelete($target.closest('li').dataset.id);
+    if (confirm(MESSAGES.CONFIRM_DELETE)) {
+      onDelete($target.closest('li').dataset.id);
+    }
   }
 
   $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, onStartEditTodoItem);
