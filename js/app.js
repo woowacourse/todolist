@@ -46,7 +46,14 @@ function TodoList() {
     }
 
     const updateTodoCount = () => {
-        $todoCount.innerHTML = totalCountTemplate($todoList.childElementCount);
+        let todoCount = 0;
+        $todoList.childNodes.forEach(todo => {
+            console.log(todo);
+            if (todo.classList && !todo.classList.contains("hidden")) {
+                todoCount++;
+            }
+        });
+        $todoCount.innerHTML = totalCountTemplate(todoCount);
     }
 
     const changeFilter = event => {
@@ -56,8 +63,7 @@ function TodoList() {
         }
         if (event.target.classList.contains('all')) {
             $todoList.querySelectorAll('li').forEach(li => li.classList.remove('hidden'));
-        }
-        if (event.target.classList.contains('active')) {
+        } else if (event.target.classList.contains('active')) {
             $todoList.querySelectorAll('li').forEach(li => {
                 if (li.classList.contains('completed')) {
                     li.classList.add('hidden');
@@ -65,8 +71,7 @@ function TodoList() {
                     li.classList.remove('hidden');
                 }
             });
-        }
-        if (event.target.classList.contains('completed')) {
+        } else if (event.target.classList.contains('completed')) {
             $todoList.querySelectorAll('li').forEach(li => {
                 if (li.classList.contains('completed')) {
                     li.classList.remove('hidden');
@@ -75,6 +80,7 @@ function TodoList() {
                 }
             });
         }
+        updateTodoCount();
     }
 
     this.init = () => {
