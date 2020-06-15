@@ -23,7 +23,7 @@ function TodoList() {
     }
 
     const deleteTodo = event => {
-        if (event.target && event.target.nodeName === "BUTTON") {
+        if (event.target && event.target.classList.contains("destroy")) {
             $todoList.removeChild(event.target.closest("li"));
         }
         updateTodoCount();
@@ -40,7 +40,6 @@ function TodoList() {
             return;
         }
         if (event.key === KEY_TYPE.ENTER) {
-            console.log(event.target.querySelector("label"))
             event.target.parentNode.querySelector("label").innerHTML = event.target.value;
         }
         event.target.closest("li").classList.remove("editing");
