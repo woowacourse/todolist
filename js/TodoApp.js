@@ -1,6 +1,10 @@
-import {EVENT_TYPE, KEY_TYPE} from "./utils/constants.js";
+import { EVENT_TYPE, KEY_TYPE } from "./utils/constants.js";
 import makeTodoItemTemplate from "./utils/templates.js";
-import TodoItem from "./domain/todo-item.js"
+import TodoItem from "./domain/TodoItem.js";
+import { TodoItemFilter } from "./TodoItemFilter.js";
+import { TodoListTypeButton } from "./TodoListTypeButton.js";
+import { TodoInput } from "./TodoInput.js";
+import { TodoList } from "./TodoList.js";
 
 function TodoApp() {
   
@@ -125,48 +129,6 @@ function TodoApp() {
   }
 };
 
-class TodoInput {
-
-  constructor({ onAdd }) {
-    const $todoTitleInput = document.getElementById("new-todo-title");
-    
-    $todoTitleInput.addEventListener(
-      EVENT_TYPE.KEY_PRESS, 
-      event => { 
-        onAdd(event, $todoTitleInput.value);
-      }
-    );
-
-    this.clear = () => {
-      $todoTitleInput.value = "";
-    }
-  }
-}
-
-class TodoList {
-
-  constructor({ onDelete, onComplete, onStartEditing, onSaveEditing, onCancleEditing }) {
-    const $todoList = document.getElementById("todo-list");
-
-    const countContainer = new Count();
-
-    $todoList.addEventListener(EVENT_TYPE.CLICK, onDelete);
-    $todoList.addEventListener(EVENT_TYPE.CLICK, onComplete);
-    $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, onStartEditing);
-    $todoList.addEventListener(EVENT_TYPE.KEY_PRESS, onSaveEditing);
-    $todoList.addEventListener(EVENT_TYPE.KEY_DOWN, onCancleEditing);
-
-    this.render = todoItems => {
-      $todoList.innerHTML = todoItems.map(todoItem => makeTodoItemTemplate(todoItem)).join("");
-    };
-
-    this.setState = todoItems => {
-      this.render(todoItems);
-      countContainer.setState(todoItems.length);
-    };
-  }
-}
-
 class Count {
 
   constructor() {
@@ -178,58 +140,6 @@ class Count {
 
     this.render = todoCount => {
       $todoCountValue.innerHTML = todoCount;
-    }
-  }
-}
-
-class TodoListTypeButton {
-  
-  constructor({ onShowAll, onShowActive, onShowCompleted }) {
-    const classNameForFocusing = "selected";
-
-    const $showAllButton = document.querySelector(".all");
-    const $showActiveButton = document.querySelector(".active");
-    const $showCompletedButton = document.querySelector(".completed");
-
-    $showAllButton.addEventListener(EVENT_TYPE.CLICK, onShowAll);
-    $showActiveButton.addEventListener(EVENT_TYPE.CLICK, onShowActive);
-    $showCompletedButton.addEventListener(EVENT_TYPE.CLICK, onShowCompleted);
-
-    this.focusOnShowAllButton = () => {
-      if (!$showAllButton.classList.contains(classNameForFocusing)) {
-        $showAllButton.classList.add(classNameForFocusing);
-      }
-      $showActiveButton.classList.remove(classNameForFocusing);
-      $showCompletedButton.classList.remove(classNameForFocusing);
-    }
-
-    this.focusOnShowActiveButton = () => {
-      if (!$showActiveButton.classList.contains(classNameForFocusing)) {
-        $showActiveButton.classList.add(classNameForFocusing);
-      }
-      $showAllButton.classList.remove(classNameForFocusing);
-      $showCompletedButton.classList.remove(classNameForFocusing);
-    }
-
-    this.focusOnShowCompletedButton = () => {
-      if (!$showCompletedButton.classList.contains(classNameForFocusing)) {
-        $showCompletedButton.classList.add(classNameForFocusing);
-      }
-      $showAllButton.classList.remove(classNameForFocusing);
-      $showActiveButton.classList.remove(classNameForFocusing);
-    }
-  }
-}
-
-class TodoItemFilter {
-
-  constructor() {
-    this.filterCompleted = items => {
-      return items.filter(item => item.completed);
-    }
-
-    this.filterActive = items => {
-      return items.filter(item => !item.completed);
     }
   }
 }
