@@ -10,10 +10,12 @@ const KEY = {
 }
 
 const STATUS = {
-  ALL: 'all',
+  ALL: "all",
+  ALL_SELECTED: "all selected",
   ACTIVE: 'active',
+  ACTIVE_SELECTED: 'active selected',
   COMPLETED: 'completed',
+  COMPLETED_SELECTED: 'completed selected'
 }
-
 
 export { EVENT, KEY, STATUS }
