@@ -1,9 +1,9 @@
-let id = 0;
+let nextItemId = 0;
 
 class TodoItem {
 
   constructor(todoTitle) {
-    this.id = id++;
+    this.id = nextItemId++;
     this.title = todoTitle;
     this.completed = false;
     this.isBeingEdited = false;

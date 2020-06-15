@@ -6,15 +6,10 @@ function TodoApp() {
   
   const todoItems = [];
 
-  const todoInput = new TodoInput({ onAdd: onAdd });
-
-  const todoList = new TodoList({
-    onDelete: onDelete,
-    onComplete: onComplete,
-    onStartEditing: onStartEditing,
-    onSaveEditing: onSaveEditing,
-    onCancleEditing: onCancleEditing
-  });
+  const todoInput = new TodoInput({ onAdd });
+  const todoList = new TodoList({ onDelete, onComplete, onStartEditing, onSaveEditing, onCancleEditing });
+  const todoListTypeButton = new TodoListTypeButton({ onShowAll, onShowActive, onShowCompleted});
+  const todoItemFilter = new TodoItemFilter();
 
   function onAdd (event, todoTitle) {
     if (event.key !== KEY_TYPE.ENTER) {
@@ -110,6 +105,24 @@ function TodoApp() {
     }
     todoList.setState(todoItems);
   }
+
+  function onShowAll(event) {
+    event.preventDefault();
+    todoList.setState(todoItems);
+    todoListTypeButton.focusOnShowAllButton();
+  }
+
+  function onShowActive(event) {
+    event.preventDefault();
+    todoList.setState(todoItemFilter.filterActive(todoItems));
+    todoListTypeButton.focusOnShowActiveButton();
+  }
+
+  function onShowCompleted(event) {
+    event.preventDefault();
+    todoList.setState(todoItemFilter.filterCompleted(todoItems));
+    todoListTypeButton.focusOnShowCompletedButton();
+  }
 };
 
 class TodoInput {
@@ -135,7 +148,7 @@ class TodoList {
   constructor({ onDelete, onComplete, onStartEditing, onSaveEditing, onCancleEditing }) {
     const $todoList = document.getElementById("todo-list");
 
-    const countContainer = new CountContainer();
+    const countContainer = new Count();
 
     $todoList.addEventListener(EVENT_TYPE.CLICK, onDelete);
     $todoList.addEventListener(EVENT_TYPE.CLICK, onComplete);
@@ -154,7 +167,7 @@ class TodoList {
   }
 }
 
-class CountContainer {
+class Count {
 
   constructor() {
     const $todoCountValue = document.getElementById("todo-count-value");
@@ -165,6 +178,58 @@ class CountContainer {
 
     this.render = todoCount => {
       $todoCountValue.innerHTML = todoCount;
+    }
+  }
+}
+
+class TodoListTypeButton {
+  
+  constructor({ onShowAll, onShowActive, onShowCompleted }) {
+    const classNameForFocusing = "selected";
+
+    const $showAllButton = document.querySelector(".all");
+    const $showActiveButton = document.querySelector(".active");
+    const $showCompletedButton = document.querySelector(".completed");
+
+    $showAllButton.addEventListener(EVENT_TYPE.CLICK, onShowAll);
+    $showActiveButton.addEventListener(EVENT_TYPE.CLICK, onShowActive);
+    $showCompletedButton.addEventListener(EVENT_TYPE.CLICK, onShowCompleted);
+
+    this.focusOnShowAllButton = () => {
+      if (!$showAllButton.classList.contains(classNameForFocusing)) {
+        $showAllButton.classList.add(classNameForFocusing);
+      }
+      $showActiveButton.classList.remove(classNameForFocusing);
+      $showCompletedButton.classList.remove(classNameForFocusing);
+    }
+
+    this.focusOnShowActiveButton = () => {
+      if (!$showActiveButton.classList.contains(classNameForFocusing)) {
+        $showActiveButton.classList.add(classNameForFocusing);
+      }
+      $showAllButton.classList.remove(classNameForFocusing);
+      $showCompletedButton.classList.remove(classNameForFocusing);
+    }
+
+    this.focusOnShowCompletedButton = () => {
+      if (!$showCompletedButton.classList.contains(classNameForFocusing)) {
+        $showCompletedButton.classList.add(classNameForFocusing);
+      }
+      $showAllButton.classList.remove(classNameForFocusing);
+      $showActiveButton.classList.remove(classNameForFocusing);
+    }
+  }
+}
+
+class TodoItemFilter {
+
+  constructor() {
+    this.filterCompleted = items => {
+      return items.filter(item => item.completed);
+    }
+
+    this.filterActive = items => {
+      return items.filter(item => !item.completed);
     }
   }
 }
