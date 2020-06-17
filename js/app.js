@@ -31,13 +31,9 @@ function TodoApp() {
       const index = this.todoItems.indexOf(targetItem);
       this.todoItems.splice(index, 1);
       new TodoList(this.todoItems);
-    }
-
-    if ($target.classList.contains("label")) {
+    } else if ($target.classList.contains("label")) {
       $target.closest("li").classList.add("editing")
-    }
-
-    if ($target.classList.contains("toggle")) {
+    } else if ($target.classList.contains("toggle")) {
       $target.closest("li").classList.toggle("completed")
       targetItem.completed = $target.closest('li').classList.contains('completed');
     }
@@ -66,13 +62,9 @@ function TodoApp() {
 
     if ($target.classList.contains("all")) {
       currentFilter = FILTER_TYPE.ALL;
-    }
-
-    if ($target.classList.contains("completed")) {
+    } else if ($target.classList.contains("completed")) {
       currentFilter = FILTER_TYPE.COMPLETED;
-    }
-
-    if ($target.classList.contains("active")) {
+    } else if ($target.classList.contains("active")) {
       currentFilter = FILTER_TYPE.ACTIVE;
     }
 
@@ -105,8 +97,7 @@ function TodoList(itemToPrint) {
 function findItemsToPrint(allItem, filterState) {
   if (filterState === FILTER_TYPE.ALL) {
     return allItem;
-  }
-  if (filterState === FILTER_TYPE.COMPLETED) {
+  } else if (filterState === FILTER_TYPE.COMPLETED) {
     return allItem.filter(item => item.completed);
   }
   return allItem.filter(item => !item.completed);
