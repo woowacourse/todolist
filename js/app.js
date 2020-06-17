@@ -40,8 +40,8 @@ function TodoApp() {
   }
 
   const findTargetItem = $target => {
-    const targetId = $target.closest("li").dataset.id;
-    return this.todoItems.filter(item => item.id == targetId)[0];
+    const targetId = Number($target.closest("li").dataset.id);
+    return this.todoItems.find((item) => item.id === targetId);
   }
 
   this.updateItem = event => {
@@ -84,10 +84,7 @@ function TodoList(itemToPrint) {
   this.$todoCount = document.querySelector("#todo-count");
 
   this.render = items => {
-    this.$todoList.innerHTML = items.map(item => {
-      const template = selectTemplate(item.completed);
-      return template(item);
-    }).join("");
+    this.$todoList.innerHTML = items.map(item => selectTemplate(item.completed)(item)).join("");
     this.$todoCount.innerText = items.length;
   };
 
