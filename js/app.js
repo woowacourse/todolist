@@ -100,12 +100,7 @@ function findItemsToPrint(allItem, filterState) {
   return allItem.filter(item => !item.completed);
 }
 
-const selectTemplate = isCompleted => {
-  if (isCompleted) {
-    return completedItemTemplate;
-  }
-  return todoItemTemplate;
-}
+const selectTemplate = isCompleted => isCompleted ? completedItemTemplate : todoItemTemplate;
 
 const todoApp = new TodoApp();
 todoApp.init();
