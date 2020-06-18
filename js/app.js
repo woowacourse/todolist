@@ -1,4 +1,4 @@
-import {completedItemTemplate, todoItemTemplate} from "./templates.js"
+import {itemTemplate} from "./templates.js"
 import {FILTER_TYPE, isEnterKey} from "./utils.js"
 
 function TodoApp() {
@@ -84,8 +84,9 @@ function TodoList(itemToPrint) {
   this.$todoCount = document.querySelector("#todo-count");
 
   this.render = items => {
-    this.$todoList.innerHTML = items.map(item => selectTemplate(item.completed)(item)).join("");
+    this.$todoList.innerHTML = items.map(item => itemTemplate(item)).join("");
     this.$todoCount.innerText = items.length;
+    document.querySelectorAll(".checked").forEach(x => x.setAttribute("checked", true));
   };
 
   this.render(itemToPrint);
@@ -100,7 +101,6 @@ function findItemsToPrint(allItem, filterState) {
   return allItem.filter(item => !item.completed);
 }
 
-const selectTemplate = isCompleted => isCompleted ? completedItemTemplate : todoItemTemplate;
 
 const todoApp = new TodoApp();
 todoApp.init();
