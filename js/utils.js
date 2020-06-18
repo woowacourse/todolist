@@ -1,5 +1,5 @@
 export const isEnterKey = event =>{
-    return event.keyCode === 13;
+    return event.key.toLowerCase() === "enter";
 }
 
 export const FILTER_TYPE = {
