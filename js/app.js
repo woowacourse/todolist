@@ -1,5 +1,5 @@
-import {itemTemplate} from "./templates.js"
 import {FILTER_TYPE, isEnterKey} from "./utils.js"
+import TodoList from "./TodoList.js";
 
 function TodoApp() {
   const $itemInput = document.querySelector("#new-todo-title");
@@ -19,7 +19,7 @@ function TodoApp() {
         completed: false
       });
       $newTodoTarget.value = "";
-      return new TodoList(findItemsToPrint(this.todoItems, currentFilter));
+      return TodoList(findItemsToPrint(this.todoItems, currentFilter));
     }
   };
 
@@ -30,7 +30,7 @@ function TodoApp() {
     if ($target.classList.contains("destroy")) {
       const index = this.todoItems.indexOf(targetItem);
       this.todoItems.splice(index, 1);
-      new TodoList(this.todoItems);
+      TodoList(this.todoItems);
     } else if ($target.classList.contains("label")) {
       $target.closest("li").classList.add("editing")
     } else if ($target.classList.contains("toggle")) {
@@ -68,7 +68,7 @@ function TodoApp() {
       currentFilter = FILTER_TYPE.ACTIVE;
     }
 
-    new TodoList(findItemsToPrint(this.todoItems, currentFilter));
+    TodoList(findItemsToPrint(this.todoItems, currentFilter));
   }
 
   this.init = () => {
@@ -77,19 +77,6 @@ function TodoApp() {
     $itemList.addEventListener("keydown", event => this.updateItem(event));
     $itemFilters.addEventListener("click", event => this.clickFilter(event));
   }
-}
-
-function TodoList(itemToPrint) {
-  this.$todoList = document.querySelector("#todo-list");
-  this.$todoCount = document.querySelector("#todo-count");
-
-  this.render = items => {
-    this.$todoList.innerHTML = items.map(item => itemTemplate(item)).join("");
-    this.$todoCount.innerText = items.length;
-    document.querySelectorAll(".checked").forEach(x => x.setAttribute("checked", true));
-  };
-
-  this.render(itemToPrint);
 }
 
 function findItemsToPrint(allItem, filterState) {
