@@ -1,5 +1,6 @@
 import {FILTER_TYPE, isEnterKey} from "./utils.js"
 import TodoList from "./TodoList.js";
+import Filter from "./Filter.js";
 
 function TodoApp() {
   const $itemInput = document.querySelector("#new-todo-title");
@@ -19,7 +20,7 @@ function TodoApp() {
         completed: false
       });
       $newTodoTarget.value = "";
-      return TodoList(findItemsToPrint(this.todoItems, currentFilter));
+      return TodoList(Filter(this.todoItems, currentFilter));
     }
   };
 
@@ -50,7 +51,7 @@ function TodoApp() {
       const targetItem = findTargetItem($target);
       targetItem.title = $target.value;
       $target.closest("li").classList.remove("editing");
-      new TodoList(findItemsToPrint(this.todoItems, currentFilter));
+      TodoList(Filter(this.todoItems, currentFilter));
     }
   }
 
@@ -68,7 +69,7 @@ function TodoApp() {
       currentFilter = FILTER_TYPE.ACTIVE;
     }
 
-    TodoList(findItemsToPrint(this.todoItems, currentFilter));
+    TodoList(Filter(this.todoItems, currentFilter));
   }
 
   this.init = () => {
@@ -78,16 +79,6 @@ function TodoApp() {
     $itemFilters.addEventListener("click", event => this.clickFilter(event));
   }
 }
-
-function findItemsToPrint(allItem, filterState) {
-  if (filterState === FILTER_TYPE.ALL) {
-    return allItem;
-  } else if (filterState === FILTER_TYPE.COMPLETED) {
-    return allItem.filter(item => item.completed);
-  }
-  return allItem.filter(item => !item.completed);
-}
-
 
 const todoApp = new TodoApp();
 todoApp.init();
