@@ -72,6 +72,6 @@ export const TodoList = class {
   }
 
   getId(target) {
-    return target.closest("li").dataset.id;
+    return Number(target.closest("li").dataset.id);
   }
 }

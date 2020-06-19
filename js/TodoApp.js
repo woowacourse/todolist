@@ -7,6 +7,7 @@ import {FILTER} from "./utils/constans.js";
 
 const TodoApp = class {
   constructor() {
+    this.todoId = 0;
     this.todoItems = [];
     this.filter = FILTER.ALL;
     this.todoInput = new TodoInput({
@@ -43,7 +44,7 @@ const TodoApp = class {
 
   addTodo(value) {
     const item = {
-      id: this.todoItems.length,
+      id: this.todoId++,
       value: value,
       isCompleted: false,
       isEditing: false
