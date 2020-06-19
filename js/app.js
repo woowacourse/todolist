@@ -1,28 +1,33 @@
 import {FILTER_TYPE, isEnterKey} from "./utils.js"
 import TodoList from "./TodoList.js";
-import Filter from "./Filter.js";
+import TodoInput from "./TodoInput.js";
 
 function TodoApp() {
-  const $itemInput = document.querySelector("#new-todo-title");
   const $itemList = document.querySelector("#todo-list");
   const $itemFilters = document.querySelector(".filters");
   let currentFilter = FILTER_TYPE.ALL;
 
-  this.count = 0;
   this.todoItems = [];
 
-  this.inputItem = event => {
-    const $newTodoTarget = event.target;
-    if (isEnterKey(event)) {
-      this.todoItems.push({
-        id: this.count++,
-        title: $newTodoTarget.value,
-        completed: false
-      });
-      $newTodoTarget.value = "";
-      return TodoList(Filter(this.todoItems, currentFilter));
+  const findItemByFilter = (allItem, filterState) => {
+    if (filterState === FILTER_TYPE.ALL) {
+      return allItem;
+    } else if (filterState === FILTER_TYPE.COMPLETED) {
+      return allItem.filter(item => item.completed);
     }
-  };
+    return allItem.filter(item => !item.completed);
+  }
+
+  this.render = () => {
+    return TodoList(findItemByFilter(this.todoItems, currentFilter));
+  }
+
+  this.setState = (todoItems) => {
+    this.todoItems = todoItems;
+    this.render();
+  }
+
+  TodoInput(this.setState, this.todoItems);
 
   this.clickItem = event => {
     const $target = event.target;
@@ -51,7 +56,7 @@ function TodoApp() {
       const targetItem = findTargetItem($target);
       targetItem.title = $target.value;
       $target.closest("li").classList.remove("editing");
-      TodoList(Filter(this.todoItems, currentFilter));
+      TodoList(findItemByFilter(this.todoItems, currentFilter));
     }
   }
 
@@ -69,11 +74,10 @@ function TodoApp() {
       currentFilter = FILTER_TYPE.ACTIVE;
     }
 
-    TodoList(Filter(this.todoItems, currentFilter));
+    TodoList(findItemByFilter(this.todoItems, currentFilter));
   }
 
   this.init = () => {
-    $itemInput.addEventListener("keydown", event => this.inputItem(event));
     $itemList.addEventListener("click", event => this.clickItem(event));
     $itemList.addEventListener("keydown", event => this.updateItem(event));
     $itemFilters.addEventListener("click", event => this.clickFilter(event));
@@ -82,4 +86,3 @@ function TodoApp() {
 
 const todoApp = new TodoApp();
 todoApp.init();
-
