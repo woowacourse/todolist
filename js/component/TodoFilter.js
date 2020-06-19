@@ -9,7 +9,7 @@ export const TodoFilter = class {
 
   changeView(event) {
     const $target = event.target;
-    const isBtn = $target.tagName === "A";
+    const isBtn = $target.classList.contains("filter");
     if (isBtn) {
       this.changeSelected($target);
       this.filterHandler($target);
