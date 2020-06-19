@@ -59,13 +59,11 @@ export const TodoList = class {
     if (isEdit && isEnter) {
       this.editTodoHandler(this.getId($target), $target.value);
       window.onclick = null;
-    }
-    if (isEdit && isESC) {
+    } else if (isEdit && isESC) {
       this.editTodoHandler(this.getId($target),
         $target.closest("li").querySelector("label").innerText);
       window.onclick = null;
-    }
-    if (!isEdit) {
+    } else if (!isEdit) {
       const $editInput = document.querySelector(".editing .edit");
       this.editTodoHandler(this.getId($editInput),
         $editInput.closest("li").querySelector("label").innerText);

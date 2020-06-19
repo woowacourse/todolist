@@ -35,8 +35,7 @@ const TodoApp = class {
     let showItems = this.todoItems;
     if (this.filter === FILTER.ACTIVE) {
       showItems = this.todoItems.filter(item => !item.isCompleted);
-    }
-    if (this.filter === FILTER.COMPLETED) {
+    } else if (this.filter === FILTER.COMPLETED) {
       showItems = this.todoItems.filter(item => item.isCompleted);
     }
     return showItems;
@@ -83,11 +82,9 @@ const TodoApp = class {
     const isCompleted = target.classList.contains("completed");
     if (isAll) {
       this.filter = FILTER.ALL;
-    }
-    if (isActive) {
+    } else if (isActive) {
       this.filter = FILTER.ACTIVE;
-    }
-    if (isCompleted) {
+    } else if (isCompleted) {
       this.filter = FILTER.COMPLETED;
     }
     this.setState(this.todoItems);
