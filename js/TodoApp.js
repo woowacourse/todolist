@@ -43,7 +43,7 @@ const TodoApp = class {
 
   addTodo(value) {
     const item = {
-      id: `${this.todoItems.length}`,
+      id: this.todoItems.length,
       value: value,
       isCompleted: false,
       isEditing: false
