@@ -26,8 +26,9 @@ const TodoApp = class {
 
   setState(updatedItems) {
     this.todoItems = updatedItems;
-    this.todoList.render(this.filterItems());
-    this.todoCount.render(this.todoItems.length);
+    const showItems = this.filterItems();
+    this.todoList.render(showItems);
+    this.todoCount.render(showItems.length);
   }
 
   filterItems() {
