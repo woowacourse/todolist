@@ -1,4 +1,5 @@
-import {EVENT_TYPE, KEY_TYPE} from "../utils/constans.js";
+import {EVENT_TYPE} from "../utils/constans.js";
+import {Validator} from "../utils/Validator.js";
 
 export const TodoList = class {
   constructor({onComplete, onDelete, toggleEdit, onEdit}) {
@@ -54,12 +55,10 @@ export const TodoList = class {
   editTodo(event) {
     const $target = event.target;
     const isEdit = $target.classList.contains("edit");
-    const isEnter = event.key === KEY_TYPE.ENTER;
-    const isESC = event.key === KEY_TYPE.ESC;
-    if (isEdit && isEnter) {
+    if (isEdit && Validator.isEnter(event)) {
       this.editTodoHandler(this.getId($target), $target.value);
       window.onclick = null;
-    } else if (isEdit && isESC) {
+    } else if (isEdit && Validator.isESC(event)) {
       this.editTodoHandler(this.getId($target),
         $target.closest("li").querySelector("label").innerText);
       window.onclick = null;
