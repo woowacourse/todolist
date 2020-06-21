@@ -8,6 +8,7 @@ export const TodoList = class {
     this.deleteTodoHandler = onDelete;
     this.toggleEditingTodoHandler = toggleEdit;
     this.editTodoHandler = onEdit;
+    this.editHandler = this.editTodo.bind(this);
     this.initEventListeners();
   }
 
@@ -48,7 +49,7 @@ export const TodoList = class {
     const isLabel = $target.classList.contains("label");
     if (isLabel) {
       this.toggleEditingTodoHandler(this.getId($target));
-      window.onclick = this.editTodo.bind(this);
+      window.addEventListener(EVENT_TYPE.CLICK, this.editHandler);
     }
   }
 
@@ -57,16 +58,16 @@ export const TodoList = class {
     const isEdit = $target.classList.contains("edit");
     if (isEdit && Validator.isEnter(event)) {
       this.editTodoHandler(this.getId($target), $target.value);
-      window.onclick = null;
+      window.removeEventListener(EVENT_TYPE.CLICK, this.editHandler);
     } else if (isEdit && Validator.isESC(event)) {
       this.editTodoHandler(this.getId($target),
         $target.closest("li").querySelector("label").innerText);
-      window.onclick = null;
+      window.removeEventListener(EVENT_TYPE.CLICK, this.editHandler);
     } else if (!isEdit) {
       const $editInput = document.querySelector(".editing .edit");
       this.editTodoHandler(this.getId($editInput),
         $editInput.closest("li").querySelector("label").innerText);
-      window.onclick = null;
+      window.removeEventListener(EVENT_TYPE.CLICK, this.editHandler);
     }
   }
 
