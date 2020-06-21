@@ -23,13 +23,12 @@ const TodoApp = class {
     this.todoFilter = new TodoFilter({
       onChange: this.changeView.bind(this)
     });
-    this.loadItems()
-      .then(items => this.setState(items))
-      .catch(error => alert(error));
+
+    this.loadItems().then(items => this.setState(items));
   }
 
   async loadItems() {
-    const items = await api.todo.getAll();
+    const items = await api.todo.getAll().catch(error => alert(error));
     return items.map(item => new TodoItem(item));
   }
 
