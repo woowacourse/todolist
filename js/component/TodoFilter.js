@@ -3,16 +3,16 @@ import {EVENT_TYPE} from "../utils/constans.js";
 export const TodoFilter = class {
   constructor({onChange}) {
     this.fillters = document.querySelector(".filters");
-    this.fillters.addEventListener(EVENT_TYPE.CLICK, this.changeView.bind(this));
-    this.filterHandler = onChange;
+    this.fillters.addEventListener(EVENT_TYPE.CLICK,
+      event => this.changeView(onChange, event));
   }
 
-  changeView(event) {
+  changeView(onChange, event) {
     const $target = event.target;
     const isBtn = $target.classList.contains("filter");
     if (isBtn) {
       this.changeSelected($target);
-      this.filterHandler($target);
+      onChange($target);
     }
   }
 

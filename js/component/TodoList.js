@@ -4,23 +4,15 @@ import {Validator} from "../utils/Validator.js";
 export const TodoList = class {
   constructor({onComplete, onDelete, toggleEdit, onEdit}) {
     this.$todoList = document.querySelector("#todo-list");
-    this.completeTodoHandler = onComplete;
-    this.deleteTodoHandler = onDelete;
-    this.toggleEditingTodoHandler = toggleEdit;
-    this.editTodoHandler = onEdit;
-    this.editTodo = this.editTodo.bind(this);
-    this.initEventListeners();
-  }
-
-  initEventListeners() {
     this.$todoList.addEventListener(EVENT_TYPE.CLICK,
-      this.completeTodo.bind(this));
+      event => this.completeTodo(onComplete, event));
     this.$todoList.addEventListener(EVENT_TYPE.CLICK,
-      this.deleteTodo.bind(this));
+      event => this.deleteTodo(onDelete, event));
     this.$todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK,
-      this.toggleEditingTodo.bind(this));
+      event => this.toggleEditingTodo(toggleEdit, event));
     this.$todoList.addEventListener(EVENT_TYPE.KEY_DOWN,
-      this.editTodo.bind(this));
+      event => this.editTodo(onEdit, event));
+    this.clickOthers = this.editTodo.bind(this, onEdit);
   }
 
   render(items) {
@@ -28,46 +20,46 @@ export const TodoList = class {
     this.$todoList.innerHTML = template.join("");
   }
 
-  completeTodo(event) {
+  completeTodo(onComplete, event) {
     const $target = event.target;
     const isComplete = $target.classList.contains("toggle");
     if (isComplete) {
-      this.completeTodoHandler(this.getId($target));
+      onComplete(this.getId($target));
     }
   }
 
-  deleteTodo(event) {
+  deleteTodo(onDelete, event) {
     const $target = event.target;
     const isDelete = $target.classList.contains("destroy");
     if (isDelete && confirm("정말 삭제하시겠습니까?")) {
-      this.deleteTodoHandler(this.getId($target));
+      onDelete(this.getId($target));
     }
   }
 
-  toggleEditingTodo(event) {
+  toggleEditingTodo(toggleEdit, event) {
     const $target = event.target;
     const isLabel = $target.classList.contains("label");
     if (isLabel) {
-      this.toggleEditingTodoHandler(this.getId($target));
-      window.addEventListener(EVENT_TYPE.CLICK, this.editTodo);
+      toggleEdit(this.getId($target));
+      window.addEventListener(EVENT_TYPE.CLICK, this.clickOthers);
     }
   }
 
-  editTodo(event) {
+  editTodo(onEdit, event) {
     const $target = event.target;
     const isEdit = $target.classList.contains("edit");
     if (isEdit && Validator.isEnter(event)) {
-      this.editTodoHandler(this.getId($target), $target.value);
-      window.removeEventListener(EVENT_TYPE.CLICK, this.editTodo);
+      onEdit(this.getId($target), $target.value);
+      window.removeEventListener(EVENT_TYPE.CLICK, this.clickOthers);
     } else if (isEdit && Validator.isESC(event)) {
-      this.editTodoHandler(this.getId($target),
+      onEdit(this.getId($target),
         $target.closest("li").querySelector("label").innerText);
-      window.removeEventListener(EVENT_TYPE.CLICK, this.editTodo);
+      window.removeEventListener(EVENT_TYPE.CLICK, this.clickOthers);
     } else if (!isEdit) {
       const $editInput = document.querySelector(".editing .edit");
-      this.editTodoHandler(this.getId($editInput),
+      onEdit(this.getId($editInput),
         $editInput.closest("li").querySelector("label").innerText);
-      window.removeEventListener(EVENT_TYPE.CLICK, this.editTodo);
+      window.removeEventListener(EVENT_TYPE.CLICK, this.clickOthers);
     }
   }
 
