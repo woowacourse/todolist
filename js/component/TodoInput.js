@@ -16,4 +16,4 @@ export const TodoInput = class {
       $newTodoTarget.value = "";
     }
   }
-}
+};
