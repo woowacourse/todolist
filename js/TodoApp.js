@@ -81,16 +81,7 @@ const TodoApp = class {
   }
 
   changeView(target) {
-    const isAll = target.classList.contains("all");
-    const isActive = target.classList.contains("active");
-    const isCompleted = target.classList.contains("completed");
-    if (isAll) {
-      this.filter = FILTER.ALL;
-    } else if (isActive) {
-      this.filter = FILTER.ACTIVE;
-    } else if (isCompleted) {
-      this.filter = FILTER.COMPLETED;
-    }
+    this.filter = FILTER.of(target);
     this.setState(this.todoItems);
   }
 };
