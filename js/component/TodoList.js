@@ -39,10 +39,11 @@ export const TodoList = class {
   toggleEditingTodo(toggleEdit, event) {
     const $target = event.target;
     const isLabel = $target.classList.contains("label");
+    const isEdit = $target.classList.contains("edit");
     if (isLabel) {
       toggleEdit(this.getId($target));
       window.addEventListener(EVENT_TYPE.CLICK, this.clickOthers);
-    } else {
+    } else if(!isEdit) {
         const $editInput = document.querySelector(".editing .edit");
         toggleEdit(this.getId($editInput));
         window.removeEventListener(EVENT_TYPE.CLICK, this.clickOthers);
