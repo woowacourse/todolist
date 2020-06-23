@@ -12,13 +12,13 @@ const TodoApp = class {
     this.filter = FILTER.ALL;
     this.todoInput = new TodoInput({
       onAdd: this.addTodo.bind(this)
-    })
+    });
     this.todoList = new TodoList({
       onComplete: this.completeTodo.bind(this),
       onDelete: this.deleteTodo.bind(this),
       toggleEdit: this.toggleEditingTodo.bind(this),
       onEdit: this.editTodo.bind(this)
-    })
+    });
     this.todoCount = new TodoCount(this.todoItems.length);
     this.todoFilter = new TodoFilter({
       onChange: this.changeView.bind(this)
@@ -48,7 +48,7 @@ const TodoApp = class {
       value: value,
       isCompleted: false,
       isEditing: false
-    }
+    };
     this.todoItems.push(new TodoItem(item));
     this.setState(this.todoItems);
   }
@@ -90,6 +90,6 @@ const TodoApp = class {
     }
     this.setState(this.todoItems);
   }
-}
+};
 
 new TodoApp();

@@ -8,4 +8,4 @@ export const Validator = class {
   static isESC(event) {
     return event.key === KEY_TYPE.ESC;
   }
-}
+};

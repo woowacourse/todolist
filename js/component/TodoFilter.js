@@ -21,4 +21,4 @@ export const TodoFilter = class {
     selectedBtn.classList.remove("selected");
     target.classList.add("selected");
   }
-}
+};

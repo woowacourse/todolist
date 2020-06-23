@@ -47,4 +47,4 @@ export const TodoItem = class {
   isSameId(id) {
     return this.id === id;
   }
-}
+};

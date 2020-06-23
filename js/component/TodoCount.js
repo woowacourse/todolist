@@ -7,4 +7,4 @@ export const TodoCount = class {
   render(count) {
     this.$todoCount.innerHTML = `총 <strong>${count}</strong> 개`;
   }
-}
+};

@@ -74,4 +74,4 @@ export const TodoList = class {
   getId(target) {
     return Number(target.closest("li").dataset.id);
   }
-}
+};
