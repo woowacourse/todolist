@@ -1,4 +1,4 @@
-import {EVENT_TYPE} from "../utils/constans.js";
+import {EVENT_TYPE} from "../utils/constants.js";
 import {Validator} from "../utils/Validator.js";
 
 export const TodoList = class {

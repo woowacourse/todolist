@@ -1,4 +1,4 @@
-import {EVENT_TYPE} from "../utils/constans.js";
+import {EVENT_TYPE} from "../utils/constants.js";
 
 export const TodoFilter = class {
   constructor({onChange}) {
