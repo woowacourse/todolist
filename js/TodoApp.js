@@ -3,7 +3,7 @@ import {TodoList} from "./component/TodoList.js";
 import {TodoItem} from "./component/TodoItem.js";
 import {TodoCount} from "./component/TodoCount.js";
 import {TodoFilter} from "./component/TodoFilter.js";
-import {FILTER} from "./utils/constans.js";
+import {FILTER} from "./utils/constants.js";
 
 const TodoApp = class {
   constructor() {

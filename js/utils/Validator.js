@@ -1,4 +1,4 @@
-import {KEY_TYPE} from "./constans.js";
+import {KEY_TYPE} from "./constants.js";
 
 export const Validator = class {
   static isEnter(event) {
