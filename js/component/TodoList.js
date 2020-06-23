@@ -12,7 +12,7 @@ export const TodoList = class {
       event => this.toggleEditingTodo(toggleEdit, event));
     this.$todoList.addEventListener(EVENT_TYPE.KEY_DOWN,
       event => this.editTodo(onEdit, event));
-    this.clickOthers = this.editTodo.bind(this, onEdit);
+    this.clickOthers = this.toggleEditingTodo.bind(this, toggleEdit);
   }
 
   render(items) {
@@ -42,6 +42,10 @@ export const TodoList = class {
     if (isLabel) {
       toggleEdit(this.getId($target));
       window.addEventListener(EVENT_TYPE.CLICK, this.clickOthers);
+    } else {
+        const $editInput = document.querySelector(".editing .edit");
+        toggleEdit(this.getId($editInput));
+        window.removeEventListener(EVENT_TYPE.CLICK, this.clickOthers);
     }
   }
 
@@ -50,16 +54,9 @@ export const TodoList = class {
     const isEdit = $target.classList.contains("edit");
     if (isEdit && Validator.isEnter(event)) {
       onEdit(this.getId($target), $target.value);
-      window.removeEventListener(EVENT_TYPE.CLICK, this.clickOthers);
     } else if (isEdit && Validator.isESC(event)) {
       onEdit(this.getId($target),
         $target.closest("li").querySelector("label").innerText);
-      window.removeEventListener(EVENT_TYPE.CLICK, this.clickOthers);
-    } else if (!isEdit) {
-      const $editInput = document.querySelector(".editing .edit");
-      onEdit(this.getId($editInput),
-        $editInput.closest("li").querySelector("label").innerText);
-      window.removeEventListener(EVENT_TYPE.CLICK, this.clickOthers);
     }
   }
 
