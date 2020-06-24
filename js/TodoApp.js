@@ -24,7 +24,11 @@ class TodoApp {
     const todoItem = {
       content: todoInputValue,
     };
-    await api.todoItem.create(todoItem).catch((error) => alert.log(error));
+    try {
+      await api.todoItem.create(todoItem);
+    } catch (e) {
+      alert(e.message);
+    }
 
     this.setState(this.todoItems).catch((error) => alert(error));
   }
@@ -59,15 +63,23 @@ class TodoApp {
   }
 
   async setState(todoItems, filter) {
-    const todoItemsResponse = await api.todoItem.get();
+    let todoItemsResponse;
+    try {
+      todoItemsResponse = await api.todoItem.get();
+    } catch (e) {
+      alert(e.message);
+    }
+
     if (filter === FILTER.ACTIVE) {
       const activeItems = this.todoItems.filter(
-        (todoItem) => todoItem.isCompleted);
+        (todoItem) => todoItem.isCompleted
+      );
       this.todoList.render(activeItems);
       this.todoCount.render(activeItems.length);
     } else if (filter === FILTER.COMPLETED) {
       const completedItems = this.todoItems.filter(
-        (todoItem) => todoItem.isCompleted);
+        (todoItem) => todoItem.isCompleted
+      );
       this.todoList.render(completedItems);
       this.setCount(completedItems.length);
     } else {
@@ -84,5 +96,4 @@ class TodoApp {
   }
 }
 
-new TodoApp().setState()
-  .catch((error) => alert(error));
+new TodoApp().setState().catch((error) => alert(error));
