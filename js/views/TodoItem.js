@@ -8,4 +8,8 @@ export class TodoItem {
   changeContent(content) {
     this.content = content;
   }
+
+  toggleCompleted() {
+    this.isCompleted = !this.isCompleted;
+  }
 }

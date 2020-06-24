@@ -17,6 +17,7 @@ export const FILTER = {
 
 export const ERROR_MESSAGE = {
   NOT_BLANK: "빈값은 입력할 수 없습니다.",
+  NOT_NULL: "null이나 undefined가 될수 없습니다.",
 };
 
 export const CLASS_TYPE = {

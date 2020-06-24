@@ -1,4 +1,4 @@
-import { EVENT_TYPE } from "../utils/Constracts.js";
+import { EVENT_TYPE, FILTER } from "../utils/Constracts.js";
 
 export class TodoFilter {
   constructor(onFilter) {
@@ -9,6 +9,9 @@ export class TodoFilter {
   }
 
   onFilterHandler(event, onFilter) {
-    onFilter(event.target.classList[0]);
+    const filter = Object.entries(FILTER).find(
+      (value) => value[1] === event.target.classList[0]
+    );
+    onFilter(filter[1]);
   }
 }

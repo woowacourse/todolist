@@ -43,7 +43,7 @@ const api = (() => {
       return response(`${BASE_URI}rutgo/${id}`, METHOD.DELETE());
     },
     toggle(id) {
-      return response(`${BASE_URI}rutgo${id}/toggle`, METHOD.PUT());
+      return response(`${BASE_URI}rutgo/${id}/toggle`, METHOD.PUT());
     },
   };
   return {

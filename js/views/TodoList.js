@@ -6,7 +6,7 @@ import {
   KEY_CODE,
   TAG_TYPE,
 } from "../utils/Constracts.js";
-import { validateBlank } from "../utils/Validator.js";
+import { validateBlank, validateHasClass } from "../utils/Validator.js";
 
 export class TodoList {
   constructor(onToggle, onDelete, onEdit, onCancelEdit) {
@@ -24,14 +24,14 @@ export class TodoList {
   }
 
   onToggleHandler(event, onToggle) {
-    if (!event.target.classList.contains(CLASS_TYPE.TOGGLE)) {
+    if (!validateHasClass(event.target, CLASS_TYPE.TOGGLE)) {
       return;
     }
     onToggle(event.target.closest(TAG_TYPE.LI).dataset.id);
   }
 
   onDeleteHandler(event, OnDelete) {
-    if (!event.target.classList.contains(CLASS_TYPE.DESTROY)) {
+    if (!validateHasClass(event.target, CLASS_TYPE.DESTROY)) {
       return;
     }
     if (!confirm(GUIDE_MESSAGE.DELETE)) {
@@ -42,7 +42,7 @@ export class TodoList {
 
   onEditHandler(event, onEdit, onCancelEdit) {
     if (
-      !event.target.classList.contains(CLASS_TYPE.LABEL) &&
+      !validateHasClass(event.target, CLASS_TYPE.LABEL) &&
       event.type !== EVENT_TYPE.KEY_DOWN
     ) {
       return;
