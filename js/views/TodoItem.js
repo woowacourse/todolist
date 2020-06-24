@@ -5,10 +5,6 @@ export class TodoItem {
     this._id = _id;
   }
 
-  changeIsCompleted() {
-    this.isCompleted = !this.isCompleted;
-  }
-
   changeContent(content) {
     this.content = content;
   }

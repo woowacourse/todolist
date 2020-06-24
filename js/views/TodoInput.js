@@ -1,4 +1,5 @@
-import { ERROR_MESSAGE, EVENT_TYPE, KEY_CODE } from "../utils/Constracts.js";
+import { EVENT_TYPE, KEY_CODE } from "../utils/Constracts.js";
+import { validateBlank } from "../utils/Validator.js";
 
 export class TodoInput {
   constructor(onAdd) {
@@ -8,18 +9,12 @@ export class TodoInput {
     });
   }
 
-  validate(value) {
-    if (value.trim() === "") {
-      throw Error(ERROR_MESSAGE.NOT_BLANK);
-    }
-  }
-
   onInputHandler(event, onAdd) {
     if (event.code !== KEY_CODE.ENTER) {
       return;
     }
     try {
-      this.validate(event.target.value);
+      validateBlank(event.target.value);
       onAdd(event.target.value);
       this.$todoInput.value = "";
     } catch (e) {

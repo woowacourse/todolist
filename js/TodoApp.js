@@ -62,14 +62,12 @@ class TodoApp {
     const todoItemsResponse = await api.todoItem.get();
     if (filter === FILTER.ACTIVE) {
       const activeItems = this.todoItems.filter(
-        (todoItem) => todoItem.isCompleted === false
-      );
+        (todoItem) => todoItem.isCompleted);
       this.todoList.render(activeItems);
       this.todoCount.render(activeItems.length);
     } else if (filter === FILTER.COMPLETED) {
       const completedItems = this.todoItems.filter(
-        (todoItem) => todoItem.isCompleted === true
-      );
+        (todoItem) => todoItem.isCompleted);
       this.todoList.render(completedItems);
       this.setCount(completedItems.length);
     } else {

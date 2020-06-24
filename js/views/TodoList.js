@@ -1,12 +1,12 @@
 import { todoListRender } from "../utils/Templates.js";
 import {
   CLASS_TYPE,
-  ERROR_MESSAGE,
   EVENT_TYPE,
   GUIDE_MESSAGE,
   KEY_CODE,
   TAG_TYPE,
 } from "../utils/Constracts.js";
+import { validateBlank } from "../utils/Validator.js";
 
 export class TodoList {
   constructor(onToggle, onDelete, onEdit, onCancelEdit) {
@@ -54,7 +54,7 @@ export class TodoList {
     }
     if (event.code === KEY_CODE.ENTER) {
       try {
-        this.validate(event.target.value);
+        validateBlank(event.target.value);
         onEdit(
           event.target.value,
           event.target.closest(TAG_TYPE.LI).dataset.id
@@ -62,12 +62,6 @@ export class TodoList {
       } catch (e) {
         alert(e.message);
       }
-    }
-  }
-
-  validate(value) {
-    if (value.trim() === "") {
-      throw Error(ERROR_MESSAGE.NOT_BLANK);
     }
   }
 
