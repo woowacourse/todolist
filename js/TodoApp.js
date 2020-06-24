@@ -26,16 +26,19 @@ class TodoApp {
     };
     try {
       await api.todoItem.create(todoItem);
+      await this.setState(this.todoItems);
     } catch (e) {
       alert(e.message);
     }
-
-    this.setState(this.todoItems).catch((error) => alert(error));
   }
 
-  onToggle(id) {
-    api.todoItem.toggle(id).catch((error) => alert(error));
-    this.setState().catch((error) => alert(error));
+  async onToggle(id) {
+    try {
+      await api.todoItem.toggle(id);
+      await this.setState();
+    } catch (e) {
+      alert(e);
+    }
   }
 
   onEdit(todoItemValue, id) {
@@ -72,13 +75,13 @@ class TodoApp {
 
     if (filter === FILTER.ACTIVE) {
       const activeItems = this.todoItems.filter(
-        (todoItem) => todoItem.isCompleted
+        todoItem => todoItem.isCompleted
       );
       this.todoList.render(activeItems);
       this.todoCount.render(activeItems.length);
     } else if (filter === FILTER.COMPLETED) {
       const completedItems = this.todoItems.filter(
-        (todoItem) => todoItem.isCompleted
+          todoItem => todoItem.isCompleted
       );
       this.todoList.render(completedItems);
       this.setCount(completedItems.length);

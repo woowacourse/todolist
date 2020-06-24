@@ -1,3 +1,5 @@
+const BASE_URI = "https://todo-api.roto.codes/";
+
 const METHOD = {
   GET() {
     return {
@@ -32,28 +34,16 @@ const api = (() => {
 
   const todoItem = {
     create(todoItem) {
-      return jsonAfterResponse(
-        "https://todo-api.roto.codes/rutgo",
-        METHOD.POST(todoItem)
-      );
+      return jsonAfterResponse(`${BASE_URI}rutgo`, METHOD.POST(todoItem));
     },
     get() {
-      return jsonAfterResponse(
-        "https://todo-api.roto.codes/rutgo",
-        METHOD.GET()
-      );
+      return jsonAfterResponse(`${BASE_URI}rutgo`, METHOD.GET());
     },
     delete(id) {
-      return response(
-        "https://todo-api.roto.codes/rutgo/" + id,
-        METHOD.DELETE()
-      );
+      return response(`${BASE_URI}rutgo/${id}`, METHOD.DELETE());
     },
     toggle(id) {
-      return response(
-        "https://todo-api.roto.codes/rutgo/" + id + "/toggle",
-        METHOD.PUT()
-      );
+      return response(`${BASE_URI}rutgo${id}/toggle`, METHOD.PUT());
     },
   };
   return {
