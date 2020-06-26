@@ -165,10 +165,6 @@ function Todo() {
 
 		const isTargetCheckbox = !event.target.type;
 		if (isTargetCheckbox) {
-			changeEditStateToInput();
-		}
-
-		function changeEditStateToInput() {
 			let parent = event.target.parentElement.parentElement;
 			if (!parent.className.startsWith(TODO_CLASS.EDIT)) {
 				addFirstClass(parent, TODO_CLASS.EDIT);
