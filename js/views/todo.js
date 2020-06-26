@@ -1,4 +1,4 @@
-import {EVENT_TYPE, FILTERS, KEY_CODE, TODO_CLASS} from "../utils/constants.js";
+import {EVENT_TYPE, FILTERS, KEY_KIND, TODO_CLASS} from "../utils/constants.js";
 import {addFirstClass} from "../utils/classSetting.js";
 import {todoItemTemplate} from "../utils/Templates.js";
 import api from "../api/index.js";
@@ -16,7 +16,7 @@ function Todo() {
 	};
 
 	const newTodoKeydownEvent = event => {
-		if (event.keyCode === KEY_CODE.ENTER) {
+		if (event.key === KEY_KIND.ENTER) {
 			createTodo();
 		}
 
@@ -103,13 +103,13 @@ function Todo() {
 	};
 
 	const todoListKeydownEvent = event => {
-		if (event.keyCode === KEY_CODE.ENTER) {
+		if (event.key === KEY_KIND.ENTER) {
 			event.preventDefault();
 			saveData();
 			changeNotEdit();
 		}
 
-		if (event.keyCode === KEY_CODE.ESC) {
+		if (event.key === KEY_KIND.ESC) {
 			event.preventDefault();
 			rollBackData();
 			changeNotEdit();

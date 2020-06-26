@@ -4,9 +4,9 @@ export const EVENT_TYPE = {
     KEYDOWN: "keydown",
 };
 
-export const KEY_CODE = {
-    ENTER: 13,
-    ESC: 27,
+export const KEY_KIND = {
+    ENTER: 'Enter',
+    ESC: 'Escape',
 };
 
 export const TODO_CLASS = {
