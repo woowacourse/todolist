@@ -43,9 +43,7 @@ function Todo() {
 							"#todo-list li");
 						const $todoIds = Array.from($todos).map(
 							todo => todo.dataset.todoId);
-						const created = res.filter(todo => {
-							return !$todoIds.includes(todo._id);
-						});
+						const created = res.filter(todo => !$todoIds.includes(todo._id));
 						const createdFilter = document.querySelector(
 							"." + FILTERS.SELECTED).classList.contains(
 							FILTERS.COMPLETE);
