@@ -71,8 +71,7 @@ function Todo() {
 		event.preventDefault();
 		if (event.target.className === "toggle") {
 			toggleClick();
-		}
-		if (event.target.className === "destroy") {
+		} else if (event.target.className === "destroy") {
 			destroyClick();
 		}
 
@@ -107,9 +106,7 @@ function Todo() {
 			event.preventDefault();
 			saveData();
 			changeNotEdit();
-		}
-
-		if (event.key === KEY_KIND.ESC) {
+		} else if (event.key === KEY_KIND.ESC) {
 			event.preventDefault();
 			rollBackData();
 			changeNotEdit();
@@ -200,14 +197,13 @@ function Todo() {
 				todo => todo.classList.contains(TODO_CLASS.COMPLETE));
 			const noCompletes = toDos.filter(
 				todo => !todo.classList.contains(TODO_CLASS.COMPLETE));
+
 			if (selectedFilter.classList.contains(FILTERS.ALL)) {
 				displayToDoList = toDos;
-			}
-			if (selectedFilter.classList.contains(FILTERS.ACTIVE)) {
+			} else if (selectedFilter.classList.contains(FILTERS.ACTIVE)) {
 				displayToDoList = noCompletes;
 				noDisplayToDoList = completes;
-			}
-			if (selectedFilter.classList.contains(FILTERS.COMPLETE)) {
+			} else if (selectedFilter.classList.contains(FILTERS.COMPLETE)) {
 				displayToDoList = completes;
 				noDisplayToDoList = noCompletes;
 			}
