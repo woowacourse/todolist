@@ -4,3 +4,7 @@ export const ITEM_STATE = {
   COMPLETED: "completed",
   SELECTED: "selected",
 }
+
+export const KEY_TYPE = {
+  ENTER : "Enter",
+}
