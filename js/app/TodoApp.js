@@ -2,7 +2,7 @@ import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
 import TodoItem from "./TodoItem.js";
 import TodoCounter from "./TodoCounter.js";
-import { ITEM_STATE } from "./constants.js";
+import { ITEM_STATE } from "../constants/constants.js";
 
 function TodoApp() {
   let nextId = 1;

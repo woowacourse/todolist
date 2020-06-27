@@ -1,3 +1,6 @@
+import { isEnter } from '../utils/util.js';
+import { todoItemTemplate } from '../utils/template.js';
+
 function TodoList({ onRemove, onUpdate, onCompleted }) {
   const $todoList = document.querySelector("#todo-list");
 
@@ -7,7 +10,7 @@ function TodoList({ onRemove, onUpdate, onCompleted }) {
   }
 
   this.render = (todos) => {
-    $todoList.innerHTML = todos.map(todo => todo.todoItemTemplate()).join("");
+    $todoList.innerHTML = todos.map(todo => todoItemTemplate(todo)).join("");
   }
 
   const onRemoveHandler = event => {
@@ -27,7 +30,7 @@ function TodoList({ onRemove, onUpdate, onCompleted }) {
   }
 
   const onFinishEditingHandler = event => {
-    if (event.key && event.key !== "Enter") {
+    if (isEnter(event)) {
       return;
     }
     if (event.target.classList.contains("edit")) {
@@ -40,7 +43,7 @@ function TodoList({ onRemove, onUpdate, onCompleted }) {
 
   const onEditHandler = event => {
     const $todoItem = event.target.closest("li");
-    if(!$todoItem.classList.contains("editing")) {
+    if (!$todoItem.classList.contains("editing")) {
       $todoItem.classList.add("editing");
       const $editInput = $todoItem.querySelector(".edit");
       $editInput.addEventListener("keypress", onFinishEditingHandler);

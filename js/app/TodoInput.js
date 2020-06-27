@@ -1,9 +1,11 @@
+import { isEnter } from '../utils/util.js';
+
 function TodoInput({ onAdd }) {
 
   const $todoInput = document.querySelector("#new-todo-title");
 
   const onAddHandler = event => {
-    if (event.key && event.key !== "Enter") {
+    if (isEnter(event)) {
       return;
     }
     const $eventTarget = event.target;
