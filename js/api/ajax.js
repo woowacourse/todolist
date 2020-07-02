@@ -54,9 +54,9 @@ const api = (() => {
     readAll() {
       return requestWithData(TODO_API.URL + TODO_API.USER_NAME, METHOD.GET());
     },
-    // update(data) {
-    //   return request(TODO_API.URL + TODO_API.USER_NAME + `/${data.id}`, METHOD.PUT(data));
-    // },
+    update(data) {
+      return request(TODO_API.URL + TODO_API.USER_NAME + `/${data.id}`, METHOD.PUT(data));
+    },
     delete(id) {
       return request(TODO_API.URL + TODO_API.USER_NAME + `/${id}`, METHOD.DELETE());
     },

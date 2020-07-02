@@ -1,3 +1,4 @@
+import { STATUS } from '../utils/constants.js';
 import { TodoInput } from './components/TodoInput.js';
 import { TodoList } from './components/TodoList.js';
 import { TodoItem } from './components/TodoItem.js';
@@ -8,7 +9,7 @@ import api from '../api/ajax.js';
 class TodoApp {
   constructor() {
     this.items = [];
-    this.status = "all";
+    this.status = STATUS.ALL;
 
     this.todoList = new TodoList({
       onDelete: id => {
@@ -37,27 +38,35 @@ class TodoApp {
 
     new TodoInput({
       onAdd: async content => {
-        await api.todo.create({ content }).catch(error => alert(error));
-        this.items = await api.todo.readAll()
-        .then(data => data.map(todoItem => new TodoItem(todoItem)))
-        .catch(error => alert(error));
-        await this.setItems(this.items);
-        await this.todoCount.render(this.items.length);
-        await this.setStatus("all");
+        try {
+          await api.todo.create({ content }).catch(error => alert(error));
+          this.items = await api.todo.readAll()
+          .then(data => data.map(todoItem => new TodoItem(todoItem)))
+          .catch(error => alert(error));
+          this.setItems(this.items);
+          this.todoCount.render(this.items.length);
+          this.setStatus(STATUS.ALL);
+        }
+        catch (err) {
+          alert(err);
+        }
       }
     });
-
     this.getAllData().catch(error => alert(error));
   }
 
   async getAllData() {
-    const items = await api.todo.readAll()
-    .then(data => data.map(todoItem => new TodoItem(todoItem)))
-    .catch(error => alert(error));
-
-    await this.setItems(items);
-    await this.todoCount.render(items.length);
-    await this.setStatus("all");
+    try {
+      const items = await api.todo.readAll()
+      .then(data => data.map(todoItem => new TodoItem(todoItem)))
+      .catch(error => alert(error));
+      this.setItems(items);
+      this.todoCount.render(items.length);
+      this.setStatus("all");
+    }
+    catch (err) {
+      alert(err);
+    }
   }
 
   toggleIsComplete(id) {
@@ -83,27 +92,21 @@ class TodoApp {
   }
 
   getTodoItemsByStatus(todoStatus) {
-    let todoItems = [];
+    const todoItems = [];
 
-    if (todoStatus === "all") {
+    if (todoStatus === STATUS.ALL) {
       return this.items;
     }
 
-    if (todoStatus === "completed") {
-      this.items.forEach(todoItem => {
-        if (todoItem.isCompleted) {
-          todoItems.push(todoItem);
-        }
-      });
+    if (todoStatus === STATUS.COMPLETED) {
+      this.items.filter(todoItem => todoItem.isCompleted)
+        .forEach(todoItem => todoItems.push(todoItem));
       return todoItems;
     }
 
-    if (todoStatus === "active") {
-      this.items.forEach(todoItem => {
-        if (!todoItem.isCompleted) {
-          todoItems.push(todoItem);
-        }
-      });
+    if (todoStatus === STATUS.ACTIVE) {
+      this.items.filter(todoItem => !todoItem.isCompleted)
+      .forEach(todoItem => todoItems.push(todoItem));
       return todoItems;
     }
   }

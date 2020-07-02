@@ -1,4 +1,4 @@
-import { KEY_TYPE } from '../../utils/constants.js';
+import { KEY_TYPE, STATUS } from '../../utils/constants.js';
 import { todoStatusTemplate } from '../../utils/templates.js';
 
 export class TodoStatus {
@@ -11,7 +11,9 @@ export class TodoStatus {
   selectFilter(event) {
     const $target = event.target;
 
-    if ($target.tagName !== "A") {
+    if (!$target.classList.contains(STATUS.ALL)
+      && !$target.classList.contains(STATUS.COMPLETED)
+      && !$target.classList.contains(STATUS.ACTIVE)) {
       return;
     }
 
