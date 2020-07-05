@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:feat" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:feat" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:state" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e7834c93-4bc2-48c6-a337-d724f32f19b3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/app.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1cIpSOXkWBGPfcJ4TOGhuLVZ5PL" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/utils" />
+    </key>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e7834c93-4bc2-48c6-a337-d724f32f19b3" name="Default Changelist" comment="" />
+      <created>1590225961012</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1590225961012</updated>
+      <workItem from="1590225962971" duration="6134000" />
+      <workItem from="1590296198410" duration="592000" />
+      <workItem from="1590297078482" duration="891000" />
+      <workItem from="1590307858343" duration="4287000" />
+      <workItem from="1590655799915" duration="585000" />
+      <workItem from="1592205593013" duration="2211000" />
+    </task>
+    <task id="LOCAL-00001" summary="feat: 아이템 추가, 체크박스, 삭제, 수정, 갯수 카운트 구현">
+      <created>1590309149391</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1590309149392</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat: 필터 기능 구현">
+      <created>1590309267730</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1590309267730</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: 상수 분리 및 버그 수정">
+      <created>1590312119563</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1590312119563</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat: 이벤트 위임 시 nodeName이 아닌 클래스명으로 필터하도록 수정">
+      <created>1592205984196</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1592205984196</updated>
+    </task>
+    <task id="LOCAL-00005" summary="feat: todoCount 정상적으로 표시하게 수정">
+      <created>1592207785765</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1592207785765</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: 아이템 추가, 체크박스, 삭제, 수정, 갯수 카운트 구현" />
+    <MESSAGE value="feat: 필터 기능 구현" />
+    <MESSAGE value="feat: 상수 분리 및 버그 수정" />
+    <MESSAGE value="feat: 이벤트 위임 시 nodeName이 아닌 클래스명으로 필터하도록 수정" />
+    <MESSAGE value="feat: todoCount 정상적으로 표시하게 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: todoCount 정상적으로 표시하게 수정" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="304" y="187" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590291969831">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="304" y="187" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1590291969831" />
+    <state x="834" y="29" key="CommitChangelistDialog2" timestamp="1592207785644">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="834" y="29" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1592207785644" />
+    <state x="1377" y="197" key="CommitChangelistDialog2/2560.23.1440.877/0.23.2560.1368@0.23.2560.1368" timestamp="1590312119354" />
+    <state x="1029" y="347" key="SettingsEditor" timestamp="1590307825769">
+      <screen x="0" y="23" width="2560" height="1368" />
+    </state>
+    <state x="1029" y="347" key="SettingsEditor/2560.23.1440.877/0.23.2560.1368@0.23.2560.1368" timestamp="1590307825769" />
+    <state x="880" y="323" key="Vcs.Push.Dialog.v2" timestamp="1592207795739">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="880" y="323" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1592207795739" />
+    <state x="1400" y="444" key="Vcs.Push.Dialog.v2/2560.23.1440.877/0.23.2560.1368@0.23.2560.1368" timestamp="1590312125880" />
+  </component>
+</project>

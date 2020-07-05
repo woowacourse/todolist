@@ -8,7 +8,7 @@ function TodoList() {
     const $filters = document.querySelector(".filters");
 
     const insertTodo = event => {
-        if (event.key !== KEY_TYPE.ENTER || $newTodoTitle.value === "") {
+        if (!isEnterKey(event) || $newTodoTitle.value === "") {
             return;
         }
         $todoList.insertAdjacentHTML("afterbegin", itemTemplate($newTodoTitle.value));
@@ -36,10 +36,10 @@ function TodoList() {
     }
 
     const finishEditTodo = event => {
-        if (event.key !== KEY_TYPE.ENTER && event.key !== KEY_TYPE.ESC) {
+        if (!isEnterKey(event) && event.key !== KEY_TYPE.ESC) {
             return;
         }
-        if (event.key === KEY_TYPE.ENTER) {
+        if (isEnterKey(event)) {
             event.target.parentNode.querySelector("label").innerHTML = event.target.value;
         }
         event.target.closest("li").classList.remove("editing");
@@ -81,6 +81,10 @@ function TodoList() {
             });
         }
         updateTodoCount();
+    }
+
+    const isEnterKey = event => {
+        return event.key === KEY_TYPE.ENTER;
     }
 
     this.init = () => {
